@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Cliente\\projects\\CadeODano\\CadeODano.csproj": {}
+    "C:\\Users\\Cliente\\projects\\CADE-O-DANO\\Back-end\\CadeODano.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Cliente\\projects\\CadeODano\\CadeODano.csproj": {
+    "C:\\Users\\Cliente\\projects\\CADE-O-DANO\\Back-end\\CadeODano.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Cliente\\projects\\CadeODano\\CadeODano.csproj",
+        "projectUniqueName": "C:\\Users\\Cliente\\projects\\CADE-O-DANO\\Back-end\\CadeODano.csproj",
         "projectName": "CadeODano",
-        "projectPath": "C:\\Users\\Cliente\\projects\\CadeODano\\CadeODano.csproj",
+        "projectPath": "C:\\Users\\Cliente\\projects\\CADE-O-DANO\\Back-end\\CadeODano.csproj",
         "packagesPath": "C:\\Users\\Cliente\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Cliente\\projects\\CadeODano\\obj\\",
+        "outputPath": "C:\\Users\\Cliente\\projects\\CADE-O-DANO\\Back-end\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Cliente\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -43,6 +43,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[16.1.1, )"
+            },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[8.0.26, )"
