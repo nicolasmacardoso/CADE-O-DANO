@@ -1,0 +1,6 @@
+@CadeODano_HostAddress = http://localhost:5189
+
+GET {{CadeODano_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
