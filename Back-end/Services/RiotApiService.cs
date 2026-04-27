@@ -66,6 +66,4 @@ public class RiotApiService : IRiotApiService
       return ServiceResult<PlayerStatsDto>.Fail($"Erro ao buscar jogador pelo nome de usuário! {ex.Message}");
     }
   }
-
-  public async Task
 }
