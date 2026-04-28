@@ -2,6 +2,12 @@ namespace CadeODano.DTOs;
 
 public record PlayerStatsDto
 {
-  public string Puuid {get;set;}
-  public List<string> ChampionsPlayed {get;set;}
+  public string Puuid { get; set; }
+  public string SummonerName { get; set; }
+
+  public List<MatchSummaryDto> RecentMatches { get; set; }
+
+  public List<MostPlayedChampionDto> MostPlayedChampions { get; set; }
+
+  public List<HighestDamageChampionDto> HighestDamageChampions { get; set; }
 }
