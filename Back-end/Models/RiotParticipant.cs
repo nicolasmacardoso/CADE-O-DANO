@@ -5,6 +5,15 @@ public class RiotParticipant
     [JsonPropertyName("puuid")]
     public string Puuid { get; set; }
 
+    [JsonPropertyName("riotIdGameName")]
+    public string SummonerName { get; set; }
+
+    [JsonPropertyName("riotIdTagline")]
+    public string Hashtag {get;set;}
+
+    [JsonPropertyName("teamId")]
+    public int TeamId { get; set; }
+
     [JsonPropertyName("championName")]
     public string ChampionName { get; set; }
 

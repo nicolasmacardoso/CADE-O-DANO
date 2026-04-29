@@ -1,13 +1,20 @@
 using CadeODano;
+using CadeODano.Interfaces;
 using CadeODano.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
+//Services
+builder.Services.AddScoped<IStatsCalculatorService, StatsCalculatorService>();
+builder.Services.AddScoped<IPlayerDashboardService, PlayerDashboardService>();
 builder.Services.AddScoped<IRiotApiService, RiotApiService>();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+
 
 builder.Services.AddHttpClient<IRiotApiService, RiotApiService>(client =>
 {

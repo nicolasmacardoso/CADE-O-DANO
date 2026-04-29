@@ -1,5 +1,5 @@
-using System.Text.RegularExpressions;
 using CadeODano.DTOs;
+using CadeODano.Interfaces;
 using CadeODano.Models;
 
 namespace CadeODano.Services;
@@ -13,53 +13,10 @@ public class RiotApiService : IRiotApiService
     _httpClient = httpClient;
   }
 
-  public async Task<ServiceResult<PlayerStatsDto>> GetPlayerStats(PlayerSearchRequestDto playerNickname)
-  {
-    try
-    {
-      var puuid = await GetPuuidByRiotId(playerNickname);
-
-      var matchIds = await GetMatchIdsByPuuid(puuid);
-
-      var recentMatches = await GetRecentMatchesByPuuid(puuid, matchIds);
-
-      var mostPlayedChampions = GetMostPlayedChampions(recentMatches);
-
-      var highestDamageChampions = GetHighestDamageChampions(recentMatches);
-
-      var playerStats = new PlayerStatsDto
-      {
-        Puuid = puuid,
-        SummonerName = playerNickname.Nickname,
-        RecentMatches = recentMatches,
-        MostPlayedChampions = mostPlayedChampions,
-        HighestDamageChampions = highestDamageChampions
-      };
-
-      return ServiceResult<PlayerStatsDto>.Success(playerStats);
-    }
-    catch (Exception ex)
-    {
-      return ServiceResult<PlayerStatsDto>.Fail($"Erro ao buscar jogador pelo nome de usuário! {ex.Message}");
-    }
-  }
-
-  private async Task<List<MatchSummaryDto>> GetRecentMatchesByPuuid(string puuid, List<string> matchIds)
-  {
-    var tasks = matchIds.Select(matchId => GetMatchSummaryByMatchId(matchId, puuid));
-
-    var matches = await Task.WhenAll(tasks);
-
-    return matches
-        .Where(x => x != null)
-        .Select(x => x!)
-        .ToList();
-  }
-
-  private async Task<List<string>> GetMatchIdsByPuuid(string puuid)
+  public async Task<List<string>> GetMatchIdsByPuuid(string puuid)
   {
     var response = await _httpClient.GetAsync(
-        $"https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?start=0&count=20");
+        $"https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?start=0&count=40");
 
     if (!response.IsSuccessStatusCode)
       throw new Exception("Não foi possível buscar o histórico de partidas.");
@@ -72,7 +29,7 @@ public class RiotApiService : IRiotApiService
     return matchIds;
   }
 
-  private async Task<string> GetPuuidByRiotId(PlayerSearchRequestDto playerNickname)
+  public async Task<string> GetPuuidByRiotId(PlayerSearchRequestDto playerNickname)
   {
     var nickname = Uri.EscapeDataString(playerNickname.Nickname);
     var hashtag = Uri.EscapeDataString(playerNickname.Hashtag);
@@ -92,7 +49,7 @@ public class RiotApiService : IRiotApiService
   }
 
 
-  private async Task<MatchSummaryDto?> GetMatchSummaryByMatchId(string matchId, string puuid)
+  public async Task<MatchSummaryDto?> GetMatchSummaryByMatchId(string matchId, string puuid)
   {
     var response = await _httpClient.GetAsync(
       $"https://americas.api.riotgames.com/lol/match/v5/matches/{matchId}");
@@ -110,6 +67,7 @@ public class RiotApiService : IRiotApiService
 
     return new MatchSummaryDto
     {
+      MatchId = matchId,
       ChampionName = playerData.ChampionName,
       ChampionIconUrl = $"https://ddragon.leagueoflegends.com/cdn/16.5.1/img/champion/{playerData.ChampionName}.png",
       Kills = playerData.Kills,
@@ -121,33 +79,14 @@ public class RiotApiService : IRiotApiService
     };
   }
 
-  private List<MostPlayedChampionDto> GetMostPlayedChampions(List<MatchSummaryDto> recentMatches)
+  public async Task<RiotMatchResponse> GetMatchById(string matchId)
   {
-    return recentMatches
-    .GroupBy(x => x.ChampionName)
-    .Select(g => new MostPlayedChampionDto
-    {
-      ChampionName = g.Key,
-      ChampionIconUrl = $"https://ddragon.leagueoflegends.com/cdn/16.5.1/img/champion/{g.Key}.png",
-      GamesPlayed = g.Count()
-    })
-    .OrderByDescending(x => x.GamesPlayed)
-    .Take(3)
-    .ToList();
-  }
+    var response = await _httpClient.GetAsync(
+      $"https://americas.api.riotgames.com/lol/match/v5/matches/{matchId}");
 
-  private List<HighestDamageChampionDto> GetHighestDamageChampions(List<MatchSummaryDto> recentMatches)
-  {
-    return recentMatches
-        .GroupBy(x => x.ChampionName)
-        .Select(g => new HighestDamageChampionDto
-        {
-          ChampionName = g.Key,
-          ChampionIconUrl = $"https://ddragon.leagueoflegends.com/cdn/16.5.1/img/champion/{g.Key}.png",
-          HighestDamage = g.Max(x => x.TotalDamage)
-        })
-        .OrderByDescending(x => x.HighestDamage)
-        .Take(3)
-        .ToList();
+    if (!response.IsSuccessStatusCode)
+      return null;
+    
+    return await response.Content.ReadFromJsonAsync<RiotMatchResponse>();
   }
 }

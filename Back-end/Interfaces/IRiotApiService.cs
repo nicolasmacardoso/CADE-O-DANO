@@ -1,9 +1,13 @@
 using CadeODano.DTOs;
+using CadeODano.Models;
 using CadeODano.Services;
 
-namespace CadeODano;
+namespace CadeODano.Interfaces;
 
 public interface IRiotApiService
 {
-  public Task<ServiceResult<PlayerStatsDto>> GetPlayerStats(PlayerSearchRequestDto playerNickname);
+  public Task<List<string>> GetMatchIdsByPuuid(string puuid);
+  public Task<string> GetPuuidByRiotId(PlayerSearchRequestDto playerNickname);
+  public Task<MatchSummaryDto?> GetMatchSummaryByMatchId(string matchId, string puuid);
+  public Task<RiotMatchResponse> GetMatchById(string matchId);
 }

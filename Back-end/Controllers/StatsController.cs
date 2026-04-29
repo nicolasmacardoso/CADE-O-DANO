@@ -1,22 +1,34 @@
 using System.CodeDom.Compiler;
 using CadeODano;
 using CadeODano.DTOs;
+using CadeODano.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 public class StatsController : Controller
 {
-  private readonly IRiotApiService _riotApiService;
+  private readonly IPlayerDashboardService _playerDashboardService;
 
-  public StatsController (IRiotApiService riotApiService)
+  public StatsController (IPlayerDashboardService playerDashboardService)
   {
-    _riotApiService = riotApiService;
+    _playerDashboardService = playerDashboardService;
   }
 
   [HttpGet("/search/{Nickname}/{Hashtag}")]
   public async Task<IActionResult> SearchByNickname([FromRoute] PlayerSearchRequestDto playerRequest)
   {
-    var result = await _riotApiService.GetPlayerStats(playerRequest);
+    var result = await _playerDashboardService.GetPlayerStats(playerRequest);
+
+    if (!result.Result)
+      return BadRequest(result);
+
+    return Ok(result);
+  }
+
+  [HttpGet("match/{matchId}")]
+  public async Task<IActionResult> GetMatchDetails(string matchId, [FromQuery] string puuid)
+  {
+    var result = await _playerDashboardService.GetMatchDetails(matchId, puuid);
 
     if (!result.Result)
       return BadRequest(result);
