@@ -1,124 +1,170 @@
 import { useState } from "react";
 import { buscarHistorico, buscarMatch } from "./services/api";
+
 import type { MatchSummary } from "./types/match";
 import type { MatchDetail } from "./types/matchDetail";
 
-// tipo de telas
-type Screen = "login" | "history" | "match";
+type Screen = 'login' | 'historico' | 'detalhes';
 
-function App() {
+function App () {
     const [screen, setScreen] = useState<Screen>("login");
-
     const [nick, setNick] = useState("");
     const [tag, setTag] = useState("");
-
-    const [matches, setMatches] = useState<MatchSummary[]>([]);
-    const [selectedMatch, setSelectedMatch] = useState<MatchDetail | null>(null);
-
     const [loading, setLoading] = useState(false);
 
-    // 🔍 buscar histórico
-    const handleSearch = async () => {
+    const [matches, setMatches] = useState<MatchSummary[]>([]);
+    const [matchDetails, setMatchDetails] = useState<MatchDetail | null>(null);
+
+    async function handleSearchHistory () {
         try {
             setLoading(true);
 
             const data = await buscarHistorico(nick, tag);
-            setMatches(data);
+            setMatches(data.data.recentMatches);
 
-            setScreen("history");
-        } catch (error) {
-            console.error(error);
-            alert("erro ao buscar histórico");
+            setScreen('historico');
+        } catch (e) {
+            console.error(e);
+            alert("Erro ao buscar histórico");
         } finally {
             setLoading(false);
         }
-    };
+    }
 
-    // 🎮 buscar detalhe da partida
-    const handleSelectMatch = async (matchId: string) => {
+    async function handleSearchMatch (matchId: string) {
         try {
             setLoading(true);
 
             const data = await buscarMatch(matchId);
-            setSelectedMatch(data);
+            setMatchDetails(data.data);
 
-            setScreen("match");
-        } catch (error) {
-            console.error(error);
-            alert("erro ao buscar partida");
+            setScreen('detalhes');
+        } catch (e) {
+            console.error(e);
+            alert("Erro ao buscar detalhes da partida");
         } finally {
             setLoading(false);
         }
-    };
+    }
 
-    // 🔙 voltar
-    const handleBack = () => {
-        setScreen("history");
-        setSelectedMatch(null);
-    };
+    function renderizaPartidas() {
+        return matches.map(({ 
+            matchId, 
+            championName, 
+            championIconUrl, 
+            kills, 
+            deaths, 
+            assists, 
+            totalDamage, 
+            win, 
+            champLevel 
+        }) => (
+            <div key={matchId} onClick={() => handleSearchMatch(matchId)}>
+                <p>{win ? "vitória" : "derrota"}</p>
+                <img src={championIconUrl} alt={championName} />
+                <p>level: {champLevel}</p>
+                <p>nome champion: {championName}</p>
+                <p>kda: {kills}/{deaths}/{assists}</p>
+                <p>dano: {totalDamage} de dano</p>
+            </div>
+        ));
+    }
+
+    function renderizaParticipantes (team: "1" | "2") {
+        const thisTeam = `team${team}` as const;
+        const participants = matchDetails?.[thisTeam] || [];
+
+        return participants.map(({ 
+            summonerName, 
+            championIconUrl, 
+            championName, 
+            kills, 
+            deaths, 
+            assists, 
+            totalDamage, 
+            champLevel, 
+            isSearchedPlayer
+        }) => (
+            <div key={summonerName+championName}>
+                <div className={isSearchedPlayer ? "border-color:blue" : ""}>
+                    <img src={championIconUrl} alt="" />
+                    <p>{championName}</p>
+                    <p>{champLevel}</p>
+                </div>
+                <div>
+                    <p>Dano total: {totalDamage}</p>
+                </div>
+                <div>
+                    <p>kda: {kills}/{deaths}/{assists}</p>
+                </div>
+            </div>
+        ))
+    }
+
+    function renderizaDetalhes () {
+        const { 
+            matchId, 
+            playerWin, 
+            queueType, 
+            gameDuration 
+        } = matchDetails || {}; 
+        
+        return (
+            <div key={matchId}>
+                <p>{playerWin ? "Vitória" : "Derrota"}</p>
+                <p>{queueType}</p>
+                <p>{gameDuration}</p>
+                <hr></hr>
+                {renderizaParticipantes("1")}
+                <hr></hr>
+                {renderizaParticipantes("2")}
+            </div>
+        )
+    }
+
+    if (loading) {
+        return <p>Carregando...</p>;
+    }
 
     return (
         <div>
-            {loading && <p>Carregando...</p>}
-
-            {screen === "login" && (
+            {screen === 'login' && (
                 <div>
-                    <h1>Login</h1>
-
                     <input
-                        placeholder="Nick"
+                        placeholder="Usuário"
                         value={nick}
-                        onChange={(e) => setNick(e.target.value)}
+                        onChange={(e) => setNick(e.target.value)} 
                     />
+                    
+                    <div className="flex items-center border px-2">
+                        <span className="text-gray-500">#</span>
 
-                    <input
-                        placeholder="Tag"
-                        value={tag}
-                        onChange={(e) => setTag(e.target.value)}
-                    />
+                        <input
+                            type="text"
+                            value={tag}
+                            onChange={(e) => setTag(e.target.value)}
+                            className="outline-none flex-1"
+                            placeholder="BR1" 
+                        />
+                    </div>
 
-                    <button onClick={handleSearch}>
+                    <button
+                        onClick={handleSearchHistory}
+                    >
                         Buscar
                     </button>
                 </div>
             )}
-
-            {screen === "history" && (
-                <div>
-                    <h1>Histórico</h1>
-
-                    {matches.map((match) => (
-                        <div
-                            key={match.matchId}
-                            onClick={() => handleSelectMatch(match.matchId)}
-                            style={{ cursor: "pointer", marginBottom: "10px" }}
-                        >
-                            <p>{match.champion}</p>
-                            <p>{match.kills}/{match.deaths}/{match.assists}</p>
-                            <p>Dano: {match.damage}</p>
-                        </div>
-                    ))}
-                </div>
+            
+            {screen === 'historico' && (
+                renderizaPartidas()
             )}
-
-            {screen === "match" && selectedMatch && (
-                <div>
-                    <button onClick={handleBack}>Voltar</button>
-
-                    <h1>Detalhe da Partida</h1>
-
-                    {selectedMatch.participants.map((p, index) => (
-                        <div key={index}>
-                            <p>{p.summonerName}</p>
-                            <p>{p.champion}</p>
-                            <p>{p.kills}/{p.deaths}/{p.assists}</p>
-                            <p>Dano: {p.damage}</p>
-                        </div>
-                    ))}
-                </div>
+            
+            {screen === 'detalhes' && (
+                renderizaDetalhes()
             )}
         </div>
-    );
+    )
 }
 
 export default App;
