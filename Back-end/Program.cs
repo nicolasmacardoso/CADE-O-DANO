@@ -1,5 +1,6 @@
 using CadeODano;
 using CadeODano.Interfaces;
+using CadeODano.Mappings;
 using CadeODano.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,7 +15,9 @@ builder.Services.AddScoped<IRiotApiService, RiotApiService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddMemoryCache();
 
+builder.Services.AddAutoMapper(typeof(RiotProfile));
 
 builder.Services.AddHttpClient<IRiotApiService, RiotApiService>(client =>
 {

@@ -1,22 +1,28 @@
+using AutoMapper;
 using CadeODano.DTOs;
+using CadeODano.Helpers;
 using CadeODano.Interfaces;
 using CadeODano.Models;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace CadeODano.Services;
 
 public class RiotApiService : IRiotApiService
 {
   private readonly HttpClient _httpClient;
+  private readonly IMapper _mapper;
+  private readonly IMemoryCache _cache;
 
-  public RiotApiService(HttpClient httpClient)
+  public RiotApiService(HttpClient httpClient, IMapper mapper, IMemoryCache cache)
   {
     _httpClient = httpClient;
+    _mapper = mapper;
+    _cache = cache;
   }
 
-  public async Task<List<string>> GetMatchIdsByPuuid(string puuid)
+  public async Task<List<string>> GetMatchIdsByPuuid(string puuid, string count)
   {
-    var response = await _httpClient.GetAsync(
-        $"https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?start=0&count=40");
+    var response = await _httpClient.GetAsync(RiotUrlBuilder.GetRecentMatchesByPuuid(puuid, count));
 
     if (!response.IsSuccessStatusCode)
       throw new Exception("Não foi possível buscar o histórico de partidas.");
@@ -34,8 +40,7 @@ public class RiotApiService : IRiotApiService
     var nickname = Uri.EscapeDataString(playerNickname.Nickname);
     var hashtag = Uri.EscapeDataString(playerNickname.Hashtag);
 
-    var response = await _httpClient.GetAsync(
-      $"https://americas.api.riotgames.com/riot/account/v1/accounts/by-riot-id/{nickname}/{hashtag}");
+    var response = await _httpClient.GetAsync(RiotUrlBuilder.GetPuuidByRiotId(playerNickname.Nickname, playerNickname.Hashtag));
 
     if (!response.IsSuccessStatusCode)
       throw new Exception("Jogador não encontrado na Riot API");
@@ -51,8 +56,7 @@ public class RiotApiService : IRiotApiService
 
   public async Task<MatchSummaryDto?> GetMatchSummaryByMatchId(string matchId, string puuid)
   {
-    var response = await _httpClient.GetAsync(
-      $"https://americas.api.riotgames.com/lol/match/v5/matches/{matchId}");
+    var response = await _httpClient.GetAsync(RiotUrlBuilder.GetMatchInfoByMatchId(matchId));
 
     if (!response.IsSuccessStatusCode)
       return null;
@@ -65,28 +69,29 @@ public class RiotApiService : IRiotApiService
     if (playerData == null)
       return null;
 
-    return new MatchSummaryDto
-    {
-      MatchId = matchId,
-      ChampionName = playerData.ChampionName,
-      ChampionIconUrl = $"https://ddragon.leagueoflegends.com/cdn/16.5.1/img/champion/{playerData.ChampionName}.png",
-      Kills = playerData.Kills,
-      Deaths = playerData.Deaths,
-      Assists = playerData.Assists,
-      TotalDamage = playerData.TotalDamage,
-      Win = playerData.Win,
-      ChampLevel = playerData.ChampLevel
-    };
+    var dto = _mapper.Map<MatchSummaryDto>(playerData);
+    dto.MatchId = matchId;
+
+    return dto;
   }
 
-  public async Task<RiotMatchResponse> GetMatchById(string matchId)
+  public async Task<RiotMatchResponse?> GetMatchById(string matchId)
   {
-    var response = await _httpClient.GetAsync(
-      $"https://americas.api.riotgames.com/lol/match/v5/matches/{matchId}");
+    if (_cache.TryGetValue(matchId, out RiotMatchResponse cachedMatch))
+      return cachedMatch;
+
+    var response = await _httpClient.GetAsync(RiotUrlBuilder.GetMatchInfoByMatchId(matchId));
 
     if (!response.IsSuccessStatusCode)
       return null;
-    
-    return await response.Content.ReadFromJsonAsync<RiotMatchResponse>();
+
+    var matchData = await response.Content.ReadFromJsonAsync<RiotMatchResponse>();
+
+    if (matchData != null)
+    {
+      _cache.Set(matchId, matchData, TimeSpan.FromMinutes(30));
+    }
+
+    return matchData;
   }
 }

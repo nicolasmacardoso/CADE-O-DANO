@@ -15,9 +15,9 @@ public class StatsController : Controller
   }
 
   [HttpGet("/search/{Nickname}/{Hashtag}")]
-  public async Task<IActionResult> SearchByNickname([FromRoute] PlayerSearchRequestDto playerRequest)
+  public async Task<IActionResult> SearchByNickname([FromRoute] PlayerSearchRequestDto playerRequest, [FromQuery] string count)
   {
-    var result = await _playerDashboardService.GetPlayerStats(playerRequest);
+    var result = await _playerDashboardService.GetPlayerStats(playerRequest, count);
 
     if (!result.Result)
       return BadRequest(result);

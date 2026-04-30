@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 
+namespace CadeODano.Models;
 public class RiotParticipant
 {
     [JsonPropertyName("puuid")]

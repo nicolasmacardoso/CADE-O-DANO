@@ -1,4 +1,7 @@
+using AutoMapper;
+using CadeODano.Builders;
 using CadeODano.DTOs;
+using CadeODano.Helpers;
 using CadeODano.Interfaces;
 
 namespace CadeODano.Services;
@@ -7,20 +10,22 @@ public class PlayerDashboardService : IPlayerDashboardService
 {
   private readonly IRiotApiService _riotApiService;
   private readonly IStatsCalculatorService _statsCalculatorService;
+  private readonly IMapper _mapper;
 
-  public PlayerDashboardService(IRiotApiService riotApiService, IStatsCalculatorService statsCalculatorService)
+  public PlayerDashboardService(IRiotApiService riotApiService, IStatsCalculatorService statsCalculatorService, IMapper mapper)
   {
     _riotApiService = riotApiService;
     _statsCalculatorService = statsCalculatorService;
+    _mapper = mapper;
   }
 
-  public async Task<ServiceResult<PlayerStatsDto>> GetPlayerStats(PlayerSearchRequestDto playerNickname)
+  public async Task<ServiceResult<PlayerStatsDto>> GetPlayerStats(PlayerSearchRequestDto playerNickname, string count)
   {
     try
     {
       var puuid = await _riotApiService.GetPuuidByRiotId(playerNickname);
 
-      var matchIds = await _riotApiService.GetMatchIdsByPuuid(puuid);
+      var matchIds = await _riotApiService.GetMatchIdsByPuuid(puuid, count);
 
       var recentMatches = await GetRecentMatchesByPuuid(puuid, matchIds);
 
@@ -28,14 +33,13 @@ public class PlayerDashboardService : IPlayerDashboardService
 
       var highestDamageChampions = _statsCalculatorService.GetHighestDamageChampions(recentMatches);
 
-      var playerStats = new PlayerStatsDto
-      {
-        Puuid = puuid,
-        SummonerName = $"{playerNickname.Nickname}#{playerNickname.Hashtag}",
-        RecentMatches = recentMatches,
-        MostPlayedChampions = mostPlayedChampions,
-        HighestDamageChampions = highestDamageChampions
-      };
+      var playerStats = PlayerStatsBuilder.Build(
+       puuid,
+       playerNickname.Nickname,
+       playerNickname.Hashtag,
+       recentMatches,
+       mostPlayedChampions,
+       highestDamageChampions);
 
       return ServiceResult<PlayerStatsDto>.Success(playerStats);
     }
@@ -55,31 +59,18 @@ public class PlayerDashboardService : IPlayerDashboardService
         return ServiceResult<MatchDetailsDto>.Fail("Partida não encontrada.");
 
       var participants = matchData.Info.Participants
-          .Select(x => new ParticipantDto
+          .Select(x =>
           {
-            SummonerName = x.SummonerName,
-            SummonerHashtag = x.Hashtag,
-            ChampionName = x.ChampionName,
-            ChampionIconUrl = $"https://ddragon.leagueoflegends.com/cdn/15.9.1/img/champion/{x.ChampionName}.png",
-            Kills = x.Kills,
-            Deaths = x.Deaths,
-            Assists = x.Assists,
-            TotalDamage = x.TotalDamage,
-            ChampLevel = x.ChampLevel,
-            TeamId = x.TeamId,
-            IsSearchedPlayer = x.Puuid == puuid
+            var dto = _mapper.Map<ParticipantDto>(x);
+            dto.IsSearchedPlayer = x.Puuid == puuid;
+            return dto;
           })
           .ToList();
 
-      var searchedPlayer = participants.FirstOrDefault(x => x.IsSearchedPlayer);
-
-      var dto = new MatchDetailsDto
-      {
-        MatchId = matchId,
-        GameDuration = matchData.Info.GameDuration,
-        Team1 = participants.Where(x => x.TeamId == 100).ToList(),
-        Team2 = participants.Where(x => x.TeamId == 200).ToList()
-      };
+      var dto = MatchDetailsBuilder.Build(
+        matchId,
+        matchData.Info.GameDuration,
+        participants);
 
       return ServiceResult<MatchDetailsDto>.Success(dto);
     }
