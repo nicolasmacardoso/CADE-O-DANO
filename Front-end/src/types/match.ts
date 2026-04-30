@@ -1,11 +1,11 @@
 export type MatchSummary = {
     matchId: string;
-    champion: string;
+    championName: string;
+    championIconUrl: string;
     kills: number;
     deaths: number;
     assists: number;
-    damage: number;
+    totalDamage: number;
     win: boolean;
-    gameDuration: number;
-    date: string;
+    champLevel: number;
 };
