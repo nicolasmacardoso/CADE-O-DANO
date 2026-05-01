@@ -3,6 +3,7 @@ import { buscarHistorico, buscarMatch } from "./services/api";
 
 import type { MatchSummary } from "./types/match";
 import type { MatchDetail } from "./types/matchDetail";
+import MatchCard from "./components/MatchCard";
 
 type Screen = 'login' | 'historico' | 'detalhes';
 
@@ -48,25 +49,12 @@ function App () {
     }
 
     function renderizaPartidas() {
-        return matches.map(({ 
-            matchId, 
-            championName, 
-            championIconUrl, 
-            kills, 
-            deaths, 
-            assists, 
-            totalDamage, 
-            win, 
-            champLevel 
-        }) => (
-            <div key={matchId} onClick={() => handleSearchMatch(matchId)}>
-                <p>{win ? "vitória" : "derrota"}</p>
-                <img src={championIconUrl} alt={championName} />
-                <p>level: {champLevel}</p>
-                <p>nome champion: {championName}</p>
-                <p>kda: {kills}/{deaths}/{assists}</p>
-                <p>dano: {totalDamage} de dano</p>
-            </div>
+        return matches.map((match) => (
+            <MatchCard
+                key={match.matchId}
+                match={match}
+                onClick={handleSearchMatch}
+            />
         ));
     }
 
