@@ -5,19 +5,18 @@ import type { MatchSummary } from "./types/match";
 import type { MatchDetail } from "./types/matchDetail";
 import MatchCard from "./components/MatchCard";
 import MatchDetailsPage from "./components/MatchDetailsPage";
+import LoginPage from "./components/LoginPage";
 
 type Screen = 'login' | 'historico' | 'detalhes';
 
 function App () {
     const [screen, setScreen] = useState<Screen>("login");
-    const [nick, setNick] = useState("");
-    const [tag, setTag] = useState("");
     const [loading, setLoading] = useState(false);
 
     const [matches, setMatches] = useState<MatchSummary[]>([]);
     const [matchDetails, setMatchDetails] = useState<MatchDetail | null>(null);
 
-    async function handleSearchHistory () {
+    async function handleSearchHistory (nick: string, tag: string) {
         try {
             setLoading(true);
 
@@ -49,36 +48,13 @@ function App () {
         }
     }
 
-    if (loading) {
-        return <p>Carregando...</p>;
-    }
-
     return (
         <div>
             {screen === 'login' && (
-                <div>
-                    <input
-                        placeholder="Usuário"
-                        value={nick}
-                        onChange={(e) => setNick(e.target.value)} 
-                    />
-                    
-                    <div className="flex items-center border px-2">
-                        <span className="text-gray-500">#</span>
-
-                        <input
-                            type="text"
-                            value={tag}
-                            onChange={(e) => setTag(e.target.value)}
-                            className="outline-none flex-1"
-                            placeholder="BR1" 
-                        />
-                    </div>
-
-                    <button onClick={handleSearchHistory}>
-                        Buscar
-                    </button>
-                </div>
+                <LoginPage
+                    onSearch={handleSearchHistory}
+                    loading={loading}
+                />
             )}
             
             {screen === 'historico' && (
@@ -93,7 +69,6 @@ function App () {
             
             {screen === 'detalhes' && (
                 <MatchDetailsPage
-                    key={matchDetails?.matchId}
                     matchDetails={matchDetails}
                 />
             )}
