@@ -10,7 +10,7 @@ type Props = {
 
 function HistoryPage ({ onBack, matches, onSelectMatch }: Props) {
     return (
-        <div>
+        <div className="">
             <BackButton onBack={onBack}/>
             
             {matches.map((match) => (

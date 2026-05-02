@@ -25,7 +25,7 @@ function MatchCard ({match, onSelectMatch}: Props) {
             <p>level: {champLevel}</p>
             <p>nome champion: {championName}</p>
             <p>kda: {kills}/{deaths}/{assists}</p>
-            <p>dano: {totalDamage} de dano</p>
+            <p>dano: {totalDamage}</p>
         </div>
     );
 }
