@@ -6,6 +6,7 @@ import type { MatchDetail } from "./types/matchDetail";
 import MatchCard from "./components/MatchCard";
 import MatchDetailsPage from "./components/MatchDetailsPage";
 import LoginPage from "./components/LoginPage";
+import BackButton from "./components/BackButton";
 
 type Screen = 'login' | 'historico' | 'detalhes';
 
@@ -58,19 +59,27 @@ function App () {
             )}
             
             {screen === 'historico' && (
-                matches.map((match) => (
-                    <MatchCard
-                        key={match.matchId}
-                        match={match}
-                        onClick={handleSearchMatch}
-                    />
-                ))
+                <div>
+                    <BackButton onBack={() => setScreen('login')}/>
+                    
+                    {matches.map((match) => (
+                        <MatchCard
+                            key={match.matchId}
+                            match={match}
+                            onClick={handleSearchMatch}
+                        />
+                    ))}
+                </div>
             )}
             
             {screen === 'detalhes' && (
-                <MatchDetailsPage
-                    matchDetails={matchDetails}
-                />
+                <div>
+                    <BackButton onBack={() => setScreen('historico')}/>
+
+                    <MatchDetailsPage
+                        matchDetails={matchDetails}
+                    />
+                </div>
             )}
         </div>
     )
