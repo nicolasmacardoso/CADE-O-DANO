@@ -4,6 +4,7 @@ import { buscarHistorico, buscarMatch } from "./services/api";
 import type { MatchSummary } from "./types/match";
 import type { MatchDetail } from "./types/matchDetail";
 import MatchCard from "./components/MatchCard";
+import MatchDetailsPage from "./components/MatchDetailsPage";
 
 type Screen = 'login' | 'historico' | 'detalhes';
 
@@ -48,68 +49,6 @@ function App () {
         }
     }
 
-    function renderizaPartidas() {
-        return matches.map((match) => (
-            <MatchCard
-                key={match.matchId}
-                match={match}
-                onClick={handleSearchMatch}
-            />
-        ));
-    }
-
-    function renderizaParticipantes (team: "1" | "2") {
-        const thisTeam = `team${team}` as const;
-        const participants = matchDetails?.[thisTeam] || [];
-
-        return participants.map(({ 
-            summonerName, 
-            championIconUrl, 
-            championName, 
-            kills, 
-            deaths, 
-            assists, 
-            totalDamage, 
-            champLevel, 
-            isSearchedPlayer
-        }) => (
-            <div key={summonerName+championName}>
-                <div className={isSearchedPlayer ? "border-color:blue" : ""}>
-                    <img src={championIconUrl} alt="" />
-                    <p>{championName}</p>
-                    <p>{champLevel}</p>
-                </div>
-                <div>
-                    <p>Dano total: {totalDamage}</p>
-                </div>
-                <div>
-                    <p>kda: {kills}/{deaths}/{assists}</p>
-                </div>
-            </div>
-        ))
-    }
-
-    function renderizaDetalhes () {
-        const { 
-            matchId, 
-            playerWin, 
-            queueType, 
-            gameDuration 
-        } = matchDetails || {}; 
-        
-        return (
-            <div key={matchId}>
-                <p>{playerWin ? "Vitória" : "Derrota"}</p>
-                <p>{queueType}</p>
-                <p>{gameDuration}</p>
-                <hr></hr>
-                {renderizaParticipantes("1")}
-                <hr></hr>
-                {renderizaParticipantes("2")}
-            </div>
-        )
-    }
-
     if (loading) {
         return <p>Carregando...</p>;
     }
@@ -136,20 +75,27 @@ function App () {
                         />
                     </div>
 
-                    <button
-                        onClick={handleSearchHistory}
-                    >
+                    <button onClick={handleSearchHistory}>
                         Buscar
                     </button>
                 </div>
             )}
             
             {screen === 'historico' && (
-                renderizaPartidas()
+                matches.map((match) => (
+                    <MatchCard
+                        key={match.matchId}
+                        match={match}
+                        onClick={handleSearchMatch}
+                    />
+                ))
             )}
             
             {screen === 'detalhes' && (
-                renderizaDetalhes()
+                <MatchDetailsPage
+                    key={matchDetails?.matchId}
+                    matchDetails={matchDetails}
+                />
             )}
         </div>
     )

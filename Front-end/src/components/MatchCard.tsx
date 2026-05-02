@@ -19,7 +19,7 @@ function MatchCard ({match, onClick}: Props) {
     } = match;
 
     return (
-        <div key={matchId} onClick={() => onClick(matchId)}>
+        <div onClick={() => onClick(matchId)}>
             <p>{win ? "vitória" : "derrota"}</p>
             <img src={championIconUrl} alt={championName} />
             <p>level: {champLevel}</p>

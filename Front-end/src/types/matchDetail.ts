@@ -1,4 +1,4 @@
-type Participant = {
+export type Participant = {
     summonerName: string;
     championIconUrl: string;
     championName: string;
