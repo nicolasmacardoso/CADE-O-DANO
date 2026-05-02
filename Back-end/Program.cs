@@ -19,6 +19,17 @@ builder.Services.AddMemoryCache();
 
 builder.Services.AddAutoMapper(typeof(RiotProfile));
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("FrontendPolicy", policy =>
+    {
+        policy
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 builder.Services.AddHttpClient<IRiotApiService, RiotApiService>(client =>
 {
     var riotApiKey = builder.Configuration["RiotApi:Key"];
@@ -36,5 +47,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.MapControllers();
+app.UseCors("FrontendPolicy");
 
 app.Run();

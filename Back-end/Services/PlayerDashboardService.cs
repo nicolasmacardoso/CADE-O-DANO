@@ -69,7 +69,9 @@ public class PlayerDashboardService : IPlayerDashboardService
 
       var dto = MatchDetailsBuilder.Build(
         matchId,
+        matchData.Info.QueueId,
         matchData.Info.GameDuration,
+        matchData.Info.gameStartTimestamp,
         participants);
 
       return ServiceResult<MatchDetailsDto>.Success(dto);
