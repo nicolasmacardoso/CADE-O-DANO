@@ -1,12 +1,17 @@
+/* REACT */
 import { useState } from "react";
+
+/* APIS */
 import { buscarHistorico, buscarMatch } from "./services/api";
 
+/* TIPOS */
 import type { MatchSummary } from "./types/match";
 import type { MatchDetail } from "./types/matchDetail";
-import MatchCard from "./components/MatchCard";
-import MatchDetailsPage from "./components/MatchDetailsPage";
+
+/* COMPONENTES */
 import LoginPage from "./components/LoginPage";
-import BackButton from "./components/BackButton";
+import HistoryPage from "./components/HistoryPage";
+import DetailsPage from "./components/DetailsPage";
 
 type Screen = 'login' | 'historico' | 'detalhes';
 
@@ -59,27 +64,18 @@ function App () {
             )}
             
             {screen === 'historico' && (
-                <div>
-                    <BackButton onBack={() => setScreen('login')}/>
-                    
-                    {matches.map((match) => (
-                        <MatchCard
-                            key={match.matchId}
-                            match={match}
-                            onClick={handleSearchMatch}
-                        />
-                    ))}
-                </div>
+                <HistoryPage
+                    onBack={() => setScreen('login')}
+                    matches={matches}
+                    onSelectMatch={handleSearchMatch}
+                />
             )}
             
             {screen === 'detalhes' && (
-                <div>
-                    <BackButton onBack={() => setScreen('historico')}/>
-
-                    <MatchDetailsPage
-                        matchDetails={matchDetails}
-                    />
-                </div>
+                <DetailsPage
+                    onBack={() => setScreen('historico')}
+                    matchDetails={matchDetails}
+                />
             )}
         </div>
     )

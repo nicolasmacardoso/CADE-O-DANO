@@ -2,10 +2,10 @@ import type { MatchSummary } from "../types/match"
 
 type Props =  {
     match: MatchSummary;
-    onClick: (matchId: string) => void;
+    onSelectMatch: (matchId: string) => Promise<void>;
 }
 
-function MatchCard ({match, onClick}: Props) {
+function MatchCard ({match, onSelectMatch}: Props) {
     const { 
         matchId, 
         championName, 
@@ -19,7 +19,7 @@ function MatchCard ({match, onClick}: Props) {
     } = match;
 
     return (
-        <div onClick={() => onClick(matchId)}>
+        <div onClick={() => onSelectMatch(matchId)}>
             <p>{win ? "vitória" : "derrota"}</p>
             <img src={championIconUrl} alt={championName} />
             <p>level: {champLevel}</p>
