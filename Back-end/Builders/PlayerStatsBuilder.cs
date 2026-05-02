@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using CadeODano.DTOs;
 
 namespace CadeODano.Builders;

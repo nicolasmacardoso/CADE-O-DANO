@@ -13,6 +13,7 @@ public class ParticipantDto
 
     public int TotalDamage { get; set; }
     public int ChampLevel { get; set; }
+    public bool Win { get; set; }
 
     public bool IsSearchedPlayer { get; set; }
     public int TeamId { get; set; }

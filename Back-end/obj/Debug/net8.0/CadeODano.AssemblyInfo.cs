@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CadeODano")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fba4be3d79668f2d25f7efcba98cc7e67012d36d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+182709ef86ae562e2c9eef9afbdf5ef302352157")]
 [assembly: System.Reflection.AssemblyProductAttribute("CadeODano")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CadeODano")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

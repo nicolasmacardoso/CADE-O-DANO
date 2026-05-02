@@ -12,9 +12,12 @@ public static class MatchDetailsBuilder
       long gameStartTimestamp,
       List<ParticipantDto> participants)
   {
+    var searchedPlayer = participants.FirstOrDefault(x => x.IsSearchedPlayer);
+
     return new MatchDetailsDto
     {
       MatchId = matchId,
+      PlayerWin = searchedPlayer?.Win ?? false,
       QueueType = QueueHelper.GetQueueDescription(queueId),
       GameDuration = FormatHelper.FormatGameDuration(gameDuration),
       gameStartDate = FormatHelper.FormatUnixMilliseconds(gameStartTimestamp),
