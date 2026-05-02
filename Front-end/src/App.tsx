@@ -18,6 +18,8 @@ type Screen = 'login' | 'historico' | 'detalhes';
 function App () {
     const [screen, setScreen] = useState<Screen>("login");
     const [loading, setLoading] = useState(false);
+    
+    const [puuid, setPuuid] = useState("");
 
     const [matches, setMatches] = useState<MatchSummary[]>([]);
     const [matchDetails, setMatchDetails] = useState<MatchDetail | null>(null);
@@ -27,8 +29,11 @@ function App () {
             setLoading(true);
 
             const data = await buscarHistorico(nick, tag);
+
             setMatches(data.data.recentMatches);
 
+            setPuuid(data.data.puuid);
+            
             setScreen('historico');
         } catch (e) {
             console.error(e);
@@ -42,12 +47,13 @@ function App () {
         try {
             setLoading(true);
 
-            const data = await buscarMatch(matchId);
+            const data = await buscarMatch(matchId, puuid);
             setMatchDetails(data.data);
 
             setScreen('detalhes');
         } catch (e) {
             console.error(e);
+
             alert("Erro ao buscar detalhes da partida");
         } finally {
             setLoading(false);
