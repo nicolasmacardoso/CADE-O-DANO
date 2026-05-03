@@ -21,6 +21,8 @@ function App () {
     
     const [puuid, setPuuid] = useState("");
 
+    const [error, setError] = useState("");
+
     const [matches, setMatches] = useState<MatchSummary[]>([]);
     const [matchDetails, setMatchDetails] = useState<MatchDetail | null>(null);
 
@@ -37,7 +39,7 @@ function App () {
             setScreen('historico');
         } catch (e) {
             console.error(e);
-            alert("Erro ao buscar histórico");
+            setError("Erro ao buscar histórico");
         } finally {
             setLoading(false);
         }
@@ -54,7 +56,7 @@ function App () {
         } catch (e) {
             console.error(e);
 
-            alert("Erro ao buscar detalhes da partida");
+            setError("Erro ao buscar detalhes da partida");
         } finally {
             setLoading(false);
         }
@@ -62,6 +64,8 @@ function App () {
 
     return (
         <div>
+            {error && <p>{error}</p>}
+            
             {screen === 'login' && (
                 <LoginPage
                     onSearch={handleSearchHistory}
