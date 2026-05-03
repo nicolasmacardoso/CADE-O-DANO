@@ -13,9 +13,13 @@ function DetailsPage ({ onBack, matchDetails }: Props) {
         <div>
             <BackButton onBack={onBack}/>
 
-            <MatchDetailsPage
-                matchDetails={matchDetails}
-            />
+            {matchDetails ? (
+                <MatchDetailsPage
+                    matchDetails={matchDetails}
+                />
+            ) : (
+                <p>Partida não carregada</p>
+            )}
         </div>
     )
 }

@@ -9,17 +9,22 @@ type Props = {
 }
 
 function HistoryPage ({ onBack, matches, onSelectMatch }: Props) {
+        
     return (
         <div className="">
             <BackButton onBack={onBack}/>
             
-            {matches.map((match) => (
-                <MatchCard
-                    key={match.matchId}
-                    match={match}
-                    onSelectMatch={onSelectMatch}
-                />
-            ))}
+            {matches ?  (
+                matches.map((match) => (
+                    <MatchCard
+                        key={match.matchId}
+                        match={match}
+                        onSelectMatch={onSelectMatch}
+                    />
+                ))
+            ) : (
+                <p>Nenhuma partida encontrada</p>
+            )}
         </div>
     )
 }
