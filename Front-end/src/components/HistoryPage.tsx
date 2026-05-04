@@ -14,7 +14,7 @@ function HistoryPage ({ onBack, matches, onSelectMatch }: Props) {
         <div className="">
             <BackButton onBack={onBack}/>
             
-            {matches ?  (
+            {matches.length > 0 ?  (
                 matches.map((match) => (
                     <MatchCard
                         key={match.matchId}
