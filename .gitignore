@@ -24,4 +24,4 @@ dist-ssr
 *.sw?
 
 # Porta da api
-/Front-end/services/api_url.ts
+Front-end/src/services/api_url.ts
