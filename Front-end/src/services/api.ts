@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:5189/";
+const BASE_URL = "http://localhost:5000/";
 
 export const buscarHistorico = async (nick: string, tag: string) => {
     const res = await fetch(`${BASE_URL}search/${nick}/${tag}?count=5`);

@@ -37,8 +37,9 @@ function App () {
             setPuuid(data.data.puuid);
             
             setScreen('historico');
+            setError("");
         } catch (e) {
-            console.error(e);
+            console.log(e);
             setError("Erro ao buscar histórico");
         } finally {
             setLoading(false);
@@ -53,8 +54,9 @@ function App () {
             setMatchDetails(data.data);
 
             setScreen('detalhes');
+            setError("");
         } catch (e) {
-            console.error(e);
+            console.log(e);
 
             setError("Erro ao buscar detalhes da partida");
         } finally {
