@@ -1,4 +1,6 @@
-const BASE_URL = "http://localhost:5189/";
+import { api_base_URL } from "./api_url";
+
+const BASE_URL = api_base_URL;
 
 export const buscarHistorico = async (nick: string, tag: string, count: string) => {
   const res = await fetch(`${BASE_URL}search/${nick}/${tag}?count=${count}`);
