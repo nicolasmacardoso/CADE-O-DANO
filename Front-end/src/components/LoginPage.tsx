@@ -1,13 +1,14 @@
 import { useState } from "react";
 
 type Props = {
-    onSearch: (nick: string, tag: string) => Promise<void>;
+    onSearch: (nick: string, tag: string, matchesNumber: string) => Promise<void>;
     loading: boolean;
 }
 
 function LoginPage ({ onSearch, loading }: Props) {
     const [nick, setNick] = useState("");
     const [tag, setTag] = useState("");
+    const [matchesNumber, setMatchesNumber] = useState("");
     
     return (
         <div>
@@ -28,10 +29,17 @@ function LoginPage ({ onSearch, loading }: Props) {
                     placeholder="BR1" 
                 />
             </div>
+                <input
+                    type="text"
+                    value={matchesNumber}
+                    onChange={(e) => setMatchesNumber(e.target.value)}
+                    className="outline-none flex-1"
+                    placeholder="5"
+                />
 
             <button 
                 disabled={loading || !nick.trim() || !tag.trim()}
-                onClick={() => onSearch(nick, tag)}
+                onClick={() => onSearch(nick, tag, matchesNumber)}
             >
                 {loading ? "Carregando..." : "Buscar"}
             </button>

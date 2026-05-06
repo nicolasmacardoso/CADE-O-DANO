@@ -26,11 +26,11 @@ function App () {
     const [matches, setMatches] = useState<MatchSummary[]>([]);
     const [matchDetails, setMatchDetails] = useState<MatchDetail | null>(null);
 
-    async function handleSearchHistory (nick: string, tag: string) {
+    async function handleSearchHistory (nick: string, tag: string, matchesNumber: string) {
         try {
             setLoading(true);
 
-            const data = await buscarHistorico(nick, tag);
+            const data = await buscarHistorico(nick, tag, matchesNumber);
 
             setMatches(data.data.recentMatches);
 
