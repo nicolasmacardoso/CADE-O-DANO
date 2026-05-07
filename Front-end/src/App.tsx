@@ -25,14 +25,17 @@ function App() {
   const [matches, setMatches] = useState<MatchSummary[]>([]);
   const [matchDetails, setMatchDetails] = useState<MatchDetail | null>(null);
 
-  const { loading, error, run } = useRequestState();
+  const historyRequest = useRequestState();
+  const matchRequest   = useRequestState();
 
   async function handleSearchHistory(
     nick: string,
     tag: string,
     matchesNumber: string
   ) {
-    const data = await run(() =>
+    matchRequest.clearError();
+
+    const data = await historyRequest.run(() =>
       buscarHistorico(nick, tag, matchesNumber)
     );
 
@@ -45,7 +48,9 @@ function App() {
   }
 
   async function handleSearchMatch(matchId: string) {
-    const data = await run(() =>
+    historyRequest.clearError();
+
+    const data = await matchRequest.run(() =>
       buscarMatch(matchId, puuid)
     );
 
@@ -59,13 +64,14 @@ function App() {
     <div>
       <div>
         <p>{screen.toUpperCase()}</p>
-        {error && <p className="global-error">{error}</p>}
+        {historyRequest.error && <p className="history-error">{historyRequest.error}</p>}
+        {matchRequest.error && <p className="match-error">{matchRequest.error}</p>}
       </div>
 
       {screen === "login" && (
         <LoginPage
           onSearch={handleSearchHistory}
-          loading={loading}
+          loading={historyRequest.loading}
         />
       )}
 

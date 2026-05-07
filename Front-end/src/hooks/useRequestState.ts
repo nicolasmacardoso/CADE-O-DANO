@@ -32,11 +32,15 @@ function useRequestState() {
         }
     }
 
+    function clearError() {
+        setError("");
+    }
+
     return {
         loading,
         error,
-        setError,
         run,
+        clearError
     };
 }
 
