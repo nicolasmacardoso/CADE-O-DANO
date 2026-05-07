@@ -3,13 +3,13 @@ import type { MatchDetail } from "../../types/matchDetail";
 
 export type SearchMatchResponse = {
     data: MatchDetail;
-}
+};
 
-type dataHistoryResponse = {
+type SearchHistoryData = {
     recentMatches: MatchSummary[];
     puuid: string;
-}
+};
 
 export type SearchHistoryResponse = {
-    data: dataHistoryResponse;
-}
+    data: SearchHistoryData;
+};

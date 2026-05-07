@@ -2,20 +2,36 @@ import type { SearchHistoryResponse, SearchMatchResponse } from "./types";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-export const buscarHistorico = async (nick: string, tag: string, count: string): Promise<SearchHistoryResponse> => {
-  const res = await fetch(`${BASE_URL}search/${nick}/${tag}?count=${count}`);
+async function fetchEndpoint<TResponse>(endpoint: string, requestLabel: string): Promise<TResponse> {
+  if (!BASE_URL) {
+    throw new Error("VITE_API_BASE_URL não configurada");
+  };
+
+  const apiRequestUrl = `${BASE_URL}${endpoint}`;
+  
+  const res = await fetch(apiRequestUrl);
 
   if (!res.ok) 
-    throw new Error("Erro ao buscar histórico: " + res.status);
+    throw new Error(`Erro ao buscar ${requestLabel}: ${res.status}`);
 
   return res.json();
 };
 
-export const buscarMatch = async (matchId: string, puuid: string): Promise<SearchMatchResponse> => {
-  const res = await fetch(`${BASE_URL}match/${matchId}?puuid=${puuid}`);
-  
-  if (!res.ok) 
-    throw new Error("Erro ao buscar partida: " + res.status);
+export const buscarHistorico = (
+  nick: string,
+  tag: string,
+  matchNumber: string
+): Promise<SearchHistoryResponse> => {
+  const historyRequestUrl = `search/${nick}/${tag}?count=${matchNumber}`;
 
-  return res.json();
+  return fetchEndpoint<SearchHistoryResponse>(historyRequestUrl, "histórico");
+};
+
+export const buscarMatch = ( 
+  matchId: string, 
+  puuid: string 
+): Promise<SearchMatchResponse> => {
+  const matchRequestUrl = `match/${matchId}?puuid=${puuid}`;
+  
+  return fetchEndpoint<SearchMatchResponse>(matchRequestUrl, "detalhes da partida");
 };
