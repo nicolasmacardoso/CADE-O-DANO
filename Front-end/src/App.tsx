@@ -26,7 +26,7 @@ function App() {
   const [matchDetails, setMatchDetails] = useState<MatchDetail | null>(null);
 
   const historyRequest = useRequestState();
-  const matchRequest   = useRequestState();
+  const matchRequest = useRequestState();
 
   async function handleSearchHistory(
     nick: string,
@@ -79,6 +79,7 @@ function App() {
         <HistoryPage
           onBack={() => setScreen("login")}
           matches={matches}
+          matchLoading={matchRequest.loading}
           onSelectMatch={handleSearchMatch}
         />
       )}
