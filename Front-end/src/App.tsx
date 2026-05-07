@@ -1,7 +1,7 @@
 /* REACT */
 import { useState } from "react";
 
-/* APIS */
+/* SERVICES */
 import { buscarHistorico, buscarMatch } from "./services/api";
 
 /* TIPOS */
@@ -13,84 +13,74 @@ import LoginPage from "./components/LoginPage";
 import HistoryPage from "./components/HistoryPage";
 import DetailsPage from "./components/DetailsPage";
 
-type Screen = 'login' | 'historico' | 'detalhes';
+/* HOOKS */
+import useRequestState from "./hooks/useRequestState";
 
-function App () {
-    const [screen, setScreen] = useState<Screen>("login");
-    const [loading, setLoading] = useState(false);
-    
-    const [puuid, setPuuid] = useState("");
+type Screen = "login" | "historico" | "detalhes";
 
-    const [error, setError] = useState("");
+function App() {
+  const [screen, setScreen] = useState<Screen>("login");
 
-    const [matches, setMatches] = useState<MatchSummary[]>([]);
-    const [matchDetails, setMatchDetails] = useState<MatchDetail | null>(null);
+  const [puuid, setPuuid] = useState("");
+  const [matches, setMatches] = useState<MatchSummary[]>([]);
+  const [matchDetails, setMatchDetails] = useState<MatchDetail | null>(null);
 
-    async function handleSearchHistory (nick: string, tag: string, matchesNumber: string) {
-        try {
-            setLoading(true);
+  const { loading, error, run } = useRequestState();
 
-            const data = await buscarHistorico(nick, tag, matchesNumber);
+  async function handleSearchHistory(
+    nick: string,
+    tag: string,
+    matchesNumber: string
+  ) {
+    const data = await run(() =>
+      buscarHistorico(nick, tag, matchesNumber)
+    );
 
-            setMatches(data.data.recentMatches);
+    if (!data) return;
 
-            setPuuid(data.data.puuid);
-            
-            setScreen('historico');
-            setError("");
-        } catch (e) {
-            console.log(e);
-            setError("Erro ao buscar histórico");
-        } finally {
-            setLoading(false);
-        }
-    }
+    setMatches(data.data.recentMatches);
+    setPuuid(data.data.puuid);
+    setScreen("historico");
+  }
 
-    async function handleSearchMatch (matchId: string) {
-        try {
-            setLoading(true);
+  async function handleSearchMatch(matchId: string) {
+    const data = await run(() =>
+      buscarMatch(matchId, puuid)
+    );
 
-            const data = await buscarMatch(matchId, puuid);
-            setMatchDetails(data.data);
+    if (!data) return;
 
-            setScreen('detalhes');
-            setError("");
-        } catch (e) {
-            console.log(e);
+    setMatchDetails(data.data);
+    setScreen("detalhes");
+  }
 
-            setError("Erro ao buscar detalhes da partida");
-        } finally {
-            setLoading(false);
-        }
-    }
+  return (
+    <div>
+      {error && <p>{error}</p>}
 
-    return (
-        <div>
-            {error && <p>{error}</p>}
-            
-            {screen === 'login' && (
-                <LoginPage
-                    onSearch={handleSearchHistory}
-                    loading={loading}
-                />
-            )}
-            
-            {screen === 'historico' && (
-                <HistoryPage
-                    onBack={() => setScreen('login')}
-                    matches={matches}
-                    onSelectMatch={handleSearchMatch}
-                />
-            )}
-            
-            {screen === 'detalhes' && (
-                <DetailsPage
-                    onBack={() => setScreen('historico')}
-                    matchDetails={matchDetails}
-                />
-            )}
-        </div>
-    )
+      {screen === "login" && (
+        <LoginPage
+          onSearch={handleSearchHistory}
+          loading={loading}
+        />
+      )}
+
+      {screen === "historico" && (
+        <HistoryPage
+          onBack={() => setScreen("login")}
+          matches={matches}
+          onSelectMatch={handleSearchMatch}
+        />
+      )}
+
+      {screen === "detalhes" && (
+        <DetailsPage
+          onBack={() => setScreen("historico")}
+          matchDetails={matchDetails}
+        />
+      )}
+    </div>
+  );
 }
 
 export default App;
