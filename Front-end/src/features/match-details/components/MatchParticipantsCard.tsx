@@ -1,4 +1,4 @@
-import type { Participant } from "../types/matchDetail";
+import type { Participant } from "../../../types/matchDetail";
 
 type Props = {
     participant: Participant

@@ -1,6 +1,6 @@
-import type { MatchDetail } from "../types/matchDetail";
+import type { MatchDetail } from "../../../types/matchDetail";
 
-import BackButton from "./BackButton";
+import BackButton from "../../../shared/components/BackButton";
 import MatchDetailsPage from "./MatchDetailsPage";
 
 type Props = {

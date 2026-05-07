@@ -1,11 +1,12 @@
-import type { MatchSummary } from "../types/match"
+import type { MatchSummary } from "../../../types/match"
 
 type Props =  {
     match: MatchSummary;
     onSelectMatch: (matchId: string) => Promise<void>;
+    isLoadingMatchDetails: boolean;
 }
 
-function MatchCard ({match, onSelectMatch}: Props) {
+function MatchCard ({match, onSelectMatch, isLoadingMatchDetails}: Props) {
     const { 
         matchId, 
         championName, 
@@ -20,7 +21,7 @@ function MatchCard ({match, onSelectMatch}: Props) {
     } = match;
 
     return (
-        <div onClick={() => onSelectMatch(matchId)}>
+        <div onClick={() => !isLoadingMatchDetails && onSelectMatch(matchId)}>
             <p>{win ? "vitória" : "derrota"}</p>
             <p>{gameStartTimestamp}</p>
             <img src={championIconUrl} alt={championName} />

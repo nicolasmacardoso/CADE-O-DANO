@@ -1,4 +1,4 @@
-import type { MatchDetail } from "../types/matchDetail"
+import type { MatchDetail } from "../../../types/matchDetail"
 import MatchParticipantsCard from "./MatchParticipantsCard";
 
 type Props = {

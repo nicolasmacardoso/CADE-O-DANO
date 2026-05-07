@@ -1,5 +1,5 @@
-import type { MatchSummary } from "../types/match";
-import BackButton from "./BackButton";
+import type { MatchSummary } from "../../../types/match";
+import BackButton from "../../../shared/components/BackButton";
 import MatchCard from "./MatchCard";
 
 type Props = {
@@ -22,6 +22,7 @@ function HistoryPage ({ onBack, matches, onSelectMatch, isLoadingMatchDetails }:
                         key={match.matchId}
                         match={match}
                         onSelectMatch={onSelectMatch}
+                        isLoadingMatchDetails={isLoadingMatchDetails}
                     />
                 ))
             ) : (

@@ -1,5 +1,5 @@
-import type { MatchSummary } from "./match";
-import type { MatchDetail } from "./matchDetail";
+import type { MatchSummary } from "../../types/match";
+import type { MatchDetail } from "../../types/matchDetail";
 
 export type SearchMatchResponse = {
     data: MatchDetail;

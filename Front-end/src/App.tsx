@@ -2,16 +2,16 @@
 import { useState } from "react";
 
 /* SERVICES */
-import { buscarHistorico, buscarMatch } from "./services/api";
+import { buscarHistorico, buscarMatch } from "./services/api/riotApi";
 
 /* TIPOS */
 import type { MatchSummary } from "./types/match";
 import type { MatchDetail } from "./types/matchDetail";
 
 /* COMPONENTES */
-import LoginPage from "./components/LoginPage";
-import HistoryPage from "./components/HistoryPage";
-import DetailsPage from "./components/DetailsPage";
+import LoginPage from "./features/login/components/LoginPage";
+import HistoryPage from "./features/history/components/HistoryPage";
+import DetailsPage from "./features/match-details/components/DetailsPage";
 
 /* HOOKS */
 import useRequestState from "./hooks/useRequestState";
