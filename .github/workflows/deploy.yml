@@ -1,0 +1,53 @@
+name: Deploy React app to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+# Grant the permissions required by the GitHub Pages deployment actions
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Avoid overlapping deployments
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          # Use a supported LTS version of Node.js
+          node-version: 22
+
+      - name: Install dependencies
+        working-directory: Front-end
+        run: npm ci
+
+      - name: Build project
+        working-directory: Front-end
+        run: npm run build
+
+      - name: Upload build artifact for Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: Front-end/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+    steps:
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
