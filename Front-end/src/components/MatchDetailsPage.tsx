@@ -2,13 +2,13 @@ import type { MatchDetail } from "../types/matchDetail"
 import MatchParticipantsCard from "./MatchParticipantsCard";
 
 type Props = {
-    matchDetails: MatchDetail | null;
+    matchDetails: MatchDetail;
 }
 
 function MatchDetailsPage ({matchDetails}: Props) {
     function renderizaParticipantes (team: "1" | "2") {
         const thisTeam = `team${team}` as const;
-        const participants = matchDetails?.[thisTeam] || [];
+        const participants = matchDetails[thisTeam];
 
         return participants.map((participant) => (
             <MatchParticipantsCard
@@ -18,8 +18,6 @@ function MatchDetailsPage ({matchDetails}: Props) {
         ))
     }
 
-    if (!matchDetails) return null;
-    
     const { 
         playerWin, 
         queueType, 
