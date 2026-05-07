@@ -40,6 +40,7 @@ function App() {
 
     setMatches(data.data.recentMatches);
     setPuuid(data.data.puuid);
+    
     setScreen("historico");
   }
 
@@ -56,7 +57,10 @@ function App() {
 
   return (
     <div>
-      {error && <p>{error}</p>}
+      <div>
+        <p>{screen.toUpperCase()}</p>
+        {error && <p className="global-error">{error}</p>}
+      </div>
 
       {screen === "login" && (
         <LoginPage
