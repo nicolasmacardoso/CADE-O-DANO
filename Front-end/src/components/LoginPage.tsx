@@ -1,5 +1,5 @@
 import { useState } from "react";
-import cadeODanoLogo from "../assets/cade-o-dano-logo.png";
+/* import cadeODanoLogo from "../assets/cade-o-dano-logo.png"; */
 
 type Props = {
   onSearch: (nick: string, tag: string, matchesNumber: string) => Promise<void>;
@@ -13,7 +13,7 @@ function LoginPage({ onSearch, loading }: Props) {
 
   return (
     <div className="login-page">
-      <img className="login-logo" src={cadeODanoLogo} alt="Cade o Dano" />
+      {/* <img className="login-logo" src={cadeODanoLogo} alt="Cade o Dano" /> */}
 
       <div className="login-form">
         <input
