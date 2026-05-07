@@ -22,6 +22,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-# Porta da api
-Front-end/src/services/api_url.ts
