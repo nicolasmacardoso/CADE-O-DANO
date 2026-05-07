@@ -12,9 +12,20 @@ function useRequestState() {
             const result = await fn();
             
             return result;
-        } catch (e) {
-            console.log(e);
-            setError("Erro ao buscar histórico");
+        } catch(e) {
+            let erro: string;
+            
+            if (e instanceof Error) {
+                erro =  e.message;
+            } else if (typeof e === "string") {
+                erro = e;
+            } else {
+                erro = "Erro desconhecido ao realizar requisição";
+            }
+                
+            console.log(erro);
+            setError(erro);
+
             return undefined;
         } finally {
             setLoading(false);
