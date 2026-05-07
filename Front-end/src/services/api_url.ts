@@ -1,1 +1,1 @@
-export const api_base_URL = "https://cadeodanobackend.livelywater-5b3a910a.eastus.azurecontainerapps.io/";
+export const api_base_URL = "https://localhost:7249/";

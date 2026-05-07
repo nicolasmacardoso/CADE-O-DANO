@@ -79,7 +79,7 @@ function App() {
         <HistoryPage
           onBack={() => setScreen("login")}
           matches={matches}
-          matchLoading={matchRequest.loading}
+          isLoadingMatchDetails={matchRequest.loading}
           onSelectMatch={handleSearchMatch}
         />
       )}

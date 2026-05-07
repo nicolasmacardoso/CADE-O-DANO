@@ -6,13 +6,13 @@ type Props = {
     onBack: () => void;
     matches: MatchSummary[];
     onSelectMatch: (matchId: string) => Promise<void>;
-    matchLoading: boolean;
+    isLoadingMatchDetails: boolean;
 }
 
-function HistoryPage ({ onBack, matches, onSelectMatch, matchLoading }: Props) {
+function HistoryPage ({ onBack, matches, onSelectMatch, isLoadingMatchDetails }: Props) {
     return (
         <div className="">
-            {matchLoading && <p>Carregando detalhes da partida selecionada...</p>}
+            {isLoadingMatchDetails && <p>Carregando detalhes da partida selecionada...</p>}
 
             <BackButton onBack={onBack}/>
             

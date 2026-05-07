@@ -15,12 +15,14 @@ function MatchCard ({match, onSelectMatch}: Props) {
         assists, 
         totalDamage, 
         win, 
-        champLevel 
+        gameStartTimestamp,
+        champLevel
     } = match;
 
     return (
         <div onClick={() => onSelectMatch(matchId)}>
             <p>{win ? "vitória" : "derrota"}</p>
+            <p>{gameStartTimestamp}</p>
             <img src={championIconUrl} alt={championName} />
             <p>level: {champLevel}</p>
             <p>nome champion: {championName}</p>

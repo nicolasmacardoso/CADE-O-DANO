@@ -8,4 +8,5 @@ export type MatchSummary = {
     totalDamage: number;
     win: boolean;
     champLevel: number;
+    gameStartTimestamp: string;
 };
