@@ -71,11 +71,12 @@ public class RiotApiService : IRiotApiService
 
     var dto = _mapper.Map<MatchSummaryDto>(playerData);
     dto.MatchId = matchId;
+    dto.gameStartTimestamp = FormatHelper.FormatUnixMilliseconds(matchData.Info.gameStartTimestamp);
 
     return dto;
   }
 
-  public async Task<RiotMatchResponse?> GetMatchById(string matchId)
+  public async Task<RiotMatchResponse> GetMatchById(string matchId)
   {
     if (_cache.TryGetValue(matchId, out RiotMatchResponse cachedMatch))
       return cachedMatch;
@@ -83,7 +84,7 @@ public class RiotApiService : IRiotApiService
     var response = await _httpClient.GetAsync(RiotUrlBuilder.GetMatchInfoByMatchId(matchId));
 
     if (!response.IsSuccessStatusCode)
-      return null;
+      throw new Exception($"Failed to get match data for {matchId}");
 
     var matchData = await response.Content.ReadFromJsonAsync<RiotMatchResponse>();
 
@@ -92,6 +93,6 @@ public class RiotApiService : IRiotApiService
       _cache.Set(matchId, matchData, TimeSpan.FromMinutes(30));
     }
 
-    return matchData;
+    return matchData!;
   }
 }
