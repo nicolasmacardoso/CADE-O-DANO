@@ -35,6 +35,7 @@ function MatchDetailsPage ({ matchDetails, onBack }: Props) {
                     <strong className={playerWin ? "match-result match-result--win" : "match-result match-result--loss"}>
                         {playerWin ? "Vitória" : "Derrota"}
                     </strong>
+                    
                     <span>{queueType}</span>
                     <span>{gameDuration}</span>
                 </div>
