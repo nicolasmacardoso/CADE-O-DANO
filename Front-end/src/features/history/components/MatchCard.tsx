@@ -27,15 +27,7 @@ function MatchCard ({match, onSelectMatch, isLoadingMatchDetails}: Props) {
             disabled={isLoadingMatchDetails}
             onClick={() => onSelectMatch(matchId)}
         >
-            <div className="match-card game-info">
-                <p className={win ? "match-result match-result--win" : "match-result match-result--loss"}>
-                    {win ? "Vitória" : "Derrota"}
-                </p>
-                
-                <p className="match-timestamp">{gameStartTimestamp}</p>
-            </div>
-            
-            <div className="champ-info">
+            <div className="match-card__champion">
                 <div className="champ-icon">
                     <img className="champion-img" src={championIconUrl} alt={championName} />
                     <p className="champion-level">level: {champLevel}</p>
@@ -43,9 +35,23 @@ function MatchCard ({match, onSelectMatch, isLoadingMatchDetails}: Props) {
                 
                 <p className="champion-name">{championName}</p>
             </div>
+
+            <div className="match-card__result">
+                <strong className={win ? "match-result match-result--win" : "match-result match-result--loss"}>
+                    {win ? "Vitória" : "Derrota"}
+                </strong>
+                <span>Ranqueada</span>
+            </div>
             
-            <p className="match-kda">kda: {kills}/{deaths}/{assists}</p>
-            <p className="match-card-damage">dano: {totalDamage}</p>
+            <div className="match-card__meta">
+                <strong>Summoner's Rift</strong>
+                <span>{gameStartTimestamp}</span>
+            </div>
+            
+            <div className="match-card__stats">
+                <p className="match-kda">kda: {kills}/{deaths}/{assists}</p>
+                <p className="match-card-damage">dano: {totalDamage}</p>
+            </div>
         </button>
     );
 }
