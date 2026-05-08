@@ -1,0 +1,49 @@
+name: Trigger auto deployment for cadeodanobackend
+
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      [ main ]
+    paths:
+    - '**'
+    - '.github/workflows/cadeodanobackend-AutoDeployTrigger-9ae36f96-2109-4a3d-bddd-320f1eebc254.yml'
+
+  # Allow manual trigger 
+  workflow_dispatch:      
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions: 
+      id-token: write #This is required for requesting the OIDC JWT Token
+      contents: read #Required when GH token is used to authenticate with private repo
+
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.CADEODANOBACKEND_AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.CADEODANOBACKEND_AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.CADEODANOBACKEND_AZURE_SUBSCRIPTION_ID }}
+
+      - name: Build and push container image to registry
+        uses: azure/container-apps-deploy-action@v2
+        with:
+          appSourcePath: ${{ github.workspace }}/Back-end
+          _dockerfilePathKey_: _dockerfilePath_
+          _targetLabelKey_: _targetLabel_
+          registryUrl: cadeodano.azurecr.io
+          registryUsername: ${{ secrets.CADEODANOBACKEND_REGISTRY_USERNAME }}
+          registryPassword: ${{ secrets.CADEODANOBACKEND_REGISTRY_PASSWORD }}
+          containerAppName: cadeodanobackend
+          resourceGroup: cade-o-dano
+          imageToBuild: cadeodano.azurecr.io/cadeodanobackend:${{ github.sha }}
+          _buildArgumentsKey_: |
+            _buildArgumentsValues_
+
+
