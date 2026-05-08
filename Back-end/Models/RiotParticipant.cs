@@ -1,22 +1,23 @@
 using System.Text.Json.Serialization;
 
 namespace CadeODano.Models;
+
 public class RiotParticipant
 {
     [JsonPropertyName("puuid")]
-    public string Puuid { get; set; }
+    public string? Puuid { get; set; }
 
     [JsonPropertyName("riotIdGameName")]
-    public string SummonerName { get; set; }
+    public string? SummonerName { get; set; }
 
     [JsonPropertyName("riotIdTagline")]
-    public string Hashtag {get;set;}
+    public string? Hashtag { get; set; }
 
     [JsonPropertyName("teamId")]
     public int TeamId { get; set; }
 
     [JsonPropertyName("championName")]
-    public string ChampionName { get; set; }
+    public string? ChampionName { get; set; }
 
     [JsonPropertyName("kills")]
     public int Kills { get; set; }

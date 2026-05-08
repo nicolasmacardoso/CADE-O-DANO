@@ -71,9 +71,20 @@ public class RiotApiService : IRiotApiService
 
     var dto = _mapper.Map<MatchSummaryDto>(playerData);
     dto.MatchId = matchId;
-    dto.gameStartTimestamp = FormatHelper.FormatUnixMilliseconds(matchData.Info.gameStartTimestamp);
+    dto.GameStartTimestamp = FormatHelper.FormatUnixMilliseconds(matchData.Info.gameStartTimestamp);
 
     return dto;
+  }
+
+  public async Task<SummonerAccountResponse> GetSummonerAccountInfoByPuuid(string puuid)
+  {
+    var response = await _httpClient.GetAsync(RiotUrlBuilder.GetSummonerByPuuid(puuid));
+
+    if (!response.IsSuccessStatusCode)
+      throw new Exception("Failed to get summoner account info.");
+
+    var accountData = await response.Content.ReadFromJsonAsync<SummonerAccountResponse>();
+    return accountData!;
   }
 
   public async Task<RiotMatchResponse> GetMatchById(string matchId)

@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using CadeODano.DTOs;
+using CadeODano.Helpers;
 
 namespace CadeODano.Builders;
 
@@ -9,6 +10,8 @@ public static class PlayerStatsBuilder
       string puuid,
       string nickname,
       string hashtag,
+      int? profileIconId,
+      int? summonerLevel,
       List<MatchSummaryDto> recentMatches,
       List<MostPlayedChampionDto> mostPlayed,
       List<HighestDamageChampionDto> highestDamage)
@@ -17,6 +20,8 @@ public static class PlayerStatsBuilder
     {
       Puuid = puuid,
       SummonerName = $"{nickname}#{hashtag}",
+      ProfileIconUrl = profileIconId.HasValue ? DataDragonHelper.GetProfileIcon(profileIconId.Value.ToString()) : null,
+      SummonerLevel = summonerLevel?.ToString(),
       RecentMatches = recentMatches,
       MostPlayedChampions = mostPlayed,
       HighestDamageChampions = highestDamage

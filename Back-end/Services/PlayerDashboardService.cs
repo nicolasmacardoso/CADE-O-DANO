@@ -25,6 +25,8 @@ public class PlayerDashboardService : IPlayerDashboardService
     {
       var puuid = await _riotApiService.GetPuuidByRiotId(playerNickname);
 
+      var summonerInfo = await _riotApiService.GetSummonerAccountInfoByPuuid(puuid);
+
       var matchIds = await _riotApiService.GetMatchIdsByPuuid(puuid, count);
 
       var recentMatches = await GetRecentMatchesByPuuid(puuid, matchIds);
@@ -37,6 +39,8 @@ public class PlayerDashboardService : IPlayerDashboardService
        puuid,
        playerNickname.Nickname,
        playerNickname.Hashtag,
+       summonerInfo.ProfileIconId,
+       summonerInfo.SummonerLevel,
        recentMatches,
        mostPlayedChampions,
        highestDamageChampions);

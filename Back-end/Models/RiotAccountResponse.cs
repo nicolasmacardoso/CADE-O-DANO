@@ -5,5 +5,5 @@ namespace CadeODano.Models;
 public class RiotAccountResponse
 {
   [JsonPropertyName("puuid")]
-  public string Puuid { get; set; }
+  public string? Puuid { get; set; }
 }
