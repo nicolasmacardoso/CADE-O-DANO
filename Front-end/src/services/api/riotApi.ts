@@ -18,7 +18,7 @@ export const buscarHistorico = (
   nick: string,
   tag: string,
 ): Promise<SearchHistoryResponse> => {
-  const historyRequestUrl = `search/${nick}/${tag}?count=100`;
+  const historyRequestUrl = `search/${encodeURIComponent(nick)}/${encodeURIComponent(tag)}?count=100`;
 
   return fetchEndpoint<SearchHistoryResponse>(historyRequestUrl, "histórico");
 };
