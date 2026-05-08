@@ -269,9 +269,30 @@ button {
 
 .app-layout__sidebar {
   height: 100vh;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
   background: rgba(29, 48, 56, 0.94);
   border-left: 1px solid var(--line-strong);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(168, 127, 49, 0.72) rgba(255, 255, 255, 0.05);
+}
+
+.app-layout__sidebar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.app-layout__sidebar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.app-layout__sidebar::-webkit-scrollbar-thumb {
+  border: 2px solid rgba(29, 48, 56, 0.94);
+  border-radius: 999px;
+  background: rgba(168, 127, 49, 0.72);
+}
+
+.app-layout__sidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(214, 187, 120, 0.86);
 }
 
 .backButton {
@@ -620,7 +641,7 @@ button {
 }
 
 .player-sidebar__section {
-  padding: 28px 24px 2px;
+  padding: 14px 24px 2px;
 }
 
 .sidebar-section-title {
@@ -628,6 +649,61 @@ button {
   font-weight: 900;
   font-size: 14px;
   color: #f2f7fa;
+}
+
+.player-sidebar__elos {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.player-sidebar__elo {
+  display: grid;
+  grid-template-columns: 94px 1fr;
+  column-gap: 12px;
+  row-gap: 2px;
+  align-items: center;
+}
+
+.player-sidebar__elo-icon {
+  grid-row: span 5;
+  margin-left: 15px;
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  transform: scale(8);
+  transform-origin: center;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.28));
+}
+
+.player-sidebar__elo-queue,
+.player-sidebar__elo-rank,
+.player-sidebar__elo-subinfo,
+.player-sidebar__elo-winrate,
+.player-sidebar__empty {
+  font-family: var(--mono);
+  font-weight: 800;
+}
+
+.player-sidebar__elo-queue {
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+.player-sidebar__elo-rank {
+  color: var(--text);
+  font-size: 14px;
+}
+
+.player-sidebar__elo-subinfo,
+.player-sidebar__elo-winrate,
+.player-sidebar__empty {
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+.player-sidebar__elo-winrate {
+  color: #d6bb78;
 }
 
 .player-sidebar__champion {

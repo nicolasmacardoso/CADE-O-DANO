@@ -69,6 +69,7 @@ function AppFlow () {
             profileIconUrl={playerStats.profileIconUrl}
             mostPlayedChampions={playerStats.mostPlayedChampions}
             highestDamageChampions={playerStats.highestDamageChampions}
+            summonerElos={playerStats.summonerElos}
         />
     ) : undefined;
 

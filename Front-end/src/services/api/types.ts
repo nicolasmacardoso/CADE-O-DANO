@@ -17,11 +17,23 @@ export type HighestDamageChampion = {
     highestDamage: number;
 }
 
+export type summonerElo = {
+    queueType: string;
+    leagueIconUrl: string;
+    tier: string;
+    rank: string;
+    leaguePoints: number;
+    wins: number;
+    losses: number;
+    winRate: string;
+}
+
 type playerInfo = {
     puuid: string;
     summonerName: string;
-    summonerLevel: number;
     profileIconUrl: string;
+    summonerLevel: number;
+    summonerElos: summonerElo[];
 }
 
 export type SearchHistoryData = playerInfo & {

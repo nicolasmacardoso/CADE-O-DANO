@@ -1,4 +1,4 @@
-import type { HighestDamageChampion, MostPlayedChampion } from "../../services/api/types";
+import type { HighestDamageChampion, MostPlayedChampion, summonerElo } from "../../services/api/types";
 
 type Props = {
     summonerName: string;
@@ -6,9 +6,17 @@ type Props = {
     profileIconUrl: string;
     mostPlayedChampions: MostPlayedChampion[];
     highestDamageChampions: HighestDamageChampion[];
+    summonerElos: summonerElo[];
 }
 
-function PlayerSidebar ({ summonerName, summonerLevel, profileIconUrl, mostPlayedChampions, highestDamageChampions }: Props) {
+function formatQueueType(queueType: string) {
+    if (queueType === "RANKED_SOLO_5x5") return "Solo/Duo";
+    if (queueType === "RANKED_FLEX_SR") return "Flex";
+
+    return queueType;
+}
+
+function PlayerSidebar ({ summonerName, summonerLevel, profileIconUrl, mostPlayedChampions, highestDamageChampions, summonerElos }: Props) {
     return (
         <div className="player-sidebar">
             <div className="player-sidebar__header">
@@ -20,6 +28,35 @@ function PlayerSidebar ({ summonerName, summonerLevel, profileIconUrl, mostPlaye
 
                 <p className="player-name">{summonerName}</p>
                 <p className="player-status">Online</p>
+            </div>
+
+            <div className="player-sidebar__section">
+                <div className="player-sidebar__elos">
+                    {summonerElos.length > 0 ? (
+                        summonerElos.slice(0, 2).map(({
+                            queueType,
+                            leagueIconUrl,
+                            tier,
+                            rank,
+                            leaguePoints,
+                            wins,
+                            losses,
+                            winRate
+                        }) => (
+                            <div key={queueType} className="player-sidebar__elo">
+                                <img className="player-sidebar__elo-icon" src={leagueIconUrl} alt={`Elo ${tier}`} />
+
+                                <p className="player-sidebar__elo-queue">{formatQueueType(queueType)}</p>
+                                <p className="player-sidebar__elo-rank">{tier} {rank}</p>
+                                <p className="player-sidebar__elo-subinfo">{leaguePoints} LP</p>
+                                <p className="player-sidebar__elo-subinfo">{wins}V / {losses}D</p>
+                                <p className="player-sidebar__elo-winrate">{winRate}</p>
+                            </div>
+                        ))
+                    ) : (
+                        <p className="player-sidebar__empty">Sem partidas ranqueadas</p>
+                    )}
+                </div>
             </div>
 
             <div className="player-sidebar__section">
