@@ -416,7 +416,7 @@ strong {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  width: min(100%, 1060px);
+  width: 100%;
   max-width: none;
 }
 
