@@ -11,4 +11,8 @@ public class DataDragonHelper
 
     public static string GetProfileIcon(string profileIconId)
         => $"https://ddragon.leagueoflegends.com/cdn/{DragonVersion}/img/profileicon/{profileIconId}.png";
+    
+    public static string GetRankIcon(string tier)
+        => $"https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/images/ranked-emblem/emblem-{tier.ToLower()}.png";
+    
 }

@@ -18,7 +18,7 @@ public static class MatchDetailsBuilder
     {
       MatchId = matchId,
       PlayerWin = searchedPlayer?.Win ?? false,
-      QueueType = QueueHelper.GetQueueDescription(queueId),
+      QueueType = RiotExtensions.GetQueueDescription(queueId),
       GameDuration = FormatHelper.FormatGameDuration(gameDuration),
       gameStartDate = FormatHelper.FormatUnixMilliseconds(gameStartTimestamp),
       Team1 = participants.Where(x => x.TeamId == 100).ToList(),

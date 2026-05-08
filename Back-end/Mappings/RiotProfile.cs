@@ -2,6 +2,7 @@ using AutoMapper;
 using CadeODano.DTOs;
 using CadeODano.Helpers;
 using CadeODano.Models;
+using CadeODano.Services;
 
 namespace CadeODano.Mappings;
 
@@ -24,5 +25,15 @@ public class RiotProfile : Profile
                 opt => opt.MapFrom(src => src.Hashtag))
             .ForMember(dest => dest.SummonerName,
                 opt => opt.MapFrom(src => src.SummonerName));
+
+        CreateMap<SummonerEloResponse, SummonerEloDto>()
+            .ForMember(dest => dest.QueueType,
+                opt => opt.MapFrom(src => RiotExtensions.ToQueueName(src.QueueType)))
+            .ForMember(dest => dest.Tier,
+                opt => opt.MapFrom(src => RiotExtensions.ToTierName(src.Tier)))
+            .ForMember(dest => dest.WinRate,
+                opt => opt.MapFrom(src => StatsCalculatorService.CalculateWinRate(src.Wins, src.Losses)))
+            .ForMember(dest => dest.LeagueIconUrl,
+                opt => opt.MapFrom(src => DataDragonHelper.GetRankIcon(src.Tier)));
     }
 }

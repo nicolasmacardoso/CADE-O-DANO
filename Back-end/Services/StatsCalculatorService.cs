@@ -1,4 +1,5 @@
 using CadeODano.DTOs;
+using CadeODano.Helpers;
 using CadeODano.Interfaces;
 
 namespace CadeODano.Services;
@@ -12,7 +13,7 @@ public class StatsCalculatorService : IStatsCalculatorService
     .Select(g => new MostPlayedChampionDto
     {
       ChampionName = g.Key,
-      ChampionIconUrl = $"https://ddragon.leagueoflegends.com/cdn/16.5.1/img/champion/{g.Key}.png",
+      ChampionIconUrl = DataDragonHelper.GetChampionIcon(g.Key),
       GamesPlayed = g.Count()
     })
     .OrderByDescending(x => x.GamesPlayed)
@@ -27,11 +28,23 @@ public class StatsCalculatorService : IStatsCalculatorService
         .Select(g => new HighestDamageChampionDto
         {
           ChampionName = g.Key,
-          ChampionIconUrl = $"https://ddragon.leagueoflegends.com/cdn/16.5.1/img/champion/{g.Key}.png",
+          ChampionIconUrl = DataDragonHelper.GetChampionIcon(g.Key),
           HighestDamage = g.Max(x => x.TotalDamage)
         })
         .OrderByDescending(x => x.HighestDamage)
         .Take(3)
         .ToList();
+  }
+
+  public static string CalculateWinRate(int wins, int losses)
+  {
+    int totalGames = wins + losses;
+
+    if (totalGames == 0)
+      return "0";
+
+    double winRate = (double)wins / totalGames * 100;
+
+    return Math.Round(winRate).ToString() + "%";
   }
 }

@@ -87,6 +87,23 @@ public class RiotApiService : IRiotApiService
     return accountData!;
   }
 
+  public async Task<List<SummonerEloDto>> GetSummonerEloByPuuid(string puuid)
+  {
+    var response = await _httpClient.GetAsync(RiotUrlBuilder.GetSummonerEloByPuuid(puuid));
+
+    if (!response.IsSuccessStatusCode)
+      throw new Exception("Failed to get summoner elo info.");
+
+    var eloData = await response.Content.ReadFromJsonAsync<List<SummonerEloResponse>>();
+
+    if (eloData == null || !eloData.Any())
+      throw new Exception("No elo data found for this player.");
+
+    var dto = _mapper.Map<List<SummonerEloDto>>(eloData);
+
+    return dto;
+  }
+
   public async Task<RiotMatchResponse> GetMatchById(string matchId)
   {
     if (_cache.TryGetValue(matchId, out RiotMatchResponse cachedMatch))

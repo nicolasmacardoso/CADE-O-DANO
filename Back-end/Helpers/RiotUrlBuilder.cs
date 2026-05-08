@@ -15,4 +15,7 @@ public class RiotUrlBuilder
         => $"https://br1.api.riotgames.com/riot/account/v4/accounts/by-puuid/{puuid}";
     public static string GetSummonerByPuuid(string puuid)
         => $"https://br1.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/{puuid}";
+
+    public static string GetSummonerEloByPuuid(string puuid)
+        => $"https://br1.api.riotgames.com/lol/league/v4/entries/by-puuid/{puuid}";
 }

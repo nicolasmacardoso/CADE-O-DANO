@@ -12,6 +12,7 @@ public static class PlayerStatsBuilder
       string hashtag,
       int? profileIconId,
       int? summonerLevel,
+      List<SummonerEloDto> summonerElos,
       List<MatchSummaryDto> recentMatches,
       List<MostPlayedChampionDto> mostPlayed,
       List<HighestDamageChampionDto> highestDamage)
@@ -24,7 +25,8 @@ public static class PlayerStatsBuilder
       SummonerLevel = summonerLevel?.ToString(),
       RecentMatches = recentMatches,
       MostPlayedChampions = mostPlayed,
-      HighestDamageChampions = highestDamage
+      HighestDamageChampions = highestDamage,
+      SummonerElos = summonerElos
     };
   }
 }

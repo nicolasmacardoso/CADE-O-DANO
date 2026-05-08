@@ -1,6 +1,6 @@
 namespace CadeODano.DTOs;
 
-public class ParticipantDto
+public record ParticipantDto
 {
     public string? SummonerName { get; set; }
     public string? SummonerHashtag { get; set; }

@@ -6,6 +6,7 @@ public record PlayerStatsDto
   public string? SummonerName { get; set; }
   public string? SummonerLevel { get; set; }
   public string? ProfileIconUrl { get; set; }
+  public List<SummonerEloDto>? SummonerElos { get; set; }
 
   public List<MatchSummaryDto>? RecentMatches { get; set; }
 

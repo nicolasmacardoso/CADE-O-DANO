@@ -1,6 +1,6 @@
 namespace CadeODano.DTOs;
 
-public class HighestDamageChampionDto
+public record HighestDamageChampionDto
 {
   public string ChampionName { get; set; }
   public string ChampionIconUrl {get;set;}
