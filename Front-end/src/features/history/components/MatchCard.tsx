@@ -29,7 +29,10 @@ function MatchCard ({match, onSelectMatch, isLoadingMatchDetails}: Props) {
         >
             <div className="match-card__champion">
                 <div className="champ-icon">
-                    <img className="champion-img" src={championIconUrl} alt={championName} />
+                    <div className="champ-icon__frame">
+                        <img className="champion-img" src={championIconUrl} alt={championName} />
+                    </div>
+
                     <p className="champion-level">{champLevel}</p>
                 </div>
                 

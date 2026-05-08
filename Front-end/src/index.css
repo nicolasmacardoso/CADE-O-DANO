@@ -377,30 +377,68 @@ button {
   height: 44px;
   object-fit: cover;
   border-radius: 50%;
-  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.08);
+  clip-path: circle(45% at 50% 50%);
+  filter: saturate(1.12) contrast(1.06) brightness(1.08);
+}
+
+.champ-icon {
+  width: 60px;
+  height: 60px;
+  display: grid;
+  place-items: center;
+}
+
+.champ-icon::before {
+  content: none;
+}
+
+.champ-icon::after {
+  content: none;
+}
+
+.champ-icon__frame {
+  position: relative;
+  z-index: 1;
+  width: 54px;
+  height: 54px;
+  overflow: hidden;
+  border: 2px solid #050b0f;
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 1px rgba(168, 127, 49, 0.68),
+    0 4px 10px rgba(0, 0, 0, 0.28);
 }
 
 .match-card .champion-img {
-  width: 48px;
-  height: 48px;
+  width: 59px;
+  height: 59px;
+  border: 0;
+  border-radius: 0;
+  clip-path: none;
+  box-shadow: none;
+  transform: translateY(-4px);
 }
 
-.champion-level {
+.champ-icon .champion-level {
   position: absolute;
-  right: -5px;
-  bottom: -5px;
-  min-width: 22px;
-  height: 22px;
+  right: -2px;
+  bottom: 2px;
+  z-index: 2;
+  min-width: 20px;
+  height: 20px;
   display: grid;
   place-items: center;
   padding: 0 5px;
   border-radius: 999px;
-  background: #061721;
-  border: 1px solid rgba(255, 255, 255, 0.76);
+  background: #02090d;
+  border: 1px solid #a87f31;
   color: #fff;
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 800;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.92),
+    0 3px 7px rgba(0, 0, 0, 0.46);
 }
 
 .champion-name,
@@ -626,10 +664,6 @@ button {
   grid-row: span 2;
   width: 44px;
   height: 44px;
-  border: 2px solid rgba(2, 10, 14, 0.96);
-  box-shadow:
-    0 0 0 1px rgba(168, 127, 49, 0.42),
-    inset 0 0 12px rgba(0, 0, 0, 0.56);
 }
 
 .player-sidebar__champion .champion-name {
