@@ -129,6 +129,12 @@ strong {
   background: rgba(246, 246, 246, 0.96);
   box-shadow: var(--card-shadow);
   border-radius: 2px;
+  overflow: visible;
+}
+
+.user-field {
+  position: relative;
+  width: 100%;
 }
 
 .login-form input,
@@ -144,6 +150,90 @@ strong {
 
 .login-form input {
   padding: 0 14px;
+}
+
+.searched-players-list {
+  position: absolute;
+  z-index: 8;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 220px;
+  overflow-y: auto;
+  padding: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  background: rgba(5, 8, 11, 0.96);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.38);
+}
+
+.searched-players-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.searched-players-list::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.searched-players-list::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(217, 54, 64, 0.72);
+}
+
+.searched-players__button {
+  width: 100%;
+  min-height: 44px;
+  display: grid;
+  grid-template-columns: 30px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 9px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+  background: #080b0f;
+  color: #f5f7f8;
+  text-align: left;
+  transition: background 0.16s ease, border-color 0.16s ease, transform 0.16s ease;
+}
+
+.searched-players__button:hover,
+.searched-players__button:focus-visible {
+  transform: translateX(2px);
+  border-color: rgba(217, 54, 64, 0.74);
+  background: #b72c34;
+}
+
+.searched-players__icon {
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+  border: 1px solid #b72c34;
+  border-radius: 50%;
+  background: #111;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.8);
+}
+
+.searched-players__nick,
+.searched-players__tag {
+  min-width: 0;
+  color: inherit;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.searched-players__nick {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.searched-players__tag {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 12px;
 }
 
 .login-form input:focus,

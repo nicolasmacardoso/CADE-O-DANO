@@ -1,11 +1,12 @@
 /* REACT */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 /* SERVICES */
 import { buscarHistorico, buscarMatch } from "../services/api/riotApi";
 
 /* TIPOS */
 import type { MatchDetail } from "../types/matchDetail";
+import type { SearchHistoryData } from "../services/api/types";
 
 /* HOOKS */
 import useRequestState from "../hooks/useRequestState";
@@ -16,7 +17,16 @@ import HistoryPage from "../features/history/components/HistoryPage";
 import DetailsPage from "../features/match-details/components/DetailsPage";
 import AppLayout from "../shared/components/AppLayout";
 import PlayerSidebar from "../shared/components/PlayerSidebar";
-import type { SearchHistoryData } from "../services/api/types";
+
+/* STORAGE */
+import { 
+    clearCurrentPlayer,
+    getCurrentPlayer, 
+    getSearchedPlayers, 
+    saveCurrentPlayer, 
+    saveSearchedPlayer, 
+    type StoredPlayer 
+} from "../services/storage/playerStorage";
 
 type Screen = "login" | "historico" | "detalhes";
 
@@ -25,8 +35,21 @@ function AppFlow () {
     const [matchDetails, setMatchDetails] = useState<MatchDetail | null>(null);
 
     const [screen, setScreen] = useState<Screen>("login");
+
+    const [searchedPlayers, setSearchedPlayers] = useState<StoredPlayer[]>([]);
+
     const historyRequest = useRequestState();
     const matchRequest = useRequestState();
+
+    useEffect(() => {
+        setSearchedPlayers(getSearchedPlayers());
+
+        const storedPlayer = getCurrentPlayer();
+
+        if (!storedPlayer) return;
+
+        handleSearchHistory(storedPlayer.nick, storedPlayer.tag);
+    }, []);
 
     async function handleSearchHistory(
         nick: string,
@@ -43,8 +66,16 @@ function AppFlow () {
 
         setPlayerStats(response.data);
 
+        const icon = response.data.profileIconUrl;
+
+        const searchedPlayer = { profileIconUrl: icon, nick, tag };
+
+        saveCurrentPlayer(searchedPlayer);
+        saveSearchedPlayer(searchedPlayer);
+        setSearchedPlayers(getSearchedPlayers());
+
         setScreen("historico");
-    }
+    };
 
     async function handleSelectMatch(matchId: string) {
         historyRequest.clearError();
@@ -60,6 +91,13 @@ function AppFlow () {
         setMatchDetails(response.data);
 
         setScreen("detalhes");
+    };
+
+    function handleBackToLogin() {
+        setPlayerStats(null);
+        setMatchDetails(null);
+        clearCurrentPlayer();
+        setScreen("login");
     }
 
     const playerSidebar = playerStats ? (
@@ -80,12 +118,13 @@ function AppFlow () {
                     onSearch={handleSearchHistory}
                     historyError={historyRequest.error}
                     loading={historyRequest.loading}
+                    searchedPlayers={searchedPlayers}
                 />
             )}
             {screen === "historico" && (
                 <AppLayout sidebar={playerSidebar}>
                     <HistoryPage
-                        onBack={() => setScreen("login")}
+                        onBack={handleBackToLogin}
                         matches={playerStats?.recentMatches || []}
                         isLoadingMatchDetails={matchRequest.loading}
                         matchError={matchRequest.error}
@@ -102,7 +141,7 @@ function AppFlow () {
                 </AppLayout>
             )}
         </div>
-    )
-}
+    );
+};
 
 export default AppFlow;
