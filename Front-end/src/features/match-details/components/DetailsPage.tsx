@@ -10,7 +10,7 @@ type Props = {
 
 function DetailsPage ({ onBack, matchDetails }: Props) {
     return (
-        <div>
+        <div className="details-page">
             <BackButton onBack={onBack}/>
 
             {matchDetails ? (
@@ -18,7 +18,7 @@ function DetailsPage ({ onBack, matchDetails }: Props) {
                     matchDetails={matchDetails}
                 />
             ) : (
-                <p>Partida não carregada</p>
+                <p className="empty-state">Partida não carregada</p>
             )}
         </div>
     )

@@ -4,9 +4,10 @@ import { useState } from "react";
 type Props = {
   onSearch: (nick: string, tag: string, matchesNumber: string) => Promise<void>;
   loading: boolean;
+  historyError: string;
 };
 
-function LoginPage({ onSearch, loading }: Props) {
+function LoginPage({ onSearch, loading, historyError }: Props) {
   const [nick, setNick] = useState("");
   const [tag, setTag] = useState("");
   const [matchesNumber, setMatchesNumber] = useState("");
@@ -14,6 +15,7 @@ function LoginPage({ onSearch, loading }: Props) {
   return (
     <div className="login-page">
       {/* <img className="login-logo" src={cadeODanoLogo} alt="Cade o Dano" /> */}
+      {historyError && <p className="request error">{historyError}</p>}
 
       <div className="login-form">
         <input
@@ -23,9 +25,10 @@ function LoginPage({ onSearch, loading }: Props) {
         />
 
         <div className="tag-field">
-          <span>#</span>
+          <span className="tag-hashtag">#</span>
 
           <input
+            className="login-input"
             type="text"
             value={tag}
             onChange={(e) => setTag(e.target.value)}
@@ -34,13 +37,15 @@ function LoginPage({ onSearch, loading }: Props) {
         </div>
 
         <input
+          className="login-input"
           type="text"
           value={matchesNumber}
           onChange={(e) => setMatchesNumber(e.target.value)}
           placeholder="5"
         />
 
-        <button
+        <button 
+          className="search-button"
           disabled={loading || !nick.trim() || !tag.trim()}
           onClick={() => onSearch(nick, tag, matchesNumber)}
         >

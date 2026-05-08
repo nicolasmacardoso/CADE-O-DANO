@@ -6,7 +6,7 @@ type Props = {
 }
 
 function MatchDetailsPage ({matchDetails}: Props) {
-    function renderizaParticipantes (team: "1" | "2") {
+    function renderParticipants (team: "1" | "2") {
         const thisTeam = `team${team}` as const;
         const participants = matchDetails[thisTeam];
 
@@ -25,14 +25,24 @@ function MatchDetailsPage ({matchDetails}: Props) {
     } = matchDetails; 
 
     return (
-        <div>
-            <p>{playerWin ? "Vitória" : "Derrota"}</p>
-            <p>{queueType}</p>
-            <p>{gameDuration}</p>
-            <hr></hr>
-            {renderizaParticipantes("1")}
-            <hr></hr>
-            {renderizaParticipantes("2")}
+        <div className="matchDetails-page">
+            <section className="match-details game-info">
+                <p className={playerWin ? "match-result match-result--win" : "match-result match-result--loss"}>
+                    {playerWin ? "Vitória" : "Derrota"}
+                </p>
+                
+                <p className="queue-type">{queueType}</p>
+                
+                <p className="game-duration">{gameDuration}</p>
+            </section>
+
+            <section className="team-section">
+                {renderParticipants("1")}
+            </section>
+
+            <section className="team-section">
+                {renderParticipants("2")}
+            </section>
         </div>
     )
 }

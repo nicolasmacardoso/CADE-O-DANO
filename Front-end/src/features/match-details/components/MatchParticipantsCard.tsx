@@ -17,23 +17,24 @@ function MatchParticipantsCard ({participant}: Props) {
         isSearchedPlayer
     } = participant;
     return (
-        <div>
-            <div className={isSearchedPlayer ? "border border-blue-500" : ""}>
-                <img src={championIconUrl} alt="" />
-                <p>{championName}</p>
-                <p>{champLevel}</p>
+        <div className={isSearchedPlayer ? "match-participant-card selected" : "match-participant-card"}>
+            <div className="champ-info">
+                <img className="champion-img" src={championIconUrl} alt={championName}/>
+                <p className="champion-level">{champLevel}</p>
             </div>
 
-            <div>
-                <p>Jogador: {summonerName}</p>
+            <p className="champion-name">{championName}</p>
+
+            <div className="name-container">
+                <p className="name">Jogador: {summonerName}</p>
             </div>
 
-            <div>
-                <p>Dano total: {totalDamage}</p>
+            <div className="damage-container">
+                <p className="damage">Dano total: {totalDamage}</p>
             </div>
             
-            <div>
-                <p>kda: {kills}/{deaths}/{assists}</p>
+            <div className="kda-container">
+                <p className="kda">kda: {kills}/{deaths}/{assists}</p>
             </div>
         </div>
     )

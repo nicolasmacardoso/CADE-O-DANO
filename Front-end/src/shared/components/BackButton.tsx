@@ -4,7 +4,7 @@ type Props = {
 
 function BackButton({onBack}: Props) {
     return (
-        <button onClick={onBack}>Voltar</button>
+        <button className="backButton" onClick={onBack}>Voltar</button>
     )
 }
 
