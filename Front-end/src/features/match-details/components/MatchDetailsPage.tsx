@@ -12,10 +12,15 @@ function MatchDetailsPage ({ matchDetails, onBack }: Props) {
         const thisTeam = `team${team}` as const;
         const participants = matchDetails[thisTeam];
 
+        const highestTeamDamage = Math.max(
+            ...participants.map((participant) => participant.totalDamage)
+        )
+
         return participants.map((participant) => (
             <MatchParticipantsCard
                 key={participant.summonerName+participant.championName}
                 participant={participant}
+                highestTeamDamage={highestTeamDamage}
             />
         ))
     }

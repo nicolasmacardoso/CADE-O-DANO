@@ -1,13 +1,14 @@
 import type { Participant } from "../../../types/matchDetail";
 
 type Props = {
-    participant: Participant
+    participant: Participant;
+    highestTeamDamage: number;
 }
 
-function MatchParticipantsCard ({participant}: Props) {
+function MatchParticipantsCard ({ participant, highestTeamDamage }: Props) {
     const { 
         summonerName, 
-        championIconUrl, 
+        championSplashArtUrl,
         championName, 
         kills, 
         deaths, 
@@ -16,26 +17,32 @@ function MatchParticipantsCard ({participant}: Props) {
         champLevel, 
         isSearchedPlayer
     } = participant;
+
+    const damageRatio = highestTeamDamage > 0
+        ? totalDamage / highestTeamDamage
+        : 0;
+
     return (
         <div className={isSearchedPlayer ? "participant-card participant-card--selected" : "participant-card"}>
             <div className="champ-info">
-                <img className="champion-img" src={championIconUrl} alt={championName}/>
+                <img className="champion-img" src={championSplashArtUrl} alt={championName}/>
                 <p className="champion-level">{champLevel}</p>
             </div>
 
-            <p className="champion-name">{championName}</p>
-
             <div className="participant-card__player">
-                <p className="name">Jogador: {summonerName}</p>
-            </div>
-
-            <div className="participant-card__damage">
-                <p className="damage">Dano total: {totalDamage}</p>
+                <p className="name">{summonerName}</p>
+                <p className="champion-name">{championName}</p>
             </div>
             
             <div className="participant-card__kda">
                 <p className="kda">kda: {kills}/{deaths}/{assists}</p>
             </div>
+
+            <div 
+                className="participant-card__damage"
+                data-damage={`Dano total: ${totalDamage}`}
+                style={{ "--damage-ratio": damageRatio } as React.CSSProperties}
+            />
         </div>
     )
 }

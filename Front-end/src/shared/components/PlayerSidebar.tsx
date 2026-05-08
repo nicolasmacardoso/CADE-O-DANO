@@ -2,16 +2,24 @@ import type { HighestDamageChampion, MostPlayedChampion } from "../../services/a
 
 type Props = {
     summonerName: string;
+    summonerLevel: number;
+    profileIconUrl: string;
     mostPlayedChampions: MostPlayedChampion[];
     highestDamageChampions: HighestDamageChampion[];
 }
 
-function PlayerSidebar ({ summonerName, mostPlayedChampions, highestDamageChampions }: Props) {
+function PlayerSidebar ({ summonerName, summonerLevel, profileIconUrl, mostPlayedChampions, highestDamageChampions }: Props) {
     return (
         <div className="player-sidebar">
             <div className="player-sidebar__header">
-                {/* <img className="player-icon" src={summonerIconURL} alt="icone de invocador"/> */}
+                <div className="player-icon">
+                    <img className="player-img" src={profileIconUrl} alt="icone de invocador"/>
+
+                    <p className="player-level">{summonerLevel}</p>
+                </div>
+
                 <p className="player-name">{summonerName}</p>
+                <p className="player-status">Online</p>
             </div>
 
             <div className="player-sidebar__section">

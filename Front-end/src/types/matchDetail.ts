@@ -1,6 +1,7 @@
 export type Participant = {
     summonerName: string;
     championIconUrl: string;
+    championSplashArtUrl: string;
     championName: string;
     kills: number;
     deaths: number;
@@ -13,9 +14,9 @@ export type Participant = {
 
 export type MatchDetail = {
     matchId: string;
-    queueType: string,
-    gameDuration: number,
-    playerWin: boolean,
+    queueType: string;
+    gameDuration: number;
+    playerWin: boolean;
     team1: Participant[];
     team2: Participant[];
 };

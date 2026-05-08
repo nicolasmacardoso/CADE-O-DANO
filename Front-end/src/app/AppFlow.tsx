@@ -31,18 +31,17 @@ function AppFlow () {
     async function handleSearchHistory(
         nick: string,
         tag: string,
-        matchesNumber: string
     ) {
         setMatchDetails(null);
         matchRequest.clearError();
 
-        const data = await historyRequest.run(() =>
-            buscarHistorico(nick, tag, matchesNumber)
+        const response = await historyRequest.run(() =>
+            buscarHistorico(nick, tag)
         );
 
-        if (!data) return;
+        if (!response) return;
 
-        setPlayerStats(data.data);
+        setPlayerStats(response.data);
 
         setScreen("historico");
     }
@@ -52,13 +51,13 @@ function AppFlow () {
         
         if (!playerStats?.puuid) return;
 
-        const data = await matchRequest.run(() =>
+        const response = await matchRequest.run(() =>
             buscarMatch(matchId, playerStats?.puuid)
         );
 
-        if (!data) return;
+        if (!response) return;
 
-        setMatchDetails(data.data);
+        setMatchDetails(response.data);
 
         setScreen("detalhes");
     }
@@ -66,6 +65,8 @@ function AppFlow () {
     const playerSidebar = playerStats ? (
         <PlayerSidebar
             summonerName={playerStats.summonerName}
+            summonerLevel={playerStats.summonerLevel}
+            profileIconUrl={playerStats.profileIconUrl}
             mostPlayedChampions={playerStats.mostPlayedChampions}
             highestDamageChampions={playerStats.highestDamageChampions}
         />

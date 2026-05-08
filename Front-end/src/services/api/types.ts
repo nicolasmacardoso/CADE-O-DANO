@@ -17,9 +17,14 @@ export type HighestDamageChampion = {
     highestDamage: number;
 }
 
-export type SearchHistoryData = {
+type playerInfo = {
     puuid: string;
     summonerName: string;
+    summonerLevel: number;
+    profileIconUrl: string;
+}
+
+export type SearchHistoryData = playerInfo & {
     recentMatches: MatchSummary[];
     mostPlayedChampions: MostPlayedChampion[];
     highestDamageChampions: HighestDamageChampion[];

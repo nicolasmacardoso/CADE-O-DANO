@@ -20,9 +20,8 @@ async function fetchEndpoint<TResponse>(endpoint: string, requestLabel: string):
 export const buscarHistorico = (
   nick: string,
   tag: string,
-  matchNumber: string
 ): Promise<SearchHistoryResponse> => {
-  const historyRequestUrl = `search/${nick}/${tag}?count=${matchNumber}`;
+  const historyRequestUrl = `search/${nick}/${tag}?count=100`;
 
   return fetchEndpoint<SearchHistoryResponse>(historyRequestUrl, "histórico");
 };
