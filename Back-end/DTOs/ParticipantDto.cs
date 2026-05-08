@@ -6,6 +6,7 @@ public class ParticipantDto
     public string SummonerHashtag {get;set;}
     public string ChampionName { get; set; }
     public string ChampionIconUrl { get; set; }
+    public string ChampionSplashArtUrl { get; set; }
 
     public int Kills { get; set; }
     public int Deaths { get; set; }
