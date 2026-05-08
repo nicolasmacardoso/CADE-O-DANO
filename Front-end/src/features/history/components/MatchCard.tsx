@@ -1,12 +1,15 @@
+import type { CSSProperties } from "react";
 import type { MatchSummary } from "../../../types/match"
 
 type Props =  {
     match: MatchSummary;
+    maxDamageInList: number;
+    minDamageInList: number;
     onSelectMatch: (matchId: string) => Promise<void>;
     isLoadingMatchDetails: boolean;
 }
 
-function MatchCard ({match, onSelectMatch, isLoadingMatchDetails}: Props) {
+function MatchCard ({match, maxDamageInList, minDamageInList, onSelectMatch, isLoadingMatchDetails}: Props) {
     const { 
         matchId, 
         championName, 
@@ -19,6 +22,18 @@ function MatchCard ({match, onSelectMatch, isLoadingMatchDetails}: Props) {
         gameStartTimestamp,
         champLevel
     } = match;
+
+    const damageRatio = maxDamageInList > 0
+        ? totalDamage / maxDamageInList
+        : 0;
+
+    const damagePercent = Math.round(damageRatio * 100);
+    const hasDamageRange = maxDamageInList > minDamageInList;
+    const damageIndicator = hasDamageRange && totalDamage === maxDamageInList
+        ? "highest"
+        : hasDamageRange && totalDamage === minDamageInList
+            ? "lowest"
+            : null;
 
     return (
         <button 
@@ -51,8 +66,22 @@ function MatchCard ({match, onSelectMatch, isLoadingMatchDetails}: Props) {
                 <span>{gameStartTimestamp}</span>
             </div>
             
-            <div className="match-card__stats">
-                <p className="match-kda">kda: {kills}/{deaths}/{assists}</p>
+            <div className="match-card__items-summary">
+                <p className="match-kda">{kills}/{deaths}/{assists}</p>
+            </div>
+
+            <div
+                className="match-card__damage-summary"
+                data-damage-tooltip={`Dano: ${totalDamage} | ${damagePercent}% do maior dano da lista`}
+                style={{ "--history-damage-ratio": damageRatio } as CSSProperties}
+            >
+                {damageIndicator && (
+                    <span className={`match-card__damage-indicator match-card__damage-indicator--${damageIndicator}`}>
+                        {damageIndicator === "highest" ? "Maior dano" : "Menor dano"}
+                    </span>
+                )}
+
+                <div className="match-card__damage-bar" aria-hidden="true" />
                 <p className="match-card-damage">dano: {totalDamage}</p>
             </div>
         </button>

@@ -11,6 +11,11 @@ type Props = {
 }
 
 function HistoryPage ({ onBack, matches, onSelectMatch, isLoadingMatchDetails, matchError }: Props) {
+    const maxDamageInList = Math.max(...matches.map((match) => match.totalDamage), 0);
+    const minDamageInList = matches.length > 0
+        ? Math.min(...matches.map((match) => match.totalDamage))
+        : 0;
+
     return (
         <div className="history-page">
             <BackButton onBack={onBack}/>
@@ -30,6 +35,8 @@ function HistoryPage ({ onBack, matches, onSelectMatch, isLoadingMatchDetails, m
                         <MatchCard
                             key={match.matchId}
                             match={match}
+                            maxDamageInList={maxDamageInList}
+                            minDamageInList={minDamageInList}
                             onSelectMatch={onSelectMatch}
                             isLoadingMatchDetails={isLoadingMatchDetails}
                         />
