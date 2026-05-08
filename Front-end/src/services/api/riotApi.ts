@@ -1,14 +1,11 @@
 import type { SearchHistoryResponse, SearchMatchResponse } from "./types";
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const DEFAULT_BASE_URL = "https://cadeodanobackend.livelywater-5b3a910a.eastus.azurecontainerapps.io/";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? DEFAULT_BASE_URL;
 
 async function fetchEndpoint<TResponse>(endpoint: string, requestLabel: string): Promise<TResponse> {
-  if (!BASE_URL) {
-    throw new Error("VITE_API_BASE_URL não configurada");
-  };
+  const apiRequestUrl = `${BASE_URL.replace(/\/$/, "")}/${endpoint.replace(/^\//, "")}`;
 
-  const apiRequestUrl = `${BASE_URL}${endpoint}`;
-  
   const res = await fetch(apiRequestUrl);
 
   if (!res.ok) 
