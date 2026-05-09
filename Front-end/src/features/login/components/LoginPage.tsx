@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import type { StoredPlayer } from "../../../services/storage/playerStorage";
 
 type Props = {
@@ -13,10 +13,15 @@ function LoginPage({ onSearch, loading, historyError, searchedPlayers }: Props) 
   const [tag, setTag] = useState("");
   const [openSearchPlayersList, setOpenSearchPlayersList] = useState(false);
 
-  const filteredSearchedPlayers = searchedPlayers.filter((player) =>
-    player.nick.includes(nick)
-  );
+  const userInputRef = useRef<HTMLInputElement>(null);
+  const searchedPlayerButtonRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  
+  const ignoreNextUserInputFocusRef = useRef(false);
 
+  const filteredSearchedPlayers = searchedPlayers.filter((player) =>
+    player.nick.toLowerCase().includes(nick.toLowerCase())
+  );
+  
   return (
     <div className="login-page">
       {historyError && <p className="request error">{historyError}</p>}
@@ -24,18 +29,35 @@ function LoginPage({ onSearch, loading, historyError, searchedPlayers }: Props) 
       <div className="login-form">
         <div 
           className="user-field"
-          /* onBlur={(event) => {
+          onBlur={(event) => {
             if (!event.currentTarget.contains(event.relatedTarget)) {
               setOpenSearchPlayersList(false);
             }
-          }} */
+          }}
         >
           <input
             placeholder="Usuário"
             id="user-input"
+            autoComplete="off"
+            ref={userInputRef}
             value={nick}
             onChange={(e) => setNick(e.target.value)}
-            onFocus={() => setOpenSearchPlayersList(true)}
+            onFocus={() => {
+              if (ignoreNextUserInputFocusRef.current) {
+                ignoreNextUserInputFocusRef.current = false;
+                return;
+              } 
+              setOpenSearchPlayersList(true);
+            }}
+            onKeyDown={(event) => {
+              if (event.key === "ArrowDown") {
+                setOpenSearchPlayersList(true);
+                event.preventDefault();
+                searchedPlayerButtonRefs.current[0]?.focus();
+              } else if (event.key === "Escape") {
+                setOpenSearchPlayersList(false);
+              };
+            }}
           />
 
           {openSearchPlayersList && filteredSearchedPlayers.length > 0 && (
@@ -44,8 +66,12 @@ function LoginPage({ onSearch, loading, historyError, searchedPlayers }: Props) 
                 nick, 
                 tag, 
                 profileIconUrl 
-              }) => (
+              }, index) => (
                 <button
+                  tabIndex={-1}
+                  ref={(element) => {
+                    searchedPlayerButtonRefs.current[index] = element;
+                  }}
                   key={`${nick}-${tag}`}
                   className="searched-players__button"
                   type="button"
@@ -54,6 +80,22 @@ function LoginPage({ onSearch, loading, historyError, searchedPlayers }: Props) 
                     setNick(nick);
                     setTag(tag);
                     onSearch(nick, tag);
+                  }}
+                  onKeyDown={(event) => {
+                    if (event.key === "ArrowDown") {
+                      event.preventDefault();
+                      searchedPlayerButtonRefs.current[index+1]?.focus();
+                    } else if (event.key === "ArrowUp") {
+                      event.preventDefault();
+                      searchedPlayerButtonRefs.current[index-1]?.focus();
+                      if (index == 0) {
+                        userInputRef.current?.focus();
+                      }
+                    } else if (event.key === "Escape") {
+                      ignoreNextUserInputFocusRef.current = true;
+                      setOpenSearchPlayersList(false);
+                      userInputRef.current?.focus();
+                    };
                   }}
                 >
                   <img className="searched-players__icon" src={profileIconUrl} alt="Ícone do jogador pesquisado"/>
@@ -72,6 +114,7 @@ function LoginPage({ onSearch, loading, historyError, searchedPlayers }: Props) 
             className="login-input"
             type="text"
             id="tag-input"
+            autoComplete="off"
             value={tag}
             onChange={(e) => setTag(e.target.value)}
             onKeyDown={(event) => {
