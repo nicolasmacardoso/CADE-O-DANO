@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { StoredPlayer } from "../../../services/storage/playerStorage";
 
 type Props = {
@@ -12,15 +12,31 @@ function LoginPage({ onSearch, loading, historyError, searchedPlayers }: Props) 
   const [nick, setNick] = useState("");
   const [tag, setTag] = useState("");
   const [openSearchPlayersList, setOpenSearchPlayersList] = useState(false);
+  const [shouldFocusFirstSearchedPlayer, setShouldFocusFirstSearchedPlayer] = useState(false);
+  
+  const [activeSearchedPlayerIndex, setActiveSearchedPlayerIndex] = useState<number | null>(null);
 
   const userInputRef = useRef<HTMLInputElement>(null);
   const searchedPlayerButtonRefs = useRef<Array<HTMLButtonElement | null>>([]);
-  
+
   const ignoreNextUserInputFocusRef = useRef(false);
 
   const filteredSearchedPlayers = searchedPlayers.filter((player) =>
     player.nick.toLowerCase().includes(nick.toLowerCase())
   );
+
+  useEffect(() => {
+    if (!shouldFocusFirstSearchedPlayer) return;
+    if (!openSearchPlayersList) return;
+    if (filteredSearchedPlayers.length === 0) return;
+
+    searchedPlayerButtonRefs.current[0]?.focus();
+    setShouldFocusFirstSearchedPlayer(false);
+  }, [
+    shouldFocusFirstSearchedPlayer, 
+    openSearchPlayersList, 
+    filteredSearchedPlayers.length
+  ]);
   
   return (
     <div className="login-page">
@@ -51,9 +67,10 @@ function LoginPage({ onSearch, loading, historyError, searchedPlayers }: Props) 
             }}
             onKeyDown={(event) => {
               if (event.key === "ArrowDown") {
-                setOpenSearchPlayersList(true);
                 event.preventDefault();
-                searchedPlayerButtonRefs.current[0]?.focus();
+                setOpenSearchPlayersList(true);
+                setShouldFocusFirstSearchedPlayer(true);
+                setActiveSearchedPlayerIndex(0);
               } else if (event.key === "Escape") {
                 setOpenSearchPlayersList(false);
               };
@@ -73,8 +90,12 @@ function LoginPage({ onSearch, loading, historyError, searchedPlayers }: Props) 
                     searchedPlayerButtonRefs.current[index] = element;
                   }}
                   key={`${nick}-${tag}`}
-                  className="searched-players__button"
+                  className={activeSearchedPlayerIndex === index ? "searched-players__button searched-players__button--selected" : "searched-players__button"}
                   type="button"
+                  onMouseEnter={()=>{
+                    searchedPlayerButtonRefs.current[index]?.focus();
+                    setActiveSearchedPlayerIndex(index)
+                  }}
                   onClick={() => {
                     setOpenSearchPlayersList(false);
                     setNick(nick);
@@ -82,15 +103,22 @@ function LoginPage({ onSearch, loading, historyError, searchedPlayers }: Props) 
                     onSearch(nick, tag);
                   }}
                   onKeyDown={(event) => {
+                    const isLastItem = index === filteredSearchedPlayers.length - 1;
+                    
                     if (event.key === "ArrowDown") {
+                      if (isLastItem) return;
                       event.preventDefault();
                       searchedPlayerButtonRefs.current[index+1]?.focus();
+                      setActiveSearchedPlayerIndex(index+1);
                     } else if (event.key === "ArrowUp") {
                       event.preventDefault();
-                      searchedPlayerButtonRefs.current[index-1]?.focus();
                       if (index == 0) {
                         userInputRef.current?.focus();
+                        setActiveSearchedPlayerIndex(null);
+                        return;
                       }
+                      searchedPlayerButtonRefs.current[index-1]?.focus();
+                      setActiveSearchedPlayerIndex(index-1);
                     } else if (event.key === "Escape") {
                       ignoreNextUserInputFocusRef.current = true;
                       setOpenSearchPlayersList(false);
