@@ -49,7 +49,7 @@ public class StatsCalculatorService : IStatsCalculatorService
     return Math.Round(winRate).ToString() + "%";
   }
 
-  public static MatchResult GetMatchResult(
+  public MatchResult GetMatchResult(
       bool win,
       int gameDuration)
   {

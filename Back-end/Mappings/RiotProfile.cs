@@ -14,13 +14,31 @@ public class RiotProfile : Profile
             .ForMember(dest => dest.ChampionIconUrl,
                 opt => opt.MapFrom(src => DataDragonHelper.GetChampionIcon(src.ChampionName)))
             .ForMember(dest => dest.ChampionSplashArtUrl,
-                opt => opt.MapFrom(src => DataDragonHelper.GetChampionSplashArt(src.ChampionName)));
+                opt => opt.MapFrom(src => DataDragonHelper.GetChampionSplashArt(src.ChampionName)))
+            .ForMember(dest => dest.ItemIconUrls,
+                opt => opt.MapFrom(src => DataDragonHelper.GetItemIconUrls(
+                    src.Item0,
+                    src.Item1,
+                    src.Item2,
+                    src.Item3,
+                    src.Item4,
+                    src.Item5,
+                    src.Item6)));
 
         CreateMap<RiotParticipant, ParticipantDto>()
             .ForMember(dest => dest.ChampionIconUrl,
                 opt => opt.MapFrom(src => DataDragonHelper.GetChampionIcon(src.ChampionName)))
             .ForMember(dest => dest.ChampionSplashArtUrl,
                 opt => opt.MapFrom(src => DataDragonHelper.GetChampionSplashArt(src.ChampionName)))
+            .ForMember(dest => dest.ItemIconUrls,
+                opt => opt.MapFrom(src => DataDragonHelper.GetItemIconUrls(
+                    src.Item0,
+                    src.Item1,
+                    src.Item2,
+                    src.Item3,
+                    src.Item4,
+                    src.Item5,
+                    src.Item6)))
             .ForMember(dest => dest.SummonerHashtag,
                 opt => opt.MapFrom(src => src.Hashtag))
             .ForMember(dest => dest.SummonerName,

@@ -12,12 +12,14 @@ public class RiotApiService : IRiotApiService
   private readonly HttpClient _httpClient;
   private readonly IMapper _mapper;
   private readonly IMemoryCache _cache;
+  private readonly IStatsCalculatorService _statsCalculatorService;
 
-  public RiotApiService(HttpClient httpClient, IMapper mapper, IMemoryCache cache)
+  public RiotApiService(HttpClient httpClient, IMapper mapper, IMemoryCache cache, IStatsCalculatorService statsCalculatorService)
   {
     _httpClient = httpClient;
     _mapper = mapper;
     _cache = cache;
+    _statsCalculatorService = statsCalculatorService;
   }
 
   public async Task<List<string>> GetMatchIdsByPuuid(string puuid, string count)
@@ -77,7 +79,7 @@ public class RiotApiService : IRiotApiService
     var dto = _mapper.Map<MatchSummaryDto>(playerData);
     dto.MatchId = matchId;
     dto.GameStartTimestamp = FormatHelper.FormatUnixMilliseconds(matchData.Info.gameStartTimestamp);
-    dto.Result = StatsCalculatorService.GetMatchResult(
+    dto.Result = _statsCalculatorService.GetMatchResult(
       playerData.Win,
       matchData.Info.GameDuration);
 

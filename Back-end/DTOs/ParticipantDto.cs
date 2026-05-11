@@ -12,6 +12,8 @@ public record ParticipantDto
     public int Deaths { get; set; }
     public int Assists { get; set; }
 
+    public List<string> ItemIconUrls { get; set; } = [];
+
     public int TotalDamage { get; set; }
     public int ChampLevel { get; set; }
     public bool Win { get; set; }
