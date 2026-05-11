@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import type { Participant } from "../../../types/matchDetail";
+import ParticipantItems from "./ParticipantItems";
 
 type Props = {
     participant: Participant;
@@ -24,6 +25,10 @@ function MatchParticipantsCard ({ participant, highestTeamDamage }: Props) {
         ? totalDamage / highestTeamDamage
         : 0;
 
+    const kda = `${kills}/${deaths}/${assists}`;
+    
+    const damageStyle = { "--damage-ratio": damageRatio } as CSSProperties;
+
     return (
         <div className={isSearchedPlayer ? "participant-card participant-card--selected" : "participant-card"}>
             <div className="champ-info">
@@ -37,31 +42,17 @@ function MatchParticipantsCard ({ participant, highestTeamDamage }: Props) {
             </div>
             
             <div className="participant-card__items-kda">
-                <div className="participant-card__items">
-                    {Array.from({ length: 7 }).map((_, index) => (
-                        <div className="participant-card__item-slot" key={index}>
-                            {itemIconUrls[index] ? (
-                                <img
-                                    className="participant-card__item-icon"
-                                    src={itemIconUrls[index]}
-                                    alt="Icone do item"
-                                />
-                            ) : (
-                                <div className="participant-card__empty-item" />
-                            )}
-                        </div>
-                    ))}
-                </div>
-                <p className="kda">kda: {kills}/{deaths}/{assists}</p>
+                <ParticipantItems itemIconUrls={itemIconUrls} />
+                <p className="kda">kda: {kda}</p>
             </div>
 
             <div 
                 className="participant-card__damage"
                 data-damage={`Dano total: ${totalDamage}`}
-                style={{ "--damage-ratio": damageRatio } as CSSProperties}
+                style={damageStyle}
             />
         </div>
-    )
+    );
 }
 
 export default MatchParticipantsCard;

@@ -2,35 +2,31 @@ import type { Participant } from "../../../types/matchDetail";
 import MatchParticipantsCard from "./MatchParticipantsCard";
 
 type Props = {
-    title: "Equipe 1" | "Equipe 2";
+    title: string;
     variant: "blue" | "red";
     participants: Participant[];
 }
 
 function TeamParticipantsSection ({ title, participants, variant }: Props) {
-    function renderParticipants () {
-        const highestTeamDamage = Math.max(
-            ...participants.map((participant) => participant.totalDamage),
-            0
-        );
-        
-        return participants.map((participant) => (
-            <MatchParticipantsCard
-                key={participant.summonerName+participant.championName}
-                participant={participant}
-                highestTeamDamage={highestTeamDamage}
-            />
-        ))
-    }
+    const highestTeamDamage = Math.max(
+        ...participants.map((participant) => participant.totalDamage),
+        0
+    );
 
     return (
-        <section className={"team-section team-section--"+variant}>
+        <section className={`team-section team-section--${variant}`}>
             <header className="team-section__header">
                 <h2>{title}</h2>
             </header>
 
             <div className="participant-list">
-                {renderParticipants()}
+                {participants.map((participant) => (
+                    <MatchParticipantsCard
+                        key={participant.summonerName + participant.championName}
+                        participant={participant}
+                        highestTeamDamage={highestTeamDamage}
+                    />
+                ))}
             </div>
         </section>
     );
