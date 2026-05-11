@@ -1,6 +1,12 @@
 import type { CSSProperties } from "react";
 import type { MatchSummary } from "../../../types/match"
 
+const MATCH_RESULT_DISPLAY: Record<MatchSummary["result"], { label: string; classModifier: string }> = {
+    0: { label: "Vitória", classModifier: "win" },
+    1: { label: "Derrota", classModifier: "loss" },
+    2: { label: "Remake", classModifier: "rmk" },
+};
+
 type Props =  {
     match: MatchSummary;
     maxDamageInList: number;
@@ -18,7 +24,7 @@ function MatchCard ({match, maxDamageInList, minDamageInList, onSelectMatch, isL
         deaths, 
         assists, 
         totalDamage, 
-        win, 
+        result, 
         gameStartTimestamp,
         champLevel
     } = match;
@@ -35,6 +41,8 @@ function MatchCard ({match, maxDamageInList, minDamageInList, onSelectMatch, isL
             ? "lowest"
             : null;
 
+    const resultadoPartida = MATCH_RESULT_DISPLAY[result];
+    
     return (
         <button 
             type="button"
@@ -55,8 +63,8 @@ function MatchCard ({match, maxDamageInList, minDamageInList, onSelectMatch, isL
             </div>
 
             <div className="match-card__result">
-                <strong className={win ? "match-result match-result--win" : "match-result match-result--loss"}>
-                    {win ? "Vitória" : "Derrota"}
+                <strong className={`match-result match-result--${resultadoPartida.classModifier}`}>
+                    {resultadoPartida.label}
                 </strong>
                 <span>Ranqueada</span>
             </div>

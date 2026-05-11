@@ -691,6 +691,10 @@ strong {
   color: var(--red);
 }
 
+.match-result--rmk {
+  color: var(--gold);
+}
+
 .match-card__result span,
 .match-card__meta span,
 .match-card__items-summary p,
