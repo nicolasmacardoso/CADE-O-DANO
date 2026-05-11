@@ -431,6 +431,27 @@ strong {
   background: rgba(214, 187, 120, 0.86);
 }
 
+.app-layout__sidebar-button {
+    display: none;
+    width: 36px;
+    height: 36px;
+    gap: 5px;
+    justify-content: center;
+    flex-direction: column;
+    place-items: center;
+    border: 1px solid rgba(239, 217, 157, 0.62);
+    background: black;
+    position: fixed;
+    right: clamp(16px, 4vw, 28px);
+    top: 18px;
+}
+
+.app-layout__sidebar-button-line {
+    width: 23px;
+    height: 2px;
+    background: rgba(239, 217, 157, 0.62);
+}
+
 .backButton {
   width: 28px;
   height: 28px;
@@ -1352,11 +1373,36 @@ strong {
   }
 
   .app-layout__sidebar {
-    min-height: auto;
-    height: auto;
-    overflow: visible;
-    border-left: 0;
-    border-top: 1px solid var(--line-strong);
+    position: fixed;
+    inset: 0 0 0 auto;
+    z-index: 40;
+    width: min(360px, 100vw);
+    min-height: 100vh;
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-left: 1px solid var(--line-strong);
+    border-top: 0;
+    box-shadow: -24px 0 48px rgba(0, 0, 0, 0.42);
+    transform: translateX(100%);
+    transition: transform 0.24s ease;
+    will-change: transform;
+  }
+
+  .app-layout__sidebar--open {
+    transform: translateX(0);
+  }
+
+  .app-layout__sidebar-button {
+    display: flex;
+    z-index: 50;
+    transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+  }
+
+  .app-layout__sidebar-button:hover {
+    transform: translateY(-1px);
+    border-color: rgba(239, 217, 157, 0.9);
+    background: rgba(0, 0, 0, 0.86);
   }
 
   .player-sidebar__header {
@@ -1441,22 +1487,44 @@ strong {
   }
 
   .history-page {
-    gap: 18px;
+    gap: 20px;
+  }
+
+  .history-page__header {
+    padding-bottom: 22px;
   }
 
   .history-page__header h1 {
-    font-size: 22px;
+    max-width: calc(100% - 58px);
+    font-size: 23px;
+    line-height: 1.12;
+  }
+
+  .match-list {
+    gap: 12px;
   }
 
   .match-card {
-    grid-template-columns: 64px 1fr;
-    gap: 8px 12px;
+    grid-template-columns: 64px minmax(0, 1fr);
+    grid-template-areas:
+      "champion result"
+      "champion meta"
+      "champion kda"
+      "damage damage";
+    align-items: center;
+    gap: 6px 12px;
     min-height: auto;
-    padding: 10px 12px 10px 0;
+    padding: 14px;
+    border-color: rgba(188, 213, 218, 0.22);
+    background:
+      linear-gradient(100deg, rgba(9, 35, 45, 0.84), rgba(5, 25, 35, 0.5)),
+      rgba(0, 10, 16, 0.58);
   }
 
   .match-card__champion {
-    grid-row: span 3;
+    grid-area: champion;
+    grid-row: auto;
+    align-self: center;
   }
 
   .match-card__result,
@@ -1466,14 +1534,33 @@ strong {
     min-width: 0;
   }
 
+  .match-card__result {
+    grid-area: result;
+  }
+
+  .match-card__meta {
+    grid-area: meta;
+  }
+
+  .match-card__items-summary {
+    grid-area: kda;
+    min-height: 0;
+  }
+
+  .match-card__damage-summary {
+    grid-area: damage;
+    width: 100%;
+    margin-top: 8px;
+  }
+
   .match-card__items-summary,
   .match-card__damage-summary {
     justify-self: start;
     text-align: left;
   }
 
-  .match-card__damage-summary {
-    width: 100%;
+  .match-card__damage-bar {
+    height: 11px;
   }
 
   .match-card__damage-indicator {
@@ -1481,15 +1568,44 @@ strong {
   }
 
   .match-card__damage-summary::after {
-    right: auto;
-    left: 0;
-    min-width: min(240px, calc(100vw - 48px));
-    white-space: normal;
+    display: none;
   }
 
   .match-card__meta strong,
   .match-card__result strong {
-    font-size: 15px;
+    font-size: 16px;
+    line-height: 1.1;
+  }
+
+  .match-card__result span,
+  .match-card__meta span,
+  .match-card__damage-summary p {
+    font-size: 12px;
+  }
+
+  .match-card__items-summary .match-kda {
+    font-size: 14px;
+  }
+
+  .match-card .champ-icon {
+    width: 58px;
+    height: 58px;
+  }
+
+  .match-card .champ-icon__frame {
+    width: 52px;
+    height: 52px;
+  }
+
+  .match-card .champion-img {
+    width: 58px;
+    height: 58px;
+    transform: translate(-2px, -5px);
+  }
+
+  .match-card .champ-icon .champion-level {
+    right: -3px;
+    bottom: 0;
   }
 
   .player-sidebar__elos {

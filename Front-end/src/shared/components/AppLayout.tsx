@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 
 type Props = {
   children: ReactNode;
@@ -6,19 +6,31 @@ type Props = {
 };
 
 function AppLayout({ children, sidebar }: Props) {
-  return (
-    <div className="app-layout">
-      <main className="app-layout__main">
-        {children}
-      </main>
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-      {sidebar && (
-        <aside className="app-layout__sidebar">
-          {sidebar}
-        </aside>
-      )}
-    </div>
-  );
+    return (
+        <div className="app-layout">
+            <main className="app-layout__main">
+                {children}
+            </main>
+            
+            <button 
+                className="app-layout__sidebar-button" 
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                type="button"
+            >
+                <div className="app-layout__sidebar-button-line"/>
+                <div className="app-layout__sidebar-button-line"/>
+                <div className="app-layout__sidebar-button-line"/>
+            </button>
+            
+            {sidebar && (
+                <aside className={isSidebarOpen ? "app-layout__sidebar app-layout__sidebar--open" : "app-layout__sidebar"}>
+                    {sidebar}
+                </aside>
+            )}
+        </div>
+    );
 }
 
 export default AppLayout;
