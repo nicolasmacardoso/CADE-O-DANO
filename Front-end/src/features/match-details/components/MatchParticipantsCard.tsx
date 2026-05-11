@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import type { Participant } from "../../../types/matchDetail";
 
 type Props = {
@@ -15,7 +16,8 @@ function MatchParticipantsCard ({ participant, highestTeamDamage }: Props) {
         assists, 
         totalDamage, 
         champLevel, 
-        isSearchedPlayer
+        isSearchedPlayer,
+        itemIconUrls
     } = participant;
 
     const damageRatio = highestTeamDamage > 0
@@ -34,14 +36,29 @@ function MatchParticipantsCard ({ participant, highestTeamDamage }: Props) {
                 <p className="champion-name">{championName}</p>
             </div>
             
-            <div className="participant-card__kda">
+            <div className="participant-card__items-kda">
+                <div className="participant-card__items">
+                    {Array.from({ length: 7 }).map((_, index) => (
+                        <div className="participant-card__item-slot" key={index}>
+                            {itemIconUrls[index] ? (
+                                <img
+                                    className="participant-card__item-icon"
+                                    src={itemIconUrls[index]}
+                                    alt="Icone do item"
+                                />
+                            ) : (
+                                <div className="participant-card__empty-item" />
+                            )}
+                        </div>
+                    ))}
+                </div>
                 <p className="kda">kda: {kills}/{deaths}/{assists}</p>
             </div>
 
             <div 
                 className="participant-card__damage"
                 data-damage={`Dano total: ${totalDamage}`}
-                style={{ "--damage-ratio": damageRatio } as React.CSSProperties}
+                style={{ "--damage-ratio": damageRatio } as CSSProperties}
             />
         </div>
     )

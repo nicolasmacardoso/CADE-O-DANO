@@ -9,4 +9,5 @@ export type MatchSummary = {
     champLevel: number;
     gameStartTimestamp: string;
     result: 0 | 1 | 2;
+    itemIconUrls: string[];
 };
