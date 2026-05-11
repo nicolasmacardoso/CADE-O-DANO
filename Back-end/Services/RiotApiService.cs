@@ -59,7 +59,12 @@ public class RiotApiService : IRiotApiService
     var response = await _httpClient.GetAsync(RiotUrlBuilder.GetMatchInfoByMatchId(matchId));
 
     if (!response.IsSuccessStatusCode)
+    {
+      Console.WriteLine(
+          $"Erro match {matchId}: {(int)response.StatusCode}");
+
       return null;
+    }
 
     var matchData = await response.Content.ReadFromJsonAsync<RiotMatchResponse>();
 
@@ -72,8 +77,12 @@ public class RiotApiService : IRiotApiService
     var dto = _mapper.Map<MatchSummaryDto>(playerData);
     dto.MatchId = matchId;
     dto.GameStartTimestamp = FormatHelper.FormatUnixMilliseconds(matchData.Info.gameStartTimestamp);
+    dto.Result = StatsCalculatorService.GetMatchResult(
+      playerData.Win,
+      matchData.Info.GameDuration);
 
     return dto;
+
   }
 
   public async Task<SummonerAccountResponse> GetSummonerAccountInfoByPuuid(string puuid)

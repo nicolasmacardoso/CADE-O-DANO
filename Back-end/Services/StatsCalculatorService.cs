@@ -1,4 +1,5 @@
 using CadeODano.DTOs;
+using CadeODano.Enums;
 using CadeODano.Helpers;
 using CadeODano.Interfaces;
 
@@ -46,5 +47,17 @@ public class StatsCalculatorService : IStatsCalculatorService
     double winRate = (double)wins / totalGames * 100;
 
     return Math.Round(winRate).ToString() + "%";
+  }
+
+  public static MatchResult GetMatchResult(
+      bool win,
+      int gameDuration)
+  {
+    if (gameDuration < 300)
+      return MatchResult.Remake;
+
+    return win
+        ? MatchResult.Victory
+        : MatchResult.Defeat;
   }
 }

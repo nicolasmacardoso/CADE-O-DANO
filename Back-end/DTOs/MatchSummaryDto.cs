@@ -1,3 +1,5 @@
+using CadeODano.Enums;
+
 namespace CadeODano.DTOs;
 
 public record MatchSummaryDto
@@ -12,6 +14,6 @@ public record MatchSummaryDto
     public int Deaths { get; set; }
     public int Assists { get; set; }
     public int TotalDamage { get; set; }
-    public bool Win { get; set; }
+    public MatchResult Result { get; set; }
     public int ChampLevel { get; set; }
 }

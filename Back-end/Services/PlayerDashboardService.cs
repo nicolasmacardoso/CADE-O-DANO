@@ -89,9 +89,26 @@ public class PlayerDashboardService : IPlayerDashboardService
     }
   }
 
-  private async Task<List<MatchSummaryDto>> GetRecentMatchesByPuuid(string puuid, List<string> matchIds)
+  private async Task<List<MatchSummaryDto>> GetRecentMatchesByPuuid(
+      string puuid,
+      List<string> matchIds)
   {
-    var tasks = matchIds.Select(matchId => _riotApiService.GetMatchSummaryByMatchId(matchId, puuid));
+    SemaphoreSlim semaphore = new(10);
+
+    var tasks = matchIds.Select(async matchId =>
+    {
+      await semaphore.WaitAsync();
+
+      try
+      {
+        return await _riotApiService
+            .GetMatchSummaryByMatchId(matchId, puuid);
+      }
+      finally
+      {
+        semaphore.Release();
+      }
+    });
 
     var matches = await Task.WhenAll(tasks);
 
