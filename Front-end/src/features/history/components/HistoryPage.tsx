@@ -12,8 +12,9 @@ type Props = {
 
 function HistoryPage ({ onBack, matches, onSelectMatch, isLoadingMatchDetails, matchError }: Props) {
     const maxDamageInList = Math.max(...matches.map((match) => match.totalDamage), 0);
-    const minDamageInList = matches.length > 0
-        ? Math.min(...matches.map((match) => match.totalDamage))
+    const matchesWithoutRemake = matches.filter(match => match.result !== 2)
+    const minDamageInList = matchesWithoutRemake.length > 0
+        ? Math.min(...matchesWithoutRemake.map((match) => match.totalDamage))
         : 0;
 
     return (
