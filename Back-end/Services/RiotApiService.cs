@@ -42,7 +42,7 @@ public class RiotApiService : IRiotApiService
     var nickname = Uri.EscapeDataString(playerNickname.Nickname);
     var hashtag = Uri.EscapeDataString(playerNickname.Hashtag);
 
-    var response = await _httpClient.GetAsync(RiotUrlBuilder.GetPuuidByRiotId(playerNickname.Nickname, playerNickname.Hashtag));
+    var response = await _httpClient.GetAsync(RiotUrlBuilder.GetPuuidByRiotId(nickname, hashtag));
 
     if (!response.IsSuccessStatusCode)
       throw new Exception("Jogador não encontrado na Riot API");

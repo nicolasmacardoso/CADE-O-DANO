@@ -22,18 +22,13 @@ public class DataDragonHelper
     public static string GetItemIcon(string itemId)
         => $"https://ddragon.leagueoflegends.com/cdn/{version}/img/item/{itemId}.png";
 
-    public static List<string> GetItemIconUrls(params int[] itemIds)
+    public static List<string?> GetItemIconUrls(params int[] itemIds)
     {
-        var itemIconUrls = new List<string>();
-
-        foreach (var itemId in itemIds)
-        {
-            if (itemId <= 0)
-                continue;
-
-            itemIconUrls.Add(GetItemIcon(itemId.ToString()));
-        }
-
-        return itemIconUrls;
+        return itemIds
+            .Select(itemId =>
+                itemId <= 0
+                    ? null
+                    : GetItemIcon(itemId.ToString()))
+            .ToList();
     }
 }
