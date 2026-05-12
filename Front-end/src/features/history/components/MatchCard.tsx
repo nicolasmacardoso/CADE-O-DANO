@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import type { MatchSummary } from "../../../types/match"
+import ParticipantItems from "../../match-details/components/ParticipantItems";
 
 const MATCH_RESULT_DISPLAY: Record<MatchSummary["result"], { label: string; classModifier: string }> = {
     0: { label: "Vitória", classModifier: "win" },
@@ -26,7 +27,8 @@ function MatchCard ({match, maxDamageInList, minDamageInList, onSelectMatch, isL
         totalDamage, 
         result, 
         gameStartTimestamp,
-        champLevel
+        champLevel,
+        itemIconUrls
     } = match;
 
     const damageRatio = maxDamageInList > 0
@@ -46,7 +48,7 @@ function MatchCard ({match, maxDamageInList, minDamageInList, onSelectMatch, isL
     return (
         <button 
             type="button"
-            className="match-card" 
+            className={`match-card match-card--${resultadoPartida.classModifier}`} 
             disabled={isLoadingMatchDetails}
             onClick={() => onSelectMatch(matchId)}
         >
@@ -75,8 +77,10 @@ function MatchCard ({match, maxDamageInList, minDamageInList, onSelectMatch, isL
             </div>
             
             <div className="match-card__items-summary">
-                <p className="match-kda">{kills}/{deaths}/{assists}</p>
+                <ParticipantItems itemIconUrls={itemIconUrls} />
             </div>
+
+            <p className="match-kda">{kills}/{deaths}/{assists}</p>
 
             <div
                 className="match-card__damage-summary"
@@ -89,8 +93,9 @@ function MatchCard ({match, maxDamageInList, minDamageInList, onSelectMatch, isL
                     </span>
                 )}
 
-                <div className="match-card__damage-bar" aria-hidden="true" />
-                <p className="match-card-damage">dano: {totalDamage}</p>
+                <div className="match-card__damage-bar">
+                    <p className="match-card-damage">{totalDamage}</p>
+                </div>
             </div>
         </button>
     );

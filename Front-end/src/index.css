@@ -537,13 +537,14 @@ strong {
 }
 
 .match-card {
+  --history-damage-bar-color: var(--blue);
   width: 100%;
-  min-height: 76px;
+  min-height: 118px;
   display: grid;
-  grid-template-columns: 72px minmax(130px, 160px) minmax(220px, 260px) minmax(180px, 1fr) minmax(180px, 0.7fr);
+  grid-template-columns: 72px minmax(130px, 160px) minmax(220px, 260px) minmax(320px, 420px) minmax(70px, 90px) minmax(220px, 300px);
   align-items: center;
   gap: 20px;
-  padding: 10px 18px 10px 10px;
+  padding: 16px 18px 16px 10px;
   border: 1px solid rgba(188, 213, 218, 0.16);
   border-radius: 6px;
   background:
@@ -556,6 +557,14 @@ strong {
     inset 0 1px 0 rgba(255, 255, 255, 0.04),
     0 10px 28px rgba(0, 0, 0, 0.18);
   transition: background 0.16s ease, border-color 0.16s ease, transform 0.16s ease, box-shadow 0.16s ease;
+}
+
+.match-card--loss {
+  --history-damage-bar-color: var(--red);
+}
+
+.match-card--rmk {
+  --history-damage-bar-color: var(--gold);
 }
 
 .match-card:hover:not(:disabled) {
@@ -716,7 +725,7 @@ strong {
 
 .match-card__items-summary {
   grid-column: 4;
-  min-height: 42px;
+  min-height: 40px;
   display: flex;
   align-items: center;
   justify-self: center;
@@ -724,12 +733,21 @@ strong {
   font-family: var(--mono);
 }
 
-.match-card__damage-summary {
+.match-card > .match-kda {
   grid-column: 5;
+  justify-self: center;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.match-card__damage-summary {
+  grid-column: 6;
   position: relative;
-  width: min(100%, 230px);
+  width: min(100%, 300px);
   display: grid;
-  gap: 6px;
+  gap: 7px;
   justify-self: end;
   font-family: var(--mono);
   text-align: right;
@@ -808,35 +826,35 @@ strong {
 
 .match-card__damage-bar {
   position: relative;
+  isolation: isolate;
   width: 100%;
-  height: 12px;
-  overflow: hidden;
-  border: 1px solid rgba(188, 213, 218, 0.12);
-  border-radius: 999px;
-  background:
-    linear-gradient(90deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.05)),
-    rgba(255, 255, 255, 0.08);
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.32);
+  height: 27px;
+  overflow: visible;
+  border: 0;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: none;
 }
 
 .match-card__damage-bar::before {
   content: "";
   position: absolute;
   inset: 0 auto 0 0;
+  z-index: 0;
   width: calc(var(--history-damage-ratio, 0) * 100%);
   min-width: 6px;
   max-width: 100%;
-  border-radius: inherit;
-  background: linear-gradient(90deg, rgb(255 141 0 / 92%), rgba(23, 201, 255, 0.9));
-  box-shadow: 0 0 16px rgba(64, 201, 255, 0.28);
+  border-radius: 2px;
+  background: var(--history-damage-bar-color);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--history-damage-bar-color) 42%, transparent);
   transition: filter 0.18s ease, box-shadow 0.18s ease;
 }
 
 .match-card__damage-summary:hover .match-card__damage-bar::before {
-  filter: brightness(1.12) saturate(1.1);
+  filter: brightness(1.18) saturate(1.18);
   box-shadow:
-    0 0 18px rgba(64, 201, 255, 0.34),
-    0 0 8px rgba(183, 146, 69, 0.26);
+    0 0 22px color-mix(in srgb, var(--history-damage-bar-color) 62%, transparent),
+    0 0 4px rgba(255, 255, 255, 0.44);
 }
 
 .match-kda,
@@ -844,10 +862,19 @@ strong {
   white-space: nowrap;
 }
 
-.match-card__items-summary .match-kda {
+.match-card__damage-bar .match-card-damage,
+.participant-card__damage .damage {
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  z-index: 2;
+  transform: translateY(-50%);
   color: var(--text);
-  font-size: 15px;
-  font-weight: 800;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.72);
 }
 
 .empty-state {
@@ -1306,9 +1333,10 @@ strong {
 
 .participant-card__damage {
   position: relative;
+  isolation: isolate;
   z-index: 2;
   width: 100%;
-  height: 20px;
+  height: 27px;
   background: rgba(255, 255, 255, 0.12);
   border-radius: 2px;
   overflow: visible;
@@ -1319,6 +1347,7 @@ strong {
   content: "";
   position: absolute;
   inset: 0 auto 0 0;
+  z-index: 0;
   width: calc(var(--damage-ratio, 1) * 100%);
   min-width: 6px;
   max-width: 100%;
@@ -1371,12 +1400,7 @@ strong {
 }
 
 .participant-card__damage .damage {
-  position: relative;
-  z-index: 1;
   display: block;
-  padding-left: calc(min(var(--damage-ratio, 1), 0.78) * 100% + 12px);
-  line-height: 18px;
-  color: var(--text);
   white-space: nowrap;
 }
 
@@ -1398,7 +1422,7 @@ strong {
   }
 
   .match-card {
-    grid-template-columns: 68px minmax(110px, 140px) minmax(180px, 230px) minmax(150px, 1fr) minmax(120px, 0.45fr);
+    grid-template-columns: 68px minmax(110px, 140px) minmax(170px, 220px) minmax(280px, 1fr) minmax(64px, 82px) minmax(170px, 240px);
     gap: 16px;
   }
 
@@ -1470,22 +1494,40 @@ strong {
   }
 
   .match-card {
-    grid-template-columns: 68px minmax(0, 1fr) minmax(180px, auto);
+    grid-template-columns: 68px minmax(0, 1fr) minmax(180px, 240px);
+    grid-template-areas:
+      "champion result meta"
+      "items items kda"
+      "damage damage damage";
     gap: 14px;
-    padding: 10px 12px 10px 0;
+    padding: 12px;
   }
 
-  .match-card__items-summary,
-  .match-card__damage-summary {
-    grid-column: auto;
+  .match-card__champion {
+    grid-area: champion;
+  }
+
+  .match-card__result {
+    grid-area: result;
+  }
+
+  .match-card__meta {
+    grid-area: meta;
   }
 
   .match-card__items-summary {
+    grid-area: items;
+    justify-self: end;
+  }
+
+  .match-card > .match-kda {
+    grid-area: kda;
     justify-self: center;
   }
 
   .match-card__damage-summary {
-    width: min(100%, 200px);
+    grid-area: damage;
+    width: min(100%, 420px);
     justify-self: end;
     text-align: right;
   }
@@ -1566,10 +1608,11 @@ strong {
     grid-template-areas:
       "champion result"
       "champion meta"
-      "champion kda"
+      "items items"
+      "kda kda"
       "damage damage";
     align-items: center;
-    gap: 6px 12px;
+    gap: 8px 12px;
     min-height: auto;
     padding: 14px;
     border-color: rgba(188, 213, 218, 0.22);
@@ -1600,8 +1643,18 @@ strong {
   }
 
   .match-card__items-summary {
-    grid-area: kda;
+    grid-area: items;
     min-height: 0;
+    justify-self: start;
+    max-width: 100%;
+    overflow-x: auto;
+    padding-bottom: 3px;
+  }
+
+  .match-card > .match-kda {
+    grid-area: kda;
+    justify-self: start;
+    font-size: 14px;
   }
 
   .match-card__damage-summary {
@@ -1610,14 +1663,13 @@ strong {
     margin-top: 8px;
   }
 
-  .match-card__items-summary,
   .match-card__damage-summary {
-    justify-self: start;
+    justify-self: stretch;
     text-align: left;
   }
 
   .match-card__damage-bar {
-    height: 11px;
+    height: 16px;
   }
 
   .match-card__damage-indicator {
@@ -1640,8 +1692,15 @@ strong {
     font-size: 12px;
   }
 
-  .match-card__items-summary .match-kda {
-    font-size: 14px;
+  .match-card .participant-card__items {
+    grid-template-columns: repeat(7, 32px);
+  }
+
+  .match-card .participant-card__item-slot,
+  .match-card .participant-card__item-icon,
+  .match-card .participant-card__empty-item {
+    width: 32px;
+    height: 32px;
   }
 
   .match-card .champ-icon {

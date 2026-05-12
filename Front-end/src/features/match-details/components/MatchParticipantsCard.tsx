@@ -42,7 +42,7 @@ function MatchParticipantsCard ({ participant, highestTeamDamage }: Props) {
             </div>
             
             <div className="participant-card__items-summary">
-                <ParticipantItems itemIconUrls={itemIconUrls} />
+                <ParticipantItems itemIconUrls={itemIconUrls}/>
             </div>
 
             <p className="participant-card__kda">{kda}</p>
@@ -51,7 +51,9 @@ function MatchParticipantsCard ({ participant, highestTeamDamage }: Props) {
                 className="participant-card__damage"
                 data-damage={`Dano total: ${totalDamage}`}
                 style={damageStyle}
-            />
+            >
+                <p className="damage">{totalDamage}</p>
+            </div>
         </div>
     );
 }

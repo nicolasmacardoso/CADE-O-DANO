@@ -1,6 +1,7 @@
 import type { MatchSummary } from "../../../types/match";
 import BackButton from "../../../shared/components/BackButton";
 import MatchCard from "./MatchCard";
+import { useState } from "react";
 
 type Props = {
     onBack: () => void;
