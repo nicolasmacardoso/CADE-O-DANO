@@ -1,6 +1,3 @@
-using CadeODano.Configuration;
-using Microsoft.Extensions.Options;
-
 namespace CadeODano.Helpers;
 
 public class DataDragonHelper

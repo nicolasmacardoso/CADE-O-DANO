@@ -1,6 +1,5 @@
 using CadeODano.Interfaces;
 using CadeODano.Mappings;
-using CadeODano.Configuration;
 using CadeODano.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,11 +28,6 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod();
     });
 });
-
-
-//DataDragon Settings 
-builder.Services.Configure<DataDragonSettings>(
-    builder.Configuration.GetSection("DataDragon"));
 
 builder.Services.AddHttpClient<IRiotApiService, RiotApiService>(client =>
 {

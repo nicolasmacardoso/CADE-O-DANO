@@ -14,30 +14,15 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      # Login direto no ACR usando as credenciais que você pegou em "Access Keys"
       - name: Login to Azure Container Registry
         uses: azure/docker-login@v1
         with:
           login-server: ${{ secrets.ACR_LOGIN_SERVER }}
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
-
-      # Build e Push da imagem
       - name: Build and Push Docker Image
         run: |
+          cd Back-end
           IMAGE_TAG=${{ secrets.ACR_LOGIN_SERVER }}/cade-o-dano-api:${{ github.sha }}
-          docker build -t $IMAGE_TAG ./Back-end
+          docker build -t $IMAGE_TAG .
           docker push $IMAGE_TAG
-
-      # Deploy no Container Apps usando as credenciais do Registry
-      # Nota: Sem o Service Principal, usamos o login do Registry para o deploy
-      - name: Deploy to Azure Container Apps
-        uses: azure/container-apps-deploy-action@v2
-        with:
-          registryUrl: ${{ secrets.ACR_LOGIN_SERVER }}
-          registryUsername: ${{ secrets.ACR_USERNAME }}
-          registryPassword: ${{ secrets.ACR_PASSWORD }}
-          containerAppName: cadeodanobackend
-          resourceGroup: cade-o-dano
-          imageToDeploy: ${{ secrets.ACR_LOGIN_SERVER }}/cade-o-dano-api:${{ github.sha }}
