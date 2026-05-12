@@ -528,6 +528,78 @@ strong {
   color: var(--blue);
 }
 
+.damage-toggle {
+  width: max-content;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-muted);
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: uppercase;
+  user-select: none;
+  cursor: pointer;
+}
+
+.damage-toggle__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.damage-toggle__control {
+  position: relative;
+  width: 42px;
+  height: 22px;
+  border: 1px solid rgba(188, 213, 218, 0.22);
+  border-radius: 999px;
+  background: rgba(2, 16, 24, 0.78);
+  box-shadow:
+    inset 0 0 10px rgba(0, 0, 0, 0.36),
+    0 6px 14px rgba(0, 0, 0, 0.18);
+  transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+
+.damage-toggle__control::before {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: var(--text-muted);
+  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.4);
+  transition: transform 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+
+.damage-toggle:hover .damage-toggle__label {
+  color: var(--text);
+}
+
+.damage-toggle__input:checked + .damage-toggle__control {
+  border-color: color-mix(in srgb, var(--blue) 72%, white 8%);
+  background: rgba(64, 201, 255, 0.14);
+  box-shadow:
+    inset 0 0 12px rgba(64, 201, 255, 0.12),
+    0 0 18px rgba(64, 201, 255, 0.16);
+}
+
+.damage-toggle__input:checked + .damage-toggle__control::before {
+  transform: translate(20px, -50%);
+  background: var(--blue);
+  box-shadow: 0 0 12px rgba(64, 201, 255, 0.46);
+}
+
+.damage-toggle__input:focus-visible + .damage-toggle__control {
+  outline: 2px solid rgba(214, 187, 120, 0.72);
+  outline-offset: 3px;
+}
+
 .match-list {
   display: flex;
   flex-direction: column;
@@ -874,7 +946,7 @@ strong {
   font-size: 13px;
   font-weight: 900;
   line-height: 1;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.72);
+  text-shadow: 0 0 3px #000;
 }
 
 .empty-state {
@@ -1133,6 +1205,10 @@ strong {
   gap: clamp(18px, 3vw, 42px);
   padding-bottom: 18px;
   border-bottom: 1px solid var(--line-strong);
+}
+
+.match-details-page__header .damage-toggle {
+  margin-left: auto;
 }
 
 .match-details-page__summary {
@@ -1736,6 +1812,10 @@ strong {
     align-items: flex-start;
     flex-direction: column;
     gap: 14px;
+  }
+
+  .match-details-page__header .damage-toggle {
+    margin-left: 0;
   }
 
   .participant-card {

@@ -5,9 +5,10 @@ import ParticipantItems from "./ParticipantItems";
 type Props = {
     participant: Participant;
     highestTeamDamage: number;
+    showDamageText: boolean;
 }
 
-function MatchParticipantsCard ({ participant, highestTeamDamage }: Props) {
+function MatchParticipantsCard ({ participant, highestTeamDamage, showDamageText }: Props) {
     const { 
         summonerName, 
         championSplashArtUrl,
@@ -52,7 +53,7 @@ function MatchParticipantsCard ({ participant, highestTeamDamage }: Props) {
                 data-damage={`Dano total: ${totalDamage}`}
                 style={damageStyle}
             >
-                <p className="damage">{totalDamage}</p>
+                {showDamageText && <p className="damage">{totalDamage}</p>}
             </div>
         </div>
     );

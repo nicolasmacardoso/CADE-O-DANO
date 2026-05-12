@@ -5,9 +5,10 @@ type Props = {
     title: string;
     variant: "blue" | "red";
     participants: Participant[];
+    showDamageText: boolean;
 }
 
-function TeamParticipantsSection ({ title, participants, variant }: Props) {
+function TeamParticipantsSection ({ title, participants, variant, showDamageText }: Props) {
     const highestTeamDamage = Math.max(
         ...participants.map((participant) => participant.totalDamage),
         0
@@ -25,6 +26,7 @@ function TeamParticipantsSection ({ title, participants, variant }: Props) {
                         key={participant.summonerName + participant.championName}
                         participant={participant}
                         highestTeamDamage={highestTeamDamage}
+                        showDamageText={showDamageText}
                     />
                 ))}
             </div>

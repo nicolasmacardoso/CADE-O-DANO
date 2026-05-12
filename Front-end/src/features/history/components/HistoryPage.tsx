@@ -17,6 +17,8 @@ function HistoryPage ({ onBack, matches, onSelectMatch, isLoadingMatchDetails, m
     const minDamageInList = matchesWithoutRemake.length > 0
         ? Math.min(...matchesWithoutRemake.map((match) => match.totalDamage))
         : 0;
+        
+    const [showDamageText, setShowDamageText] = useState(false);
 
     return (
         <div className="history-page">
@@ -30,6 +32,18 @@ function HistoryPage ({ onBack, matches, onSelectMatch, isLoadingMatchDetails, m
                 {isLoadingMatchDetails && <p>Carregando detalhes da partida selecionada...</p>}
                 {matchError && <p className="match-error">{matchError}</p>}
             </div>
+
+            <label className="damage-toggle">
+                <span className="damage-toggle__label">Exibir dano</span>
+                <input 
+                    className="damage-toggle__input"
+                    type="checkbox" 
+                    name="show-damage-text" 
+                    checked={showDamageText}
+                    onChange={(event) => setShowDamageText(event.target.checked)}
+                />
+                <span className="damage-toggle__control" />
+            </label>
             
             <section className="match-list">
                 {matches.length > 0 ?  (
@@ -41,6 +55,7 @@ function HistoryPage ({ onBack, matches, onSelectMatch, isLoadingMatchDetails, m
                             minDamageInList={minDamageInList}
                             onSelectMatch={onSelectMatch}
                             isLoadingMatchDetails={isLoadingMatchDetails}
+                            showDamageText={showDamageText}
                         />
                     ))
                 ) : (

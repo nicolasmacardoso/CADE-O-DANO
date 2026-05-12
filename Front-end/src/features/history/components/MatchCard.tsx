@@ -14,9 +14,10 @@ type Props =  {
     minDamageInList: number;
     onSelectMatch: (matchId: string) => Promise<void>;
     isLoadingMatchDetails: boolean;
+    showDamageText: boolean;
 }
 
-function MatchCard ({match, maxDamageInList, minDamageInList, onSelectMatch, isLoadingMatchDetails}: Props) {
+function MatchCard ({ match, maxDamageInList, minDamageInList, onSelectMatch, isLoadingMatchDetails, showDamageText }: Props) {
     const { 
         matchId, 
         championName, 
@@ -94,7 +95,7 @@ function MatchCard ({match, maxDamageInList, minDamageInList, onSelectMatch, isL
                 )}
 
                 <div className="match-card__damage-bar">
-                    <p className="match-card-damage">{totalDamage}</p>
+                    {showDamageText && <p className="match-card-damage">{totalDamage}</p>}
                 </div>
             </div>
         </button>

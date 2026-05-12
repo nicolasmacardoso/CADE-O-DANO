@@ -1,6 +1,7 @@
 import type { MatchDetail } from "../../../types/matchDetail"
 import BackButton from "../../../shared/components/BackButton";
 import TeamParticipantsSection from "./TeamParticipantsSection";
+import { useState } from "react";
 
 type Props = {
     matchDetails: MatchDetail;
@@ -8,6 +9,8 @@ type Props = {
 }
 
 function MatchDetailsPage ({ matchDetails, onBack }: Props) {
+    const [showDamageText, setShowDamageText] = useState(false);
+
     const { 
         playerWin, 
         queueType, 
@@ -40,6 +43,18 @@ function MatchDetailsPage ({ matchDetails, onBack }: Props) {
                     <span>{queueType}</span>
                     <span>{gameDuration}</span>
                 </div>
+
+                <label className="damage-toggle">
+                    <span className="damage-toggle__label">Exibir dano</span>
+                    <input
+                        className="damage-toggle__input"
+                        type="checkbox"
+                        name="show-damage-text"
+                        checked={showDamageText}
+                        onChange={(event) => setShowDamageText(event.target.checked)}
+                    />
+                    <span className="damage-toggle__control" />
+                </label>
             </header>
 
             {teams.map(({ 
@@ -52,6 +67,7 @@ function MatchDetailsPage ({ matchDetails, onBack }: Props) {
                     title={title}
                     participants={participants}
                     variant={variant}
+                    showDamageText={showDamageText}
                 />
             ))}
         </div>
