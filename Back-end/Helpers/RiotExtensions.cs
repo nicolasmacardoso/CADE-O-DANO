@@ -21,8 +21,8 @@ public static class RiotExtensions
     {
         return queueType switch
         {
-            "RANKED_SOLO_5x5" => "Solo/Duo",
-            "RANKED_FLEX_SR" => "Flex",
+            "RANKED_SOLO_5x5" => "Ranqueada Solo/Duo",
+            "RANKED_FLEX_SR" => "Ranqueada Flex",
             _ => queueType
         };
     }
