@@ -1,11 +1,14 @@
+import type { CSSProperties } from "react";
 import type { Participant } from "../../../types/matchDetail";
+import ParticipantItems from "./ParticipantItems";
 
 type Props = {
     participant: Participant;
     highestTeamDamage: number;
+    showDamageText: boolean;
 }
 
-function MatchParticipantsCard ({ participant, highestTeamDamage }: Props) {
+function MatchParticipantsCard ({ participant, highestTeamDamage, showDamageText }: Props) {
     const { 
         summonerName, 
         championSplashArtUrl,
@@ -15,12 +18,17 @@ function MatchParticipantsCard ({ participant, highestTeamDamage }: Props) {
         assists, 
         totalDamage, 
         champLevel, 
-        isSearchedPlayer
+        isSearchedPlayer,
+        itemIconUrls
     } = participant;
 
     const damageRatio = highestTeamDamage > 0
         ? totalDamage / highestTeamDamage
         : 0;
+
+    const kda = `${kills}/${deaths}/${assists}`;
+    
+    const damageStyle = { "--damage-ratio": damageRatio } as CSSProperties;
 
     return (
         <div className={isSearchedPlayer ? "participant-card participant-card--selected" : "participant-card"}>
@@ -34,17 +42,21 @@ function MatchParticipantsCard ({ participant, highestTeamDamage }: Props) {
                 <p className="champion-name">{championName}</p>
             </div>
             
-            <div className="participant-card__kda">
-                <p className="kda">kda: {kills}/{deaths}/{assists}</p>
+            <div className="participant-card__items-summary">
+                <ParticipantItems itemIconUrls={itemIconUrls}/>
             </div>
+
+            <p className="participant-card__kda">{kda}</p>
 
             <div 
                 className="participant-card__damage"
                 data-damage={`Dano total: ${totalDamage}`}
-                style={{ "--damage-ratio": damageRatio } as React.CSSProperties}
-            />
+                style={damageStyle}
+            >
+                {showDamageText && <p className="damage">{totalDamage}</p>}
+            </div>
         </div>
-    )
+    );
 }
 
 export default MatchParticipantsCard;

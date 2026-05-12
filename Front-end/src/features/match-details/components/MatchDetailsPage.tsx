@@ -1,6 +1,7 @@
 import type { MatchDetail } from "../../../types/matchDetail"
-import MatchParticipantsCard from "./MatchParticipantsCard";
 import BackButton from "../../../shared/components/BackButton";
+import TeamParticipantsSection from "./TeamParticipantsSection";
+import { useState } from "react";
 
 type Props = {
     matchDetails: MatchDetail;
@@ -8,28 +9,26 @@ type Props = {
 }
 
 function MatchDetailsPage ({ matchDetails, onBack }: Props) {
-    function renderParticipants (team: "1" | "2") {
-        const thisTeam = `team${team}` as const;
-        const participants = matchDetails[thisTeam];
-
-        const highestTeamDamage = Math.max(
-            ...participants.map((participant) => participant.totalDamage)
-        )
-
-        return participants.map((participant) => (
-            <MatchParticipantsCard
-                key={participant.summonerName+participant.championName}
-                participant={participant}
-                highestTeamDamage={highestTeamDamage}
-            />
-        ))
-    }
+    const [showDamageText, setShowDamageText] = useState(false);
 
     const { 
         playerWin, 
         queueType, 
         gameDuration 
     } = matchDetails; 
+
+    const teams = [
+        {
+            title: "Equipe 1",
+            participants: matchDetails.team1,
+            variant: "blue"
+        },
+        {
+            title: "Equipe 2",
+            participants: matchDetails.team2,
+            variant: "red"
+        }
+    ] as const;
 
     return (
         <div className="match-details-page">
@@ -44,27 +43,33 @@ function MatchDetailsPage ({ matchDetails, onBack }: Props) {
                     <span>{queueType}</span>
                     <span>{gameDuration}</span>
                 </div>
+
+                <label className="damage-toggle">
+                    <span className="damage-toggle__label">Exibir dano</span>
+                    <input
+                        className="damage-toggle__input"
+                        type="checkbox"
+                        name="show-damage-text"
+                        checked={showDamageText}
+                        onChange={(event) => setShowDamageText(event.target.checked)}
+                    />
+                    <span className="damage-toggle__control" />
+                </label>
             </header>
 
-            <section className="team-section team-section--blue">
-                <header className="team-section__header">
-                    <h2>Equipe 1</h2>
-                </header>
-
-                <div className="participant-list">
-                    {renderParticipants("1")}
-                </div>
-            </section>
-
-            <section className="team-section team-section--red">
-                <header className="team-section__header">
-                    <h2>Equipe 2</h2>
-                </header>
-
-                <div className="participant-list">
-                    {renderParticipants("2")}
-                </div>
-            </section>
+            {teams.map(({ 
+                title, 
+                participants, 
+                variant 
+            }) => (
+                <TeamParticipantsSection
+                    key={title}
+                    title={title}
+                    participants={participants}
+                    variant={variant}
+                    showDamageText={showDamageText}
+                />
+            ))}
         </div>
     )
 }

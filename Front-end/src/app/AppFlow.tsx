@@ -22,8 +22,10 @@ import PlayerSidebar from "../shared/components/PlayerSidebar";
 import { 
     clearCurrentPlayer,
     getCurrentPlayer, 
+    getCurrentPlayerHistory,
     getSearchedPlayers, 
     saveCurrentPlayer, 
+    saveCurrentPlayerHistory,
     saveSearchedPlayer, 
     type StoredPlayer 
 } from "../services/storage/playerStorage";
@@ -31,10 +33,10 @@ import {
 type Screen = "login" | "historico" | "detalhes";
 
 function AppFlow () {
-    const [playerStats, setPlayerStats] = useState<SearchHistoryData | null>(null);
+    const [playerStats, setPlayerStats] = useState<SearchHistoryData | null>(() => getCurrentPlayerHistory());
     const [matchDetails, setMatchDetails] = useState<MatchDetail | null>(null);
 
-    const [screen, setScreen] = useState<Screen>("login");
+    const [screen, setScreen] = useState<Screen>(() => playerStats ? "historico" : "login");
 
     const [searchedPlayers, setSearchedPlayers] = useState<StoredPlayer[]>([]);
 
@@ -44,6 +46,8 @@ function AppFlow () {
     useEffect(() => {
         setSearchedPlayers(getSearchedPlayers());
 
+        if (playerStats) return;
+
         const storedPlayer = getCurrentPlayer();
 
         if (!storedPlayer) return;
@@ -52,9 +56,11 @@ function AppFlow () {
     }, []);
 
     async function handleSearchHistory(
-        nick: string,
-        tag: string,
+        nick: string | null,
+        tag: string | null,
     ) {
+        if (!nick || !tag) return;
+
         setMatchDetails(null);
         matchRequest.clearError();
 
@@ -65,6 +71,7 @@ function AppFlow () {
         if (!response) return;
 
         setPlayerStats(response.data);
+        saveCurrentPlayerHistory(response.data);
 
         const icon = response.data.profileIconUrl;
 
@@ -92,6 +99,15 @@ function AppFlow () {
 
         setScreen("detalhes");
     };
+
+    async function handleRefreshHistory() {
+        const storedPlayer = getCurrentPlayer();
+
+        await handleSearchHistory(
+            storedPlayer?.nick || null,
+            storedPlayer?.tag || null,
+        );
+    }
 
     function handleBackToLogin() {
         setPlayerStats(null);
@@ -125,7 +141,9 @@ function AppFlow () {
                 <AppLayout sidebar={playerSidebar}>
                     <HistoryPage
                         onBack={handleBackToLogin}
+                        onRefresh={handleRefreshHistory}
                         matches={playerStats?.recentMatches || []}
+                        isRefreshingHistory={historyRequest.loading}
                         isLoadingMatchDetails={matchRequest.loading}
                         matchError={matchRequest.error}
                         onSelectMatch={handleSelectMatch}

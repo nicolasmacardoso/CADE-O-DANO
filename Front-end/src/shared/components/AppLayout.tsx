@@ -25,7 +25,11 @@ function AppLayout({ children, sidebar }: Props) {
             </button>
             
             {sidebar && (
-                <aside className={isSidebarOpen ? "app-layout__sidebar app-layout__sidebar--open" : "app-layout__sidebar"}>
+                <aside className={
+                    isSidebarOpen ? 
+                    "app-layout__sidebar app-layout__sidebar--open" : 
+                    "app-layout__sidebar"
+                }>
                     {sidebar}
                 </aside>
             )}

@@ -1,5 +1,12 @@
 import type { CSSProperties } from "react";
 import type { MatchSummary } from "../../../types/match"
+import ParticipantItems from "../../match-details/components/ParticipantItems";
+
+const MATCH_RESULT_DISPLAY: Record<MatchSummary["result"], { label: string; classModifier: string }> = {
+    0: { label: "Vitória", classModifier: "win" },
+    1: { label: "Derrota", classModifier: "loss" },
+    2: { label: "Remake", classModifier: "rmk" },
+};
 
 type Props =  {
     match: MatchSummary;
@@ -7,9 +14,10 @@ type Props =  {
     minDamageInList: number;
     onSelectMatch: (matchId: string) => Promise<void>;
     isLoadingMatchDetails: boolean;
+    showDamageText: boolean;
 }
 
-function MatchCard ({match, maxDamageInList, minDamageInList, onSelectMatch, isLoadingMatchDetails}: Props) {
+function MatchCard ({ match, maxDamageInList, minDamageInList, onSelectMatch, isLoadingMatchDetails, showDamageText }: Props) {
     const { 
         matchId, 
         championName, 
@@ -18,9 +26,10 @@ function MatchCard ({match, maxDamageInList, minDamageInList, onSelectMatch, isL
         deaths, 
         assists, 
         totalDamage, 
-        win, 
+        result, 
         gameStartTimestamp,
-        champLevel
+        champLevel,
+        itemIconUrls
     } = match;
 
     const damageRatio = maxDamageInList > 0
@@ -35,10 +44,12 @@ function MatchCard ({match, maxDamageInList, minDamageInList, onSelectMatch, isL
             ? "lowest"
             : null;
 
+    const resultadoPartida = MATCH_RESULT_DISPLAY[result];
+    
     return (
         <button 
             type="button"
-            className="match-card" 
+            className={`match-card match-card--${resultadoPartida.classModifier}`} 
             disabled={isLoadingMatchDetails}
             onClick={() => onSelectMatch(matchId)}
         >
@@ -55,8 +66,8 @@ function MatchCard ({match, maxDamageInList, minDamageInList, onSelectMatch, isL
             </div>
 
             <div className="match-card__result">
-                <strong className={win ? "match-result match-result--win" : "match-result match-result--loss"}>
-                    {win ? "Vitória" : "Derrota"}
+                <strong className={`match-result match-result--${resultadoPartida.classModifier}`}>
+                    {resultadoPartida.label}
                 </strong>
                 <span>Ranqueada</span>
             </div>
@@ -67,8 +78,10 @@ function MatchCard ({match, maxDamageInList, minDamageInList, onSelectMatch, isL
             </div>
             
             <div className="match-card__items-summary">
-                <p className="match-kda">{kills}/{deaths}/{assists}</p>
+                <ParticipantItems itemIconUrls={itemIconUrls} />
             </div>
+
+            <p className="match-kda">{kills}/{deaths}/{assists}</p>
 
             <div
                 className="match-card__damage-summary"
@@ -81,8 +94,9 @@ function MatchCard ({match, maxDamageInList, minDamageInList, onSelectMatch, isL
                     </span>
                 )}
 
-                <div className="match-card__damage-bar" aria-hidden="true" />
-                <p className="match-card-damage">dano: {totalDamage}</p>
+                <div className="match-card__damage-bar">
+                    {showDamageText && <p className="match-card-damage">{totalDamage}</p>}
+                </div>
             </div>
         </button>
     );

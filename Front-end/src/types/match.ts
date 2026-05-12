@@ -6,7 +6,8 @@ export type MatchSummary = {
     deaths: number;
     assists: number;
     totalDamage: number;
-    win: boolean;
     champLevel: number;
     gameStartTimestamp: string;
+    result: 0 | 1 | 2;
+    itemIconUrls: string[];
 };

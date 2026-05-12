@@ -10,6 +10,7 @@ export type Participant = {
     champLevel: number;
     isSearchedPlayer: boolean;
     teamId: number;
+    itemIconUrls: string[];
 };
 
 export type MatchDetail = {
