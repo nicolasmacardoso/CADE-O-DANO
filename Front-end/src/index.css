@@ -367,6 +367,16 @@ strong {
   }
 }
 
+@keyframes refresh-spin {
+  from {
+    transform: translate(2px, 0) rotate(470deg);
+  }
+
+  to {
+    transform: translate(2px, 0) rotate(830deg);
+  }
+}
+
 .app-layout {
   height: 100vh;
   display: grid;
@@ -509,6 +519,53 @@ strong {
   align-self: flex-start;
 }
 
+.history-page__refresh-button {
+  position: absolute;
+  top: clamp(18px, 2vw, 28px);
+  left: clamp(72px, 6vw, 104px);
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(239, 217, 157, 0.62);
+  border-radius: 2px;
+  background: rgba(0, 0, 0, 0.22);
+  transition: background 0.16s ease, transform 0.16s ease, border-color 0.16s ease, opacity 0.16s ease;
+}
+
+.history-page__refresh-button::before {
+    content: "↻";
+    width: 24px;
+    height: 24px;
+    display: grid;
+    place-items: center;
+    color: #e8d398;
+    font-family: "Segoe UI Symbol", "Segoe UI", Arial, sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1;
+    transform: translate(2px, 0) rotate(470deg);
+    transform-origin: center;
+}
+
+.history-page__refresh-button::after {
+  content: none;
+}
+
+.history-page__refresh-button:hover:not(:disabled) {
+  border-color: rgba(239, 217, 157, 0.88);
+  background: rgba(232, 211, 152, 0.12);
+  transform: rotate(18deg);
+}
+
+.history-page__refresh-button:disabled {
+  opacity: 0.62;
+}
+
+.history-page__refresh-button.is-loading::before {
+  animation: refresh-spin 0.75s linear infinite;
+}
+
 .history-page__header {
   padding-bottom: clamp(20px, 3vh, 30px);
   border-bottom: 1px solid var(--line-strong);
@@ -540,6 +597,7 @@ strong {
   text-transform: uppercase;
   user-select: none;
   cursor: pointer;
+  margin-left: auto;
 }
 
 .damage-toggle__input {
@@ -1205,10 +1263,6 @@ strong {
   gap: clamp(18px, 3vw, 42px);
   padding-bottom: 18px;
   border-bottom: 1px solid var(--line-strong);
-}
-
-.match-details-page__header .damage-toggle {
-  margin-left: auto;
 }
 
 .match-details-page__summary {
