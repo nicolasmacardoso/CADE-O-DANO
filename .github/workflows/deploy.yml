@@ -4,14 +4,14 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'Front-end/**' # Só dispara se houver mudanças dentro da pasta Front-end
 
-# Grant the permissions required by the GitHub Pages deployment actions
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Avoid overlapping deployments
 concurrency:
   group: pages
   cancel-in-progress: false
@@ -27,7 +27,6 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          # Use a supported LTS version of Node.js
           node-version: 22
 
       - name: Install dependencies
