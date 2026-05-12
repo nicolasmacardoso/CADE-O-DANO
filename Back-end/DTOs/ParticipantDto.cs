@@ -18,6 +18,8 @@ public record ParticipantDto
     public int ChampLevel { get; set; }
     public bool Win { get; set; }
 
+    public List<SummonerEloDto>? SummonerElos { get; set; }
+
     public bool IsSearchedPlayer { get; set; }
     public int TeamId { get; set; }
 }

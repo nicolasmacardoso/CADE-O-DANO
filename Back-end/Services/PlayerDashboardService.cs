@@ -65,21 +65,26 @@ public class PlayerDashboardService : IPlayerDashboardService
       if (matchData == null)
         return ServiceResult<MatchDetailsDto>.Fail("Partida não encontrada.");
 
-      var participants = matchData.Info.Participants
-          .Select(x =>
+      var participantsTasks = matchData.Info.Participants
+          .Select(async x =>
           {
             var dto = _mapper.Map<ParticipantDto>(x);
+
             dto.IsSearchedPlayer = x.Puuid == puuid;
+
+            dto.SummonerElos = await _riotApiService.GetSummonerEloByPuuid(x.Puuid);
+
             return dto;
-          })
-          .ToList();
+          });
+
+      var participants = (await Task.WhenAll(participantsTasks)).ToList();
 
       var dto = MatchDetailsBuilder.Build(
-        matchId,
-        matchData.Info.QueueId,
-        matchData.Info.GameDuration,
-        matchData.Info.gameStartTimestamp,
-        participants);
+          matchId,
+          matchData.Info.QueueId,
+          matchData.Info.GameDuration,
+          matchData.Info.gameStartTimestamp,
+          participants);
 
       return ServiceResult<MatchDetailsDto>.Success(dto);
     }
