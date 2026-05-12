@@ -41,10 +41,11 @@ function MatchParticipantsCard ({ participant, highestTeamDamage }: Props) {
                 <p className="champion-name">{championName}</p>
             </div>
             
-            <div className="participant-card__items-kda">
+            <div className="participant-card__items-summary">
                 <ParticipantItems itemIconUrls={itemIconUrls} />
-                <p className="kda">kda: {kda}</p>
             </div>
+
+            <p className="participant-card__kda">{kda}</p>
 
             <div 
                 className="participant-card__damage"
