@@ -1,6 +1,5 @@
 using CadeODano.Interfaces;
 using CadeODano.Mappings;
-using CadeODano.Configuration;
 using CadeODano.Services;
 
 var builder = WebApplication.CreateBuilder(args);
