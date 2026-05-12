@@ -8,6 +8,8 @@ const MATCH_RESULT_DISPLAY: Record<MatchSummary["result"], { label: string; clas
     2: { label: "Remake", classModifier: "rmk" },
 };
 
+const UNKNOWN_MATCH_RESULT = { label: "Resultado indisponivel", classModifier: "rmk" };
+
 type Props =  {
     match: MatchSummary;
     maxDamageInList: number;
@@ -44,7 +46,7 @@ function MatchCard ({ match, maxDamageInList, minDamageInList, onSelectMatch, is
             ? "lowest"
             : null;
 
-    const resultadoPartida = MATCH_RESULT_DISPLAY[result];
+    const resultadoPartida = MATCH_RESULT_DISPLAY[result] ?? UNKNOWN_MATCH_RESULT;
     
     return (
         <button 

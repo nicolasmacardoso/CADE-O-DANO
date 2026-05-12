@@ -10,21 +10,74 @@ export type StoredPlayer = {
     tag: string;
 };
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+    return typeof value === "object" && value !== null;
+}
+
+function hasStringFields(value: Record<string, unknown>, fields: string[]) {
+    return fields.every((field) => typeof value[field] === "string");
+}
+
+function hasNonEmptyStringFields(value: Record<string, unknown>, fields: string[]) {
+    return fields.every((field) => {
+        const fieldValue = value[field];
+        return typeof fieldValue === "string" && fieldValue.trim().length > 0;
+    });
+}
+
+function hasArrayFields(value: Record<string, unknown>, fields: string[]) {
+    return fields.every((field) => Array.isArray(value[field]));
+}
+
+function isStoredPlayer(value: unknown): value is StoredPlayer {
+    return isRecord(value)
+        && hasStringFields(value, ["profileIconUrl"])
+        && hasNonEmptyStringFields(value, ["nick", "tag"]);
+}
+
+function isSearchHistoryData(value: unknown): value is SearchHistoryData {
+    if (!isRecord(value)) return false;
+
+    return hasNonEmptyStringFields(value, ["puuid", "summonerName"])
+        && hasStringFields(value, ["profileIconUrl"])
+        && typeof value.summonerLevel === "number"
+        && hasArrayFields(value, [
+            "summonerElos",
+            "recentMatches",
+            "mostPlayedChampions",
+            "highestDamageChampions",
+        ]);
+}
+
+function parseStoredValue<T>(
+    key: string,
+    isValid: (value: unknown) => value is T,
+): T | null {
+    const storedValue = localStorage.getItem(key);
+
+    if (!storedValue) return null;
+
+    try {
+        const parsedValue: unknown = JSON.parse(storedValue);
+        return isValid(parsedValue) ? parsedValue : null;
+    } catch {
+        return null;
+    }
+}
+
 export function saveCurrentPlayer(player: StoredPlayer) {
-    localStorage.setItem(CURRENT_PLAYER_KEY, JSON.stringify(player))
+    localStorage.setItem(CURRENT_PLAYER_KEY, JSON.stringify(player));
 }
 
 export function getCurrentPlayer(): StoredPlayer | null {
-    const storedPlayer = localStorage.getItem(CURRENT_PLAYER_KEY);
-    
-    if (!storedPlayer) return null;
-    
-    try {
-        return JSON.parse(storedPlayer) as StoredPlayer;
-    } catch {
-        localStorage.removeItem(CURRENT_PLAYER_KEY);
+    const storedPlayer = parseStoredValue(CURRENT_PLAYER_KEY, isStoredPlayer);
+
+    if (!storedPlayer) {
+        clearCurrentPlayer();
         return null;
     }
+
+    return storedPlayer;
 }
 
 export function clearCurrentPlayer() {
@@ -37,23 +90,21 @@ export function saveCurrentPlayerHistory(history: SearchHistoryData) {
 }
 
 export function getCurrentPlayerHistory(): SearchHistoryData | null {
-    const storedHistory = localStorage.getItem(CURRENT_PLAYER_HISTORY_KEY);
+    const storedHistory = parseStoredValue(CURRENT_PLAYER_HISTORY_KEY, isSearchHistoryData);
 
-    if (!storedHistory) return null;
-
-    try {
-        return JSON.parse(storedHistory) as SearchHistoryData;
-    } catch {
-        localStorage.removeItem(CURRENT_PLAYER_HISTORY_KEY);
+    if (!storedHistory) {
+        clearCurrentPlayer();
         return null;
     }
+
+    return storedHistory;
 }
 
 export function saveSearchedPlayer(player: StoredPlayer) {
     const storedPlayers = getSearchedPlayers();
 
     const filteredPlayers = storedPlayers.filter(
-        (storedPlayer) => 
+        (storedPlayer) =>
             storedPlayer.nick !== player.nick || storedPlayer.tag !== player.tag
     );
 
@@ -63,14 +114,15 @@ export function saveSearchedPlayer(player: StoredPlayer) {
 }
 
 export function getSearchedPlayers(): StoredPlayer[] {
-    const storedPlayers = localStorage.getItem(SEARCHED_PLAYERS_KEY);
+    const storedPlayers = parseStoredValue(
+        SEARCHED_PLAYERS_KEY,
+        (value): value is StoredPlayer[] => Array.isArray(value) && value.every(isStoredPlayer)
+    );
 
-    if (!storedPlayers) return [];
-
-    try {
-        return JSON.parse(storedPlayers) as StoredPlayer[];
-    } catch {
+    if (!storedPlayers) {
         localStorage.removeItem(SEARCHED_PLAYERS_KEY);
         return [];
     }
+
+    return storedPlayers;
 }
