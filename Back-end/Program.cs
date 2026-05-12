@@ -29,11 +29,6 @@ builder.Services.AddCors(options =>
     });
 });
 
-
-//DataDragon Settings 
-builder.Services.Configure<DataDragonSettings>(
-    builder.Configuration.GetSection("DataDragon"));
-
 builder.Services.AddHttpClient<IRiotApiService, RiotApiService>(client =>
 {
     var riotApiKey = builder.Configuration["RiotApi:Key"];
