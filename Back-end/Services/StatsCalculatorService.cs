@@ -49,6 +49,22 @@ public class StatsCalculatorService : IStatsCalculatorService
     return Math.Round(winRate).ToString() + "%";
   }
 
+  public static double CalculateKDA(int kills, int deaths, int assists)
+  {
+    if (deaths == 0)
+      return kills + assists;
+
+    return Math.Round((double)(kills + assists) / deaths, 2);
+  }
+
+  public static double CalculateKillParticipation(int kills, int assists, int teamKills)
+  {
+    if (teamKills == 0)
+      return 0;
+
+    return Math.Round(((double)(kills + assists) / teamKills) * 100, 2);
+  }
+
   public MatchResult GetMatchResult(
       bool win,
       int gameDuration)

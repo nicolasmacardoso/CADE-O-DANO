@@ -64,6 +64,12 @@ public class PlayerDashboardService : IPlayerDashboardService
       if (matchData == null)
         return ServiceResult<MatchDetailsDto>.Fail("Partida não encontrada.");
 
+      var teamKills = matchData.Info.Participants
+        .GroupBy(p => p.TeamId)
+        .ToDictionary(
+        g => g.Key,
+        g => g.Sum(x => x.Kills));
+
       var participantsTasks = matchData.Info.Participants
           .Select(async x =>
           {
@@ -72,6 +78,12 @@ public class PlayerDashboardService : IPlayerDashboardService
             dto.IsSearchedPlayer = x.Puuid == puuid;
 
             dto.SummonerElos = await _riotApiService.GetSummonerEloByPuuid(x.Puuid);
+
+            dto.KillParticipation = StatsCalculatorService
+              .CalculateKillParticipation(
+              x.Kills,
+              x.Assists,
+              teamKills[x.TeamId]);
 
             return dto;
           });
