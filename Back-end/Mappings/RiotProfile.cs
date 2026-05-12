@@ -42,7 +42,9 @@ public class RiotProfile : Profile
             .ForMember(dest => dest.SummonerHashtag,
                 opt => opt.MapFrom(src => src.Hashtag))
             .ForMember(dest => dest.SummonerName,
-                opt => opt.MapFrom(src => src.SummonerName));
+                opt => opt.MapFrom(src => src.SummonerName))
+            .ForMember(dest => dest.KDA,
+                opt => opt.MapFrom(src => StatsCalculatorService.CalculateKDA(src.Kills, src.Deaths, src.Assists)));
 
         CreateMap<SummonerEloResponse, SummonerEloDto>()
             .ForMember(dest => dest.QueueType,
