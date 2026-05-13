@@ -1316,9 +1316,209 @@ strong {
   color: var(--red);
 }
 
-.participant-list {
+.team-section__participant-list {
   display: flex;
   flex-direction: column;
+}
+
+.participant-runes {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(240px, 0.82fr);
+  gap: clamp(28px, 5vw, 72px);
+  padding: 28px clamp(22px, 4vw, 56px) 32px;
+  border-bottom: 1px solid rgba(183, 146, 69, 0.46);
+  background:
+    linear-gradient(90deg, rgba(10, 13, 18, 0.96), rgba(21, 18, 27, 0.9) 48%, rgba(9, 25, 31, 0.92)),
+    radial-gradient(circle at 18% 22%, rgba(212, 168, 72, 0.16), transparent 32%),
+    radial-gradient(circle at 76% 24%, rgba(38, 194, 213, 0.14), transparent 28%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.38);
+  overflow: hidden;
+}
+
+.participant-runes::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, transparent 0 58%, rgba(183, 146, 69, 0.08) 58% 59%, transparent 59%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 92px);
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.participant-runes__tree {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  align-content: start;
+  gap: 18px;
+  --rune-accent: #d8b15f;
+  --rune-glow: rgba(216, 177, 95, 0.38);
+}
+
+.participant-runes__tree--precision {
+  --rune-accent: #d8b15f;
+  --rune-glow: rgba(216, 177, 95, 0.38);
+}
+
+.participant-runes__tree--domination {
+  --rune-accent: #ff4050;
+  --rune-glow: rgba(255, 64, 80, 0.46);
+}
+
+.participant-runes__tree--inspiration {
+  --rune-accent: #28bcd4;
+  --rune-glow: rgba(40, 188, 212, 0.36);
+}
+
+.participant-runes__tree--resolve {
+  --rune-accent: #31b96a;
+  --rune-glow: rgba(49, 185, 106, 0.38);
+}
+
+.participant-runes__tree--sorcery {
+  --rune-accent: #3668ff;
+  --rune-glow: rgba(54, 104, 255, 0.42);
+}
+
+.participant-runes__tree-header {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  align-items: center;
+  gap: 18px;
+  min-height: 64px;
+}
+
+.participant-runes__tree-header p {
+  color: var(--rune-accent);
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.participant-runes__tree-icon,
+.participant-runes__keystone-icon,
+.participant-runes__perk-icon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, rgba(255, 255, 255, 0.12), transparent 58%),
+    rgba(3, 13, 18, 0.9);
+  border: 2px solid var(--rune-accent);
+  box-shadow:
+    0 0 0 3px rgba(0, 0, 0, 0.34),
+    0 0 18px var(--rune-glow);
+}
+
+.participant-runes__tree-icon {
+  width: 54px;
+  height: 54px;
+  justify-self: center;
+}
+
+.participant-runes__tree-icon img {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+}
+
+.participant-runes__keystone {
+  position: relative;
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  align-items: center;
+  gap: 22px;
+  min-height: 104px;
+}
+
+.participant-runes__keystone::before,
+.participant-runes__perk-list::before {
+  content: "";
+  position: absolute;
+  left: 47px;
+  top: -18px;
+  bottom: -18px;
+  width: 2px;
+  background: linear-gradient(180deg, transparent, var(--rune-accent), transparent);
+  box-shadow: 0 0 14px var(--rune-glow);
+}
+
+.participant-runes__keystone-icon {
+  width: 92px;
+  height: 92px;
+}
+
+.participant-runes__keystone-icon img {
+  width: 74px;
+  height: 74px;
+  object-fit: contain;
+}
+
+.participant-runes__keystone strong,
+.participant-runes__perk strong {
+  color: #d8d1bd;
+  font-family: var(--display);
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.participant-runes__perk-text {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+
+.participant-runes__perk-text p {
+  max-width: 34ch;
+  color: rgba(216, 209, 189, 0.72);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.participant-runes__perk-list {
+  position: relative;
+  display: grid;
+  gap: 18px;
+}
+
+.participant-runes__perk {
+  position: relative;
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  align-items: center;
+  gap: 18px;
+  min-height: 58px;
+}
+
+.participant-runes__perk-icon {
+  width: 52px;
+  height: 52px;
+  justify-self: center;
+}
+
+.participant-runes__perk-icon img {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  border-radius: 50%;
+}
+
+.participant-runes__tree--secondary {
+  padding-top: 10px;
+}
+
+.participant-runes__tree--secondary .participant-runes__perk-list {
+  gap: 22px;
 }
 
 .participant-card {
@@ -1330,9 +1530,11 @@ strong {
   grid-template-columns:   
     190px 
     minmax(140px, 1fr) 
+    44px
     minmax(304px, 420px) 
     minmax(76px, 100px) 
     minmax(160px, 449px);
+  grid-template-areas: "champion player runes items kda damage";
   align-items: center;
   gap: 16px 14px;
   padding: 8px 22px 8px 14px;
@@ -1357,6 +1559,7 @@ strong {
 }
 
 .participant-card .champ-info {
+  grid-area: champion;
   position: relative;
   z-index: 0;
   height: 62px;
@@ -1421,6 +1624,7 @@ strong {
 }
 
 .participant-card__player {
+  grid-area: player;
   display: flex;
   flex-direction: column;
   gap: 3px;
@@ -1542,12 +1746,38 @@ strong {
   font-weight: 800;
 }
 
+.participant-card__runes-summary {
+  grid-area: runes;
+  justify-self: center;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid rgba(194, 144, 55, 0.58);
+  border-radius: 2px;
+  background: rgba(5, 14, 18, 0.82);
+  cursor: pointer;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+    0 4px 10px rgba(0, 0, 0, 0.22);
+}
+
+.participant-card__runes-summary img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  display: block;
+}
+
 .participant-card__items-summary {
+  grid-area: items;
   min-width: 0;
   justify-self: center;
 }
 
 .participant-card__kda {
+  grid-area: kda;
   justify-self: center;
   min-width: 0;
   font-family: var(--mono);
@@ -1590,6 +1820,7 @@ strong {
 }
 
 .participant-card__damage {
+  grid-area: damage;
   position: relative;
   isolation: isolate;
   z-index: 2;
@@ -1707,10 +1938,10 @@ strong {
   }
 
   .participant-card {
-    grid-template-columns: 190px minmax(140px, 1fr) minmax(304px, 340px) minmax(76px, 96px);
+    grid-template-columns: 190px minmax(140px, 1fr) 44px minmax(304px, 340px) minmax(76px, 96px);
     grid-template-areas:
-      "champion player items kda"
-      "champion player damage damage";
+      "champion player runes items kda"
+      "champion player runes damage damage";
     align-items: center;
   }
 
@@ -1753,7 +1984,7 @@ strong {
   }
 
   .participant-card {
-    grid-template-columns: 176px minmax(150px, 1fr) minmax(300px, 360px) minmax(70px, 90px);
+    grid-template-columns: 176px minmax(150px, 1fr) 44px minmax(300px, 360px) minmax(70px, 90px);
     gap: 14px;
   }
 }
@@ -1763,12 +1994,10 @@ strong {
     grid-template-columns: 1fr;
     height: auto;
     min-height: 100vh;
-    overflow: visible;
   }
 
   .app-layout__main {
     height: auto;
-    overflow: visible;
     padding: 18px clamp(16px, 4vw, 28px) 34px;
   }
 
@@ -1866,7 +2095,7 @@ strong {
     grid-template-columns: 170px minmax(170px, 1fr);
     grid-template-areas:
       "champion player"
-      "items items"
+      "runes items"
       "kda kda"
       "damage damage";
     gap: 10px 14px;
@@ -1881,7 +2110,7 @@ strong {
   .participant-card__items-summary {
     grid-area: items;
     width: min(100%, 420px);
-    justify-self: center;
+    justify-self: start;
   }
 
   .participant-card__kda {
@@ -1900,6 +2129,24 @@ strong {
 
   .participant-card__damage .damage {
     padding-left: 0;
+  }
+
+  .participant-runes {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 24px clamp(16px, 4vw, 32px) 28px;
+  }
+
+  .participant-runes__tree {
+    max-width: 620px;
+  }
+
+  .participant-runes__tree--secondary {
+    padding-top: 0;
+  }
+
+  .participant-runes__perk-text p {
+    max-width: 48ch;
   }
 }
 
@@ -2071,9 +2318,14 @@ strong {
     grid-template-areas:
       "champion"
       "player"
+      "runes"
       "items"
       "kda"
       "damage";
+  }
+
+  .participant-card__runes-summary {
+    justify-self: start;
   }
 
   .participant-card__items-summary {
@@ -2118,6 +2370,92 @@ strong {
     justify-self: stretch;
     width: 100%;
   }
+
+  .participant-runes {
+    gap: 26px;
+    padding: 22px 14px 26px;
+  }
+
+  .participant-runes__tree {
+    gap: 14px;
+  }
+
+  .participant-runes__tree-header,
+  .participant-runes__keystone,
+  .participant-runes__perk {
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .participant-runes__tree-header {
+    min-height: 54px;
+  }
+
+  .participant-runes__tree-icon {
+    width: 46px;
+    height: 46px;
+  }
+
+  .participant-runes__tree-icon img {
+    width: 29px;
+    height: 29px;
+  }
+
+  .participant-runes__keystone {
+    min-height: 84px;
+  }
+
+  .participant-runes__keystone::before,
+  .participant-runes__perk-list::before {
+    left: 35px;
+  }
+
+  .participant-runes__keystone-icon {
+    width: 70px;
+    height: 70px;
+  }
+
+  .participant-runes__keystone-icon img {
+    width: 56px;
+    height: 56px;
+  }
+
+  .participant-runes__perk-list {
+    gap: 14px;
+  }
+
+  .participant-runes__tree--secondary .participant-runes__perk-list {
+    gap: 16px;
+  }
+
+  .participant-runes__perk {
+    min-height: 50px;
+  }
+
+  .participant-runes__perk-icon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .participant-runes__perk-icon img {
+    width: 35px;
+    height: 35px;
+  }
+
+  .participant-runes__tree-header p {
+    font-size: 12px;
+  }
+
+  .participant-runes__keystone strong,
+  .participant-runes__perk strong {
+    font-size: 13px;
+  }
+
+  .participant-runes__perk-text p {
+    max-width: none;
+    font-size: 11px;
+    line-height: 1.32;
+  }
 }
 
 @media (max-width: 480px) {
@@ -2131,5 +2469,72 @@ strong {
             "kda meta"
             "items items"
             "damage damage";
+    }
+
+    .participant-runes {
+        padding-inline: 12px;
+    }
+
+    .participant-runes__tree-header,
+    .participant-runes__keystone,
+    .participant-runes__perk {
+        grid-template-columns: 58px minmax(0, 1fr);
+        gap: 12px;
+    }
+
+    .participant-runes__keystone::before,
+    .participant-runes__perk-list::before {
+        left: 28px;
+    }
+
+    .participant-runes__tree-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .participant-runes__tree-icon img {
+        width: 25px;
+        height: 25px;
+    }
+
+    .participant-runes__keystone-icon {
+        width: 56px;
+        height: 56px;
+    }
+
+    .participant-runes__keystone-icon img {
+        width: 45px;
+        height: 45px;
+    }
+
+    .participant-runes__perk-icon {
+        width: 38px;
+        height: 38px;
+    }
+
+    .participant-runes__perk-icon img {
+        width: 30px;
+        height: 30px;
+    }
+
+    .participant-runes__keystone {
+        min-height: 68px;
+    }
+
+    .participant-runes__perk {
+        min-height: 46px;
+    }
+
+    .participant-runes__perk-text {
+        gap: 3px;
+    }
+
+    .participant-runes__keystone strong,
+    .participant-runes__perk strong {
+        font-size: 12px;
+    }
+
+    .participant-runes__perk-text p {
+        font-size: 10.5px;
     }
 }

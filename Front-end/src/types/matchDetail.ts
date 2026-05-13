@@ -1,5 +1,27 @@
 import type { summonerElo } from "../services/api/types";
 
+type PerkRune = {
+    name: string;
+    shortDescription?: string;
+    shortDesc?: string;
+    iconUrl: string;
+};
+
+type RuneTree = {
+    name: string;
+    iconUrl: string;
+};
+
+export type Runes = {
+    primaryTree?: RuneTree;
+    secondaryTree?: RuneTree;
+    primaryPerkRunes?: PerkRune[];
+    secondaryPerkRunes?: PerkRune[];
+    keystone?: PerkRune;
+    primaryStyle?: RuneTree;
+    secondaryStyle?: RuneTree;
+};
+
 export type Participant = {
     summonerName: string;
     championIconUrl: string;
@@ -14,6 +36,7 @@ export type Participant = {
     teamId: number;
     itemIconUrls: string[];
     summonerElos?: summonerElo[];
+    runes: Runes;
 };
 
 export type MatchDetail = {

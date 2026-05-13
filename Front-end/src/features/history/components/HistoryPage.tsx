@@ -48,11 +48,13 @@ function HistoryPage ({
                 <h1>Histórico de partidas</h1>
             </header>
             
-            <div className="history-page__feedback">
-                {isRefreshingHistory && <p>Atualizando histórico...</p>}
-                {isLoadingMatchDetails && <p>Carregando detalhes da partida selecionada...</p>}
-                {matchError && <p className="match-error">{matchError}</p>}
-            </div>
+            {isRefreshingHistory || isLoadingMatchDetails || matchError || (
+                <div className="history-page__feedback">
+                    {isRefreshingHistory && <p>Atualizando histórico...</p>}
+                    {isLoadingMatchDetails && <p>Carregando detalhes da partida selecionada...</p>}
+                    {matchError && <p className="match-error">{matchError}</p>}
+                </div>
+            )}
 
             <label className="damage-toggle">
                 <span className="damage-toggle__label">Exibir dano</span>

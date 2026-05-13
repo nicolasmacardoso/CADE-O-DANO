@@ -2,11 +2,13 @@ import type { CSSProperties } from "react";
 import type { Participant } from "../../../types/matchDetail";
 import type { summonerElo } from "../../../services/api/types";
 import ParticipantItems from "./ParticipantItems";
+import runesIcon from "../../../assets/runesicon.png";
 
 type Props = {
     participant: Participant;
     highestTeamDamage: number;
     showDamageText: boolean;
+    onClickRunes: () => void;
 }
 
 function formatEloBadge(elo: summonerElo) {
@@ -17,7 +19,7 @@ function formatEloBadge(elo: summonerElo) {
     return `${tierLabel} ${elo.rank}`;
 }
 
-function MatchParticipantsCard ({ participant, highestTeamDamage, showDamageText }: Props) {
+function MatchParticipantsCard ({ participant, highestTeamDamage, showDamageText, onClickRunes }: Props) {
     const { 
         summonerName, 
         championSplashArtUrl,
@@ -86,6 +88,13 @@ function MatchParticipantsCard ({ participant, highestTeamDamage, showDamageText
                 </div>
                 <p className="champion-name">{championName}</p>
             </div>
+
+            <button 
+                className="participant-card__runes-summary"
+                onClick={onClickRunes}
+            >
+                <img src={runesIcon} alt="Icone de runa padrao"/>
+            </button>
 
             <div className="participant-card__items-summary">
                 <ParticipantItems itemIconUrls={itemIconUrls}/>

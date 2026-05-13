@@ -1,5 +1,7 @@
+import { Fragment, useState } from "react";
 import type { Participant } from "../../../types/matchDetail";
 import MatchParticipantsCard from "./MatchParticipantsCard";
+import MatchParticipantsRunes from "./MatchParticipantsRunes";
 
 type Props = {
     title: string;
@@ -9,6 +11,8 @@ type Props = {
 }
 
 function TeamParticipantsSection ({ title, participants, variant, showDamageText }: Props) {
+    const [openedRunesKey, setOpenedRunesKey] = useState<string | null>(null);
+
     const highestTeamDamage = Math.max(
         ...participants.map((participant) => participant.totalDamage),
         0
@@ -20,15 +24,27 @@ function TeamParticipantsSection ({ title, participants, variant, showDamageText
                 <h2>{title}</h2>
             </header>
 
-            <div className="participant-list">
-                {participants.map((participant) => (
-                    <MatchParticipantsCard
-                        key={participant.summonerName + participant.championName}
-                        participant={participant}
-                        highestTeamDamage={highestTeamDamage}
-                        showDamageText={showDamageText}
-                    />
-                ))}
+            <div className="team-section__participant-list">
+                {participants.map((participant) => {
+                    const participantKey = participant.summonerName + participant.championName;
+                    const isRunesOpen = openedRunesKey === participantKey;
+
+                    return (
+                        <Fragment key={participantKey}>
+                            <MatchParticipantsCard
+                                onClickRunes={() => setOpenedRunesKey(isRunesOpen ? null : participantKey)}
+                                participant={participant}
+                                highestTeamDamage={highestTeamDamage}
+                                showDamageText={showDamageText}
+                            />
+                            {isRunesOpen && (
+                                <MatchParticipantsRunes
+                                    runes={participant.runes}
+                                />
+                            )}
+                        </Fragment>
+                    );
+                })}
             </div>
         </section>
     );
