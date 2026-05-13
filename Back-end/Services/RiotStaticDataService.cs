@@ -50,7 +50,7 @@ public class RiotStaticDataService : IRiotStaticDataService
 
         return new PerkRuneDto
         {
-            ShortDescription = rune.ShortDesc,
+            ShortDescription = FormatHelper.CleanRuneDescription(rune.ShortDesc),
             Name = rune.Name,
             IconUrl = DataDragonHelper.GetRuneIcon(rune.Icon)
         };

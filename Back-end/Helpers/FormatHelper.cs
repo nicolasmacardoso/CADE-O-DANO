@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+
 namespace CadeODano.Helpers;
 
 public static class FormatHelper
@@ -26,5 +28,13 @@ public static class FormatHelper
     var seconds = durationInSeconds % 60;
 
     return $"{minutes:D2}min {seconds:D2}s";
+  }
+
+  public static string CleanRuneDescription(string text)
+  {
+    if (string.IsNullOrWhiteSpace(text))
+      return string.Empty;
+
+    return Regex.Replace(text, "<.*?>", string.Empty);
   }
 }
