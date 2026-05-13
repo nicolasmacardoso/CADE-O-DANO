@@ -38,6 +38,10 @@ public static class PlayerStatsBuilder
             Matches = new PlayerMatchesDto
             {
                 RecentMatches = recentMatches,
+            },
+            
+            PerformanceSummary = new PlayerPerfomanceSummaryDto
+            {
                 MostPlayedChampions = mostPlayed,
                 HighestDamageChampions = highestDamage
             }
