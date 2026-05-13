@@ -94,16 +94,25 @@ public class PlayerDashboardService : IPlayerDashboardService
             var primaryStyle = x.Perks.Styles[0];
             var secondaryStyle = x.Perks.Styles[1];
 
+            var primaryRunes = await Task.WhenAll(
+              primaryStyle.Selections.Select(x =>
+                    _riotStaticDataService.GetRuneAsync(x.Perk)));
+
+            var secondaryRunes = await Task.WhenAll(
+                secondaryStyle.Selections.Select(x =>
+                    _riotStaticDataService.GetRuneAsync(x.Perk)));
+
             dto.Runes = new ParticipantRunesDto
             {
-              Keystone = await _riotStaticDataService
-                .GetRuneAsync(primaryStyle.Selections[0].Perk),
+              PrimaryTree = await _riotStaticDataService
+                    .GetRuneStyleAsync(primaryStyle.StyleId),
 
-              PrimaryStyle = await _riotStaticDataService
-               .GetRuneStyleAsync(primaryStyle.StyleId),
+              SecondaryTree = await _riotStaticDataService
+                    .GetRuneStyleAsync(secondaryStyle.StyleId),
 
-              SecondaryStyle = await _riotStaticDataService
-                .GetRuneStyleAsync(secondaryStyle.StyleId)
+              PrimaryPerkRunes = primaryRunes.ToList(),
+
+              SecondaryPerkRunes = secondaryRunes.ToList()
             };
 
             return dto;

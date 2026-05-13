@@ -1,8 +1,10 @@
 namespace CadeODano.DTOs;
 
-public class RuneStyleDto
+public record PerkRuneDto
 {
     public string Name { get; set; } = string.Empty;
+
+    public string ShortDescription { get; set; } = string.Empty;
 
     public string IconUrl { get; set; } = string.Empty;
 }

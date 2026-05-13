@@ -55,9 +55,18 @@ public class RiotParticipant
     [JsonPropertyName("perks")]
     public Perks Perks { get; set; } = null!;
 
+    [JsonPropertyName("neutralMinionsKilled")]
+    public int NeutralMinionsKilled { get; set; }
+
+    [JsonPropertyName("totalMinionsKilled")]
+    public int TotalMinionsKilled { get; set; }
+
     [JsonPropertyName("win")]
     public bool Win { get; set; }
 
     [JsonPropertyName("champLevel")]
     public int ChampLevel { get; set; }
+    
+    [JsonPropertyName("challenges")]
+    public Challenges Challenges { get; set; } = null!;
 }

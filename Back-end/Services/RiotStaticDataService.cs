@@ -36,7 +36,7 @@ public class RiotStaticDataService : IRiotStaticDataService
         return runes!;
     }
 
-    public async Task<RuneDto> GetRuneAsync(int runeId)
+    public async Task<PerkRuneDto> GetRuneAsync(int runeId)
     {
         var runes = await GetRunesAsync();
 
@@ -46,26 +46,26 @@ public class RiotStaticDataService : IRiotStaticDataService
             .FirstOrDefault(x => x.Id == runeId);
 
         if (rune == null)
-            return new RuneDto();
+            return new PerkRuneDto();
 
-        return new RuneDto
+        return new PerkRuneDto
         {
-            ShortDesc = rune.ShortDesc,
+            ShortDescription = FormatHelper.CleanRuneDescription(rune.ShortDesc),
             Name = rune.Name,
             IconUrl = DataDragonHelper.GetRuneIcon(rune.Icon)
         };
     }
 
-    public async Task<RuneStyleDto> GetRuneStyleAsync(int styleId)
+    public async Task<RuneTreeDto> GetRuneStyleAsync(int styleId)
     {
         var runes = await GetRunesAsync();
 
         var style = runes.FirstOrDefault(x => x.Id == styleId);
 
         if (style == null)
-            return new RuneStyleDto();
+            return new RuneTreeDto();
 
-        return new RuneStyleDto
+        return new RuneTreeDto
         {
             Name = style.Name,
             IconUrl = DataDragonHelper.GetRuneIcon(style.Icon)

@@ -14,5 +14,5 @@ public class RiotMatchInfo
   public long gameStartTimestamp{get;set;}
 
   [JsonPropertyName("participants")]
-  public List<RiotParticipant> Participants { get; set; }
+  public List<RiotParticipant> Participants { get; set; } = null!;
 }
