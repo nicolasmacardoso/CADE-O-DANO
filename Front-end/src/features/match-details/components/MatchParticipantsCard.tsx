@@ -3,6 +3,7 @@ import type { Participant } from "../../../types/matchDetail";
 import type { summonerElo } from "../../../services/api/types";
 import ParticipantItems from "./ParticipantItems";
 import runesIcon from "../../../assets/runesicon.png";
+import minionIcon from "../../../assets/icon_minions.png";
 
 type Props = {
     participant: Participant;
@@ -27,6 +28,9 @@ function MatchParticipantsCard ({ participant, highestTeamDamage, showDamageText
         kills, 
         deaths, 
         assists, 
+        killParticipation,
+        cs,
+        csPerMinute,
         totalDamage, 
         champLevel, 
         isSearchedPlayer,
@@ -86,6 +90,7 @@ function MatchParticipantsCard ({ participant, highestTeamDamage, showDamageText
                         </div>
                     )}
                 </div>
+                
                 <p className="champion-name">{championName}</p>
             </div>
 
@@ -100,7 +105,20 @@ function MatchParticipantsCard ({ participant, highestTeamDamage, showDamageText
                 <ParticipantItems itemIconUrls={itemIconUrls}/>
             </div>
 
-            <p className="participant-card__kda">{kda}</p>
+            <div className="participant-card__kda">
+                <p>
+                    <span>{kda}</span> <span>{killParticipation} K/P</span>
+                </p> 
+                <p>
+                    <span>
+                        {cs}
+                        <span className="participant-card__minion-icon" aria-hidden="true">
+                            <img src={minionIcon} alt="" />
+                        </span>
+                    </span> 
+                    <span>{csPerMinute} cs/m</span>
+                </p> 
+            </div>
 
             <div 
                 className="participant-card__damage"

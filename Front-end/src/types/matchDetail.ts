@@ -22,14 +22,20 @@ export type Runes = {
     secondaryStyle?: RuneTree;
 };
 
-export type Participant = {
+type ParticipantKda = {
+    kills: number;
+    deaths: number;
+    assists: number;
+    killParticipation: string;
+    cs: number;
+    csPerMinute: number;
+}
+
+export type Participant = ParticipantKda & {
     summonerName: string;
     championIconUrl: string;
     championSplashArtUrl: string;
     championName: string;
-    kills: number;
-    deaths: number;
-    assists: number;
     totalDamage: number;
     champLevel: number;
     isSearchedPlayer: boolean;
