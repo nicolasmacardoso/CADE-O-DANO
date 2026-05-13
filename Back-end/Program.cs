@@ -10,6 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<IStatsCalculatorService, StatsCalculatorService>();
 builder.Services.AddScoped<IPlayerDashboardService, PlayerDashboardService>();
 builder.Services.AddScoped<IRiotApiService, RiotApiService>();
+builder.Services.AddScoped<IRiotStaticDataService, RiotStaticDataService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

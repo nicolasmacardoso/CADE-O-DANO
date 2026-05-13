@@ -52,6 +52,9 @@ public class RiotParticipant
     [JsonPropertyName("totalDamageDealtToChampions")]
     public int TotalDamage { get; set; }
 
+    [JsonPropertyName("perks")]
+    public Perks Perks { get; set; } = null!;
+
     [JsonPropertyName("win")]
     public bool Win { get; set; }
 

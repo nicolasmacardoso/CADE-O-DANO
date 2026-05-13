@@ -12,9 +12,11 @@ public record ParticipantDto
     public int Deaths { get; set; }
     public int Assists { get; set; }
 
-    public double KDA { get; set;}
-    
+    public double KDA { get; set; }
+
     public double KillParticipation { get; set; }
+
+    public ParticipantRunesDto Runes { get; set; } = null!;
 
     public List<string> ItemIconUrls { get; set; } = [];
 

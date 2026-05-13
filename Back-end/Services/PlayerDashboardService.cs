@@ -10,12 +10,18 @@ public class PlayerDashboardService : IPlayerDashboardService
   private readonly IRiotApiService _riotApiService;
   private readonly IStatsCalculatorService _statsCalculatorService;
   private readonly IMapper _mapper;
+  private readonly IRiotStaticDataService _riotStaticDataService;
 
-  public PlayerDashboardService(IRiotApiService riotApiService, IStatsCalculatorService statsCalculatorService, IMapper mapper)
+  public PlayerDashboardService(
+    IRiotApiService riotApiService,
+    IStatsCalculatorService statsCalculatorService,
+    IMapper mapper,
+    IRiotStaticDataService riotStaticDataService)
   {
     _riotApiService = riotApiService;
     _statsCalculatorService = statsCalculatorService;
     _mapper = mapper;
+    _riotStaticDataService = riotStaticDataService;
   }
 
   public async Task<ServiceResult<PlayerStatsDto>> GetPlayerStats(PlayerSearchRequestDto playerNickname, string count)
@@ -77,13 +83,28 @@ public class PlayerDashboardService : IPlayerDashboardService
 
             dto.IsSearchedPlayer = x.Puuid == puuid;
 
-            dto.SummonerElos = await _riotApiService.GetSummonerEloByPuuid(x.Puuid);
+            dto.SummonerElos = await _riotApiService.GetSummonerEloByPuuid(x.Puuid!);
 
             dto.KillParticipation = StatsCalculatorService
               .CalculateKillParticipation(
               x.Kills,
               x.Assists,
               teamKills[x.TeamId]);
+
+            var primaryStyle = x.Perks.Styles[0];
+            var secondaryStyle = x.Perks.Styles[1];
+
+            dto.Runes = new ParticipantRunesDto
+            {
+              Keystone = await _riotStaticDataService
+                .GetRuneAsync(primaryStyle.Selections[0].Perk),
+
+              PrimaryStyle = await _riotStaticDataService
+               .GetRuneStyleAsync(primaryStyle.StyleId),
+
+              SecondaryStyle = await _riotStaticDataService
+                .GetRuneStyleAsync(secondaryStyle.StyleId)
+            };
 
             return dto;
           });

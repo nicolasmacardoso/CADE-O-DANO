@@ -12,9 +12,9 @@ public class RiotProfile : Profile
     {
         CreateMap<RiotParticipant, MatchSummaryDto>()
             .ForMember(dest => dest.ChampionIconUrl,
-                opt => opt.MapFrom(src => DataDragonHelper.GetChampionIcon(src.ChampionName)))
+                opt => opt.MapFrom(src => DataDragonHelper.GetChampionIcon(src.ChampionName!)))
             .ForMember(dest => dest.ChampionSplashArtUrl,
-                opt => opt.MapFrom(src => DataDragonHelper.GetChampionSplashArt(src.ChampionName)))
+                opt => opt.MapFrom(src => DataDragonHelper.GetChampionSplashArt(src.ChampionName!)))
             .ForMember(dest => dest.ItemIconUrls,
                 opt => opt.MapFrom(src => DataDragonHelper.GetItemIconUrls(
                     src.Item0,
@@ -27,9 +27,9 @@ public class RiotProfile : Profile
 
         CreateMap<RiotParticipant, ParticipantDto>()
             .ForMember(dest => dest.ChampionIconUrl,
-                opt => opt.MapFrom(src => DataDragonHelper.GetChampionIcon(src.ChampionName)))
+                opt => opt.MapFrom(src => DataDragonHelper.GetChampionIcon(src.ChampionName!)))
             .ForMember(dest => dest.ChampionSplashArtUrl,
-                opt => opt.MapFrom(src => DataDragonHelper.GetChampionSplashArt(src.ChampionName)))
+                opt => opt.MapFrom(src => DataDragonHelper.GetChampionSplashArt(src.ChampionName!)))
             .ForMember(dest => dest.ItemIconUrls,
                 opt => opt.MapFrom(src => DataDragonHelper.GetItemIconUrls(
                     src.Item0,

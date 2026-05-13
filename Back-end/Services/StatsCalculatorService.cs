@@ -13,8 +13,8 @@ public class StatsCalculatorService : IStatsCalculatorService
     .GroupBy(x => x.ChampionName)
     .Select(g => new MostPlayedChampionDto
     {
-      ChampionName = g.Key,
-      ChampionIconUrl = DataDragonHelper.GetChampionIcon(g.Key),
+      ChampionName = g.Key!,
+      ChampionIconUrl = DataDragonHelper.GetChampionIcon(g.Key!),
       GamesPlayed = g.Count()
     })
     .OrderByDescending(x => x.GamesPlayed)
@@ -28,8 +28,8 @@ public class StatsCalculatorService : IStatsCalculatorService
         .GroupBy(x => x.ChampionName)
         .Select(g => new HighestDamageChampionDto
         {
-          ChampionName = g.Key,
-          ChampionIconUrl = DataDragonHelper.GetChampionIcon(g.Key),
+          ChampionName = g.Key!,
+          ChampionIconUrl = DataDragonHelper.GetChampionIcon(g.Key!),
           HighestDamage = g.Max(x => x.TotalDamage)
         })
         .OrderByDescending(x => x.HighestDamage)
