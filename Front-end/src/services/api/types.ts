@@ -32,7 +32,7 @@ type playerInfo = {
     puuid: string;
     summonerName: string;
     profileIconUrl: string;
-    summonerLevel: number;
+    summonerLevel: string | number;
     summonerElos: summonerElo[];
 }
 

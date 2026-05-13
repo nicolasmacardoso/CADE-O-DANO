@@ -29,6 +29,10 @@ function hasArrayFields(value: Record<string, unknown>, fields: string[]) {
     return fields.every((field) => Array.isArray(value[field]));
 }
 
+function hasStringOrNumberField(value: Record<string, unknown>, field: string) {
+    return typeof value[field] === "string" || typeof value[field] === "number";
+}
+
 function isStoredPlayer(value: unknown): value is StoredPlayer {
     return isRecord(value)
         && hasStringFields(value, ["profileIconUrl"])
@@ -40,7 +44,7 @@ function isSearchHistoryData(value: unknown): value is SearchHistoryData {
 
     return hasNonEmptyStringFields(value, ["puuid", "summonerName"])
         && hasStringFields(value, ["profileIconUrl"])
-        && typeof value.summonerLevel === "number"
+        && hasStringOrNumberField(value, "summonerLevel")
         && hasArrayFields(value, [
             "summonerElos",
             "recentMatches",

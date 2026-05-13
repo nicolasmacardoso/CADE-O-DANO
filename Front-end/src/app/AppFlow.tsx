@@ -46,8 +46,6 @@ function AppFlow () {
     useEffect(() => {
         setSearchedPlayers(getSearchedPlayers());
 
-        if (playerStats) return;
-
         const storedPlayer = getCurrentPlayer();
 
         if (!storedPlayer) return;

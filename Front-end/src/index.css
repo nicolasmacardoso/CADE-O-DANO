@@ -544,7 +544,7 @@ strong {
     font-size: 28px;
     font-weight: 700;
     line-height: 1;
-    transform: translate(2px, 0) rotate(470deg);
+    transform: translateX(4px) rotate(470deg);
     transform-origin: center;
 }
 

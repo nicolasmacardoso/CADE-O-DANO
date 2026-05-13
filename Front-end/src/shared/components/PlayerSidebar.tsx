@@ -2,7 +2,7 @@ import type { HighestDamageChampion, MostPlayedChampion, summonerElo } from "../
 
 type Props = {
     summonerName: string;
-    summonerLevel: number;
+    summonerLevel: string | number;
     profileIconUrl: string;
     mostPlayedChampions: MostPlayedChampion[];
     highestDamageChampions: HighestDamageChampion[];
