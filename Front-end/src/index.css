@@ -519,10 +519,12 @@ strong {
   align-self: flex-start;
 }
 
+.history-page__buttons-box {
+    display: flex;
+    gap: 10px;
+}
+
 .history-page__refresh-button {
-  position: absolute;
-  top: clamp(18px, 2vw, 28px);
-  left: clamp(72px, 6vw, 104px);
   width: 36px;
   height: 36px;
   display: grid;

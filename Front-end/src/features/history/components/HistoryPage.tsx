@@ -32,15 +32,17 @@ function HistoryPage ({
 
     return (
         <div className="history-page">
-            <BackButton onBack={onBack}/>
-            <button 
-                type="button"
-                className={isRefreshingHistory ? "history-page__refresh-button is-loading" : "history-page__refresh-button"}
-                onClick={onRefresh}
-                disabled={isRefreshingHistory}
-                aria-label="Recarregar histórico"
-                title="Recarregar histórico"
-            />
+            <div className="history-page__buttons-box">
+                <BackButton onBack={onBack}/>
+                <button
+                    type="button"
+                    className={isRefreshingHistory ? "history-page__refresh-button is-loading" : "history-page__refresh-button"}
+                    onClick={onRefresh}
+                    disabled={isRefreshingHistory}
+                    aria-label="Recarregar histórico"
+                    title="Recarregar histórico"
+                />
+            </div>
 
             <header className="history-page__header">
                 <h1>Histórico de partidas</h1>
