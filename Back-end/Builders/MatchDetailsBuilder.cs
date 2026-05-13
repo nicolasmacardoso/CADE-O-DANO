@@ -17,12 +17,19 @@ public static class MatchDetailsBuilder
     return new MatchDetailsDto
     {
       MatchId = matchId,
-      PlayerWin = searchedPlayer?.Win ?? false,
       QueueType = RiotExtensions.GetQueueDescription(queueId),
       GameDuration = FormatHelper.FormatGameDuration(gameDuration),
       gameStartDate = FormatHelper.FormatUnixMilliseconds(gameStartTimestamp),
-      Team1 = participants.Where(x => x.TeamId == 100).ToList(),
-      Team2 = participants.Where(x => x.TeamId == 200).ToList()
+      TotalKills = participants.Sum(x => x.Kills),
+      Teams = participants
+    .GroupBy(p => p.TeamId)
+    .Select(g => new TeamDto
+    {
+      TeamId = g.Key,
+      TotalTeamKills = g.Sum(p => p.Kills),
+      Participants = g.ToList()
+    })
+    .ToList()
     };
   }
 }

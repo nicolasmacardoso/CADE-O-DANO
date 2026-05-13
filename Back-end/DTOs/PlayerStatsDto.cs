@@ -2,15 +2,9 @@ namespace CadeODano.DTOs;
 
 public record PlayerStatsDto
 {
-  public string? Puuid { get; set; }
-  public string? SummonerName { get; set; }
-  public string? SummonerLevel { get; set; }
-  public string? ProfileIconUrl { get; set; }
-  public List<SummonerEloDto>? SummonerElos { get; set; }
+    public PlayerProfileDto Profile { get; set; } = null!;
 
-  public List<MatchSummaryDto>? RecentMatches { get; set; }
+    public PlayerRankedStatsDto RankedStats { get; set; } = null!;
 
-  public List<MostPlayedChampionDto>? MostPlayedChampions { get; set; }
-
-  public List<HighestDamageChampionDto>? HighestDamageChampions { get; set; }
+    public PlayerMatchesDto Matches { get; set; } = null!;
 }
