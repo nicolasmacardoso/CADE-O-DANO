@@ -1,3 +1,5 @@
+import type { summonerElo } from "../services/api/types";
+
 export type Participant = {
     summonerName: string;
     championIconUrl: string;
@@ -11,6 +13,7 @@ export type Participant = {
     isSearchedPlayer: boolean;
     teamId: number;
     itemIconUrls: string[];
+    summonerElos?: summonerElo[];
 };
 
 export type MatchDetail = {

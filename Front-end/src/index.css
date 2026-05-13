@@ -1409,6 +1409,116 @@ strong {
   gap: 3px;
 }
 
+.participant-card__player-header {
+  position: relative;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: max-content;
+  max-width: 100%;
+}
+
+.participant-card__player-header .name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.participant-card__elo {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 46px;
+  height: 22px;
+  padding: 0 8px;
+  flex: 0 0 auto;
+  border: 1px solid rgba(168, 127, 49, 0.74);
+  border-radius: 3px;
+  background:
+    linear-gradient(180deg, rgba(29, 35, 34, 0.96), rgba(4, 14, 19, 0.96));
+  cursor: help;
+  outline: none;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 6px 12px rgba(0, 0, 0, 0.18);
+  transition: border-color 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
+}
+
+.participant-card__elo:hover,
+.participant-card__elo:focus-visible {
+  border-color: rgba(214, 187, 120, 0.92);
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 0 16px rgba(168, 127, 49, 0.22),
+    0 8px 16px rgba(0, 0, 0, 0.22);
+}
+
+.participant-card__elo-badge {
+  color: #d6bb78;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.participant-card__elo-tooltip {
+  position: absolute;
+  left: calc(100% + 10px);
+  top: 50%;
+  z-index: 30;
+  min-width: 180px;
+  display: grid;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid rgba(183, 146, 69, 0.72);
+  border-radius: 4px;
+  background: rgba(2, 16, 24, 0.97);
+  color: var(--text);
+  opacity: 0;
+  transform: translate(-4px, -50%);
+  pointer-events: none;
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.38);
+  transition: opacity 0.16s ease, transform 0.16s ease;
+}
+
+.participant-card__elo:hover .participant-card__elo-tooltip,
+.participant-card__elo:focus-visible .participant-card__elo-tooltip {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+
+.participant-card__elo-tooltip-item {
+  display: grid;
+  gap: 2px;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.participant-card__elo-tooltip-item strong {
+  color: var(--text);
+  font-family: var(--display);
+  font-size: 14px;
+  line-height: 1.1;
+}
+
+.participant-card__elo-tooltip-item span {
+  color: var(--text-muted);
+}
+
+.participant-card__elo-queue {
+  color: var(--gold);
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
 .participant-card__player .champion-name {
   color: var(--text-muted);
   font-size: 13px;
@@ -1884,6 +1994,18 @@ strong {
 
   .participant-card__kda {
     justify-self: start;
+  }
+
+  .participant-card__elo-tooltip {
+    left: 0;
+    top: calc(100% + 10px);
+    min-width: min(210px, calc(100vw - 48px));
+    transform: translateY(-4px);
+  }
+
+  .participant-card__elo:hover .participant-card__elo-tooltip,
+  .participant-card__elo:focus-visible .participant-card__elo-tooltip {
+    transform: translateY(0);
   }
 
   .participant-card__items {
