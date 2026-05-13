@@ -588,7 +588,7 @@ strong {
 .damage-toggle {
   width: max-content;
   display: inline-flex;
-  align-items: center;
+  align-items: flex-end;
   gap: 10px;
   color: var(--text-muted);
   font-family: var(--mono);
@@ -671,7 +671,12 @@ strong {
   width: 100%;
   min-height: 118px;
   display: grid;
-  grid-template-columns: 72px minmax(130px, 160px) minmax(220px, 260px) minmax(320px, 420px) minmax(70px, 90px) minmax(220px, 300px);
+  grid-template-columns: 72px 
+    minmax(130px, 160px) 
+    minmax(220px, 260px) 
+    minmax(320px, 320px) 
+    minmax(70px, 150px) 
+    minmax(180px, 570px);
   align-items: center;
   gap: 20px;
   padding: 16px 18px 16px 10px;
@@ -875,7 +880,7 @@ strong {
 .match-card__damage-summary {
   grid-column: 6;
   position: relative;
-  width: min(100%, 300px);
+  width: 100%;
   display: grid;
   gap: 7px;
   justify-self: end;
@@ -1018,6 +1023,7 @@ strong {
   min-height: 100%;
   font-family: var(--sans);
   color: var(--text);
+  padding-bottom: 150px;
 }
 
 .player-sidebar__header {
@@ -1319,7 +1325,12 @@ strong {
   z-index: 0;
   min-height: 70px;
   display: grid;
-  grid-template-columns: 190px minmax(140px, 1fr) minmax(304px, 420px) minmax(76px, 100px) minmax(160px, 260px);
+  grid-template-columns:   
+    190px 
+    minmax(140px, 1fr) 
+    minmax(304px, 420px) 
+    minmax(76px, 100px) 
+    minmax(160px, 449px);
   align-items: center;
   gap: 16px 14px;
   padding: 8px 22px 8px 14px;
@@ -1658,6 +1669,41 @@ strong {
 }
 
 @media (max-width: 1500px) {
+  .match-card {
+    grid-template-columns: 72px minmax(120px, 150px) minmax(170px, 220px) minmax(270px, 1fr) minmax(70px, 90px);
+    grid-template-areas:
+      "champion result meta items kda"
+      "champion damage damage damage damage";
+    gap: 12px 16px;
+  }
+
+  .match-card__champion {
+    grid-area: champion;
+  }
+
+  .match-card__result {
+    grid-area: result;
+  }
+
+  .match-card__meta {
+    grid-area: meta;
+  }
+
+  .match-card__items-summary {
+    grid-area: items;
+    justify-self: end;
+  }
+
+  .match-card > .match-kda {
+    grid-area: kda;
+  }
+
+  .match-card__damage-summary {
+    grid-area: damage;
+    width: 100%;
+    justify-self: end;
+  }
+
   .participant-card {
     grid-template-columns: 190px minmax(140px, 1fr) minmax(304px, 340px) minmax(76px, 96px);
     grid-template-areas:
@@ -1700,7 +1746,7 @@ strong {
   }
 
   .match-card {
-    grid-template-columns: 68px minmax(110px, 140px) minmax(170px, 220px) minmax(280px, 1fr) minmax(64px, 82px) minmax(170px, 240px);
+    grid-template-columns: 68px minmax(110px, 140px) minmax(160px, 210px) minmax(250px, 1fr) minmax(64px, 82px);
     gap: 16px;
   }
 
@@ -1771,11 +1817,15 @@ strong {
     gap: 18px;
   }
 
+  .damage-toggle {
+    align-self: flex-end;
+  }
+
   .match-card {
     grid-template-columns: 68px minmax(0, 1fr) minmax(180px, 240px);
     grid-template-areas:
       "champion result meta"
-      "items items kda"
+      "kda items items"
       "damage damage damage";
     gap: 14px;
     padding: 12px;
@@ -1791,6 +1841,7 @@ strong {
 
   .match-card__meta {
     grid-area: meta;
+    justify-self: end;
   }
 
   .match-card__items-summary {
@@ -1800,12 +1851,11 @@ strong {
 
   .match-card > .match-kda {
     grid-area: kda;
-    justify-self: center;
   }
 
   .match-card__damage-summary {
     grid-area: damage;
-    width: min(100%, 420px);
+    width: 100%;
     justify-self: end;
     text-align: right;
   }
@@ -1847,8 +1897,6 @@ strong {
   }
 
   .participant-card__damage .damage {
-    position: static;
-    transform: none;
     padding-left: 0;
   }
 }
@@ -1887,12 +1935,6 @@ strong {
 
   .match-card {
     grid-template-columns: 64px minmax(0, 1fr);
-    grid-template-areas:
-      "champion result"
-      "champion meta"
-      "items items"
-      "kda kda"
-      "damage damage";
     align-items: center;
     gap: 8px 12px;
     min-height: auto;
@@ -1927,7 +1969,6 @@ strong {
   .match-card__items-summary {
     grid-area: items;
     min-height: 0;
-    justify-self: start;
     max-width: 100%;
     overflow-x: auto;
     padding-bottom: 3px;
@@ -1935,7 +1976,6 @@ strong {
 
   .match-card > .match-kda {
     grid-area: kda;
-    justify-self: start;
     font-size: 14px;
   }
 
@@ -1951,7 +1991,7 @@ strong {
   }
 
   .match-card__damage-bar {
-    height: 16px;
+    height: 27px;
   }
 
   .match-card__damage-indicator {
@@ -2058,6 +2098,7 @@ strong {
 
   .participant-card__items {
     grid-template-columns: repeat(7, 34px);
+    gap: 3px;
   }
 
   .participant-card__item-slot,
@@ -2075,4 +2116,18 @@ strong {
     justify-self: stretch;
     width: 100%;
   }
+}
+
+@media (max-width: 480px) {
+    .match-card__items-summary {
+        justify-self: center;
+    }
+
+    .match-card {
+        grid-template-areas:
+            "champion result"
+            "kda meta"
+            "items items"
+            "damage damage";
+    }
 }
