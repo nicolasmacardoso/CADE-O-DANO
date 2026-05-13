@@ -1326,7 +1326,7 @@ strong {
   display: grid;
   grid-template-columns: minmax(280px, 1fr) minmax(240px, 0.82fr);
   gap: clamp(28px, 5vw, 72px);
-  height: 480px;
+  height: 540px;
   padding: 28px clamp(22px, 4vw, 56px) 32px;
   border-bottom: 1px solid rgba(183, 146, 69, 0.46);
   background:
@@ -1519,7 +1519,6 @@ strong {
   font-size: 12px;
   font-weight: 700;
   line-height: 1.35;
-  display: -webkit-box;
   overflow: hidden;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
@@ -2024,7 +2023,11 @@ strong {
   }
 
   .participant-card {
-    grid-template-columns: 176px minmax(150px, 1fr) 44px minmax(300px, 360px) minmax(70px, 90px);
+    grid-template-columns: 176px minmax(150px, 1fr) minmax(70px, 90px);
+    grid-template-areas:
+        "champion player runes"
+        "items items kda"
+        "damage damage damage";
     gap: 14px;
   }
 }
@@ -2131,17 +2134,6 @@ strong {
     text-align: right;
   }
 
-  .participant-card {
-    grid-template-columns: 170px minmax(170px, 1fr);
-    grid-template-areas:
-      "champion player"
-      "runes items"
-      "kda kda"
-      "damage damage";
-    gap: 10px 14px;
-    padding: 10px 14px;
-  }
-
   .match-details-page__summary {
     grid-template-columns: 1fr;
     gap: 6px;
@@ -2149,7 +2141,6 @@ strong {
 
   .participant-card__items-summary {
     grid-area: items;
-    width: min(100%, 420px);
     justify-self: start;
   }
 
@@ -2174,7 +2165,7 @@ strong {
   .participant-runes {
     grid-template-columns: 1fr;
     gap: 30px;
-    height: 740px;
+    height: 780px;
     padding: 24px clamp(16px, 4vw, 32px) 28px;
     background-position: center 38%;
   }
@@ -2313,11 +2304,12 @@ strong {
 
   .match-card .participant-card__items {
     grid-template-columns: repeat(7, 32px);
+    gap: 3px;
   }
 
-  .match-card .participant-card__item-slot,
-  .match-card .participant-card__item-icon,
-  .match-card .participant-card__empty-item {
+  .participant-card__item-slot,
+  .participant-card__item-icon,
+  .participant-card__empty-item {
     width: 32px;
     height: 32px;
   }
@@ -2343,6 +2335,10 @@ strong {
     bottom: 0;
   }
 
+  .player-sidebar {
+    padding-bottom: 150px;
+  }
+
   .player-sidebar__elos {
     grid-template-columns: 1fr;
   }
@@ -2364,12 +2360,11 @@ strong {
   .participant-card {
     grid-template-columns: 1fr;
     grid-template-areas:
-      "champion"
-      "player"
-      "runes"
-      "items"
-      "kda"
-      "damage";
+      "champion champion"
+      "player runes"
+      "items items"
+      "kda kda"
+      "damage damage";
   }
 
   .participant-card__runes-summary {
@@ -2399,15 +2394,15 @@ strong {
   }
 
   .participant-card__items {
-    grid-template-columns: repeat(7, 34px);
-    gap: 3px;
+    grid-template-columns: repeat(7, 33px);
+    gap: 2px;
   }
 
   .participant-card__item-slot,
   .participant-card__item-icon,
   .participant-card__empty-item {
-    width: 34px;
-    height: 34px;
+    width: 32px;
+    height: 32px;
   }
 
   .participant-card .champ-info {
@@ -2421,7 +2416,7 @@ strong {
 
   .participant-runes {
     gap: 26px;
-    height: 590px;
+    height: 640px;
     padding: 22px 14px 26px;
     background-position: center top;
   }
@@ -2528,7 +2523,6 @@ strong {
     }
 
     .participant-runes {
-        height: 560px;
         padding-inline: 12px;
     }
 
