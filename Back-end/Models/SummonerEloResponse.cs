@@ -5,13 +5,13 @@ namespace CadeODano.Models;
 public class SummonerEloResponse
 {
   [JsonPropertyName("queueType")]
-  public string QueueType { get; set; }
+  public string QueueType { get; set; } = null!;
 
   [JsonPropertyName("tier")]
-  public string Tier { get; set; }
+  public string Tier { get; set; } = null!;
 
   [JsonPropertyName("rank")]
-  public string Rank { get; set; }
+  public string Rank { get; set; } = null!;
 
   [JsonPropertyName("leaguePoints")]
   public int LeaguePoints { get; set; }

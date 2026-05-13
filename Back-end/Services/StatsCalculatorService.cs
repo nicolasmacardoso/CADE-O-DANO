@@ -65,6 +65,20 @@ public class StatsCalculatorService : IStatsCalculatorService
     return Math.Round(((double)(kills + assists) / teamKills) * 100, 2).ToString() + "%";
   }
 
+  public static int CalculateCS(int totalMinionsKilled, int neutralMinionsKilled)
+  {
+    return totalMinionsKilled + neutralMinionsKilled;
+  }
+
+  public static double CalculateCSPM(int cs, double gameDurationInSeconds)
+  {
+    if (gameDurationInSeconds == 0)
+      return 0;
+
+    double gameDurationInMinutes = gameDurationInSeconds / 60.0;
+    return Math.Round(cs / gameDurationInMinutes, 2);
+  }
+
   public MatchResult GetMatchResult(
       bool win,
       int gameDuration)

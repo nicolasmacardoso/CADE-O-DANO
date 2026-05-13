@@ -23,7 +23,10 @@ public class RiotProfile : Profile
                     src.Item3,
                     src.Item4,
                     src.Item5,
-                    src.Item6)));
+                    src.Item6)))
+            .ForMember(dest => dest.CS,
+                opt => opt.MapFrom(src => StatsCalculatorService.CalculateCS(
+                    src.TotalMinionsKilled, src.NeutralMinionsKilled)));
 
         CreateMap<RiotParticipant, ParticipantDto>()
             .ForMember(dest => dest.ChampionIconUrl,
@@ -44,7 +47,13 @@ public class RiotProfile : Profile
             .ForMember(dest => dest.SummonerName,
                 opt => opt.MapFrom(src => src.SummonerName))
             .ForMember(dest => dest.KDA,
-                opt => opt.MapFrom(src => StatsCalculatorService.CalculateKDA(src.Kills, src.Deaths, src.Assists)));
+                opt => opt.MapFrom(src => StatsCalculatorService.CalculateKDA(src.Kills, src.Deaths, src.Assists)))
+            .ForMember(dest => dest.CS,
+                opt => opt.MapFrom(src => StatsCalculatorService.CalculateCS(
+                    src.TotalMinionsKilled, src.NeutralMinionsKilled)))
+            .ForMember(dest => dest.CSPerMinute,
+                opt => opt.MapFrom(src => StatsCalculatorService.CalculateCSPM(
+                    src.TotalMinionsKilled + src.NeutralMinionsKilled, src.Challenges.GameLength)));
 
         CreateMap<SummonerEloResponse, SummonerEloDto>()
             .ForMember(dest => dest.QueueType,

@@ -6,7 +6,7 @@ namespace CadeODano.Interfaces;
 public interface IRiotStaticDataService
 {
     public Task<List<DataDragonRuneTree>> GetRunesAsync();
-    public Task<RuneStyleDto> GetRuneStyleAsync(int styleId);
-    public Task<RuneDto> GetRuneAsync(int runeId);
+    public Task<RuneTreeDto> GetRuneStyleAsync(int styleId);
+    public Task<PerkRuneDto> GetRuneAsync(int runeId);
 
 }

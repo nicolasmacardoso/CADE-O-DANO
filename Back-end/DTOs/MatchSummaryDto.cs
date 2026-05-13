@@ -14,6 +14,7 @@ public record MatchSummaryDto
     public int Deaths { get; set; }
     public int Assists { get; set; }
     public int TotalDamage { get; set; }
+    public int CS { get; set; }
 
     public List<string> ItemIconUrls { get; set; } = [];
     public MatchResult Result { get; set; }

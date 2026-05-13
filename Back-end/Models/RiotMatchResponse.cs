@@ -5,5 +5,5 @@ namespace CadeODano.Models;
 public class RiotMatchResponse
 {
   [JsonPropertyName("info")]
-  public RiotMatchInfo Info {get;set;}
+  public RiotMatchInfo Info {get;set;} = null!;
 }

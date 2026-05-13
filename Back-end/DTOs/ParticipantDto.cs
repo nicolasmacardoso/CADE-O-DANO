@@ -15,6 +15,8 @@ public record ParticipantDto
     public double KDA { get; set; }
 
     public string KillParticipation { get; set; } = null!;
+    public int CS { get; set; }
+    public double CSPerMinute { get; set; }
 
     public ParticipantRunesDto Runes { get; set; } = null!;
 
