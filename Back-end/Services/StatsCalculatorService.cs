@@ -57,12 +57,12 @@ public class StatsCalculatorService : IStatsCalculatorService
     return Math.Round((double)(kills + assists) / deaths, 2);
   }
 
-  public static double CalculateKillParticipation(int kills, int assists, int teamKills)
+  public static string CalculateKillParticipation(int kills, int assists, int teamKills)
   {
     if (teamKills == 0)
-      return 0;
+      return "0%";
 
-    return Math.Round(((double)(kills + assists) / teamKills) * 100, 2);
+    return Math.Round(((double)(kills + assists) / teamKills) * 100, 2).ToString() + "%";
   }
 
   public MatchResult GetMatchResult(
