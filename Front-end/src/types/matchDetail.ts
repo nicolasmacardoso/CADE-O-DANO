@@ -1,19 +1,48 @@
 import type { summonerElo } from "../services/api/types";
 
-export type Participant = {
+type PerkRune = {
+    name: string;
+    shortDescription?: string;
+    shortDesc?: string;
+    iconUrl: string;
+};
+
+type RuneTree = {
+    name: string;
+    iconUrl: string;
+};
+
+export type Runes = {
+    primaryTree?: RuneTree;
+    secondaryTree?: RuneTree;
+    primaryPerkRunes?: PerkRune[];
+    secondaryPerkRunes?: PerkRune[];
+    keystone?: PerkRune;
+    primaryStyle?: RuneTree;
+    secondaryStyle?: RuneTree;
+};
+
+type ParticipantKda = {
+    kills: number;
+    deaths: number;
+    assists: number;
+    killParticipation: string;
+    cs: number;
+    csPerMinute: number;
+}
+
+export type Participant = ParticipantKda & {
     summonerName: string;
     championIconUrl: string;
     championSplashArtUrl: string;
     championName: string;
-    kills: number;
-    deaths: number;
-    assists: number;
     totalDamage: number;
     champLevel: number;
     isSearchedPlayer: boolean;
     teamId: number;
     itemIconUrls: string[];
     summonerElos?: summonerElo[];
+    runes: Runes;
 };
 
 export type MatchDetail = {
