@@ -10,7 +10,7 @@ type Props = {
     highestTeamDamage: number;
     showDamageText: boolean;
     handleOpenRunes: () => void;
-    handleSearchHistory: (nick: string, tag: string) => void;
+    handleSearchParticipant: (nick: string, tag: string) => void;
 }
 
 function formatEloBadge(elo: summonerElo) {
@@ -21,7 +21,7 @@ function formatEloBadge(elo: summonerElo) {
     return `${tierLabel} ${elo.rank}`;
 }
 
-function MatchParticipantsCard ({ participant, highestTeamDamage, showDamageText, handleOpenRunes, handleSearchHistory }: Props) {
+function MatchParticipantsCard ({ participant, highestTeamDamage, showDamageText, handleOpenRunes, handleSearchParticipant }: Props) {
     const { 
         summonerName, 
         summonerHashtag, 
@@ -58,12 +58,15 @@ function MatchParticipantsCard ({ participant, highestTeamDamage, showDamageText
                 <p className="champion-level">{champLevel}</p>
             </div>
 
-            <div 
-                className="participant-card__player" 
-                onClick={() => handleSearchHistory(summonerName, summonerHashtag)}
-            >
+            <div className="participant-card__player">
                 <div className="participant-card__player-header">
-                    <p className="name">{summonerName}</p>
+                    <button
+                        className="participant-card__player-name"
+                        type="button"
+                        onClick={() => handleSearchParticipant(summonerName, summonerHashtag)}
+                    >
+                        <span className="name">{summonerName}#{summonerHashtag}</span>
+                    </button>
 
                     {displayedElo && (
                         <div 

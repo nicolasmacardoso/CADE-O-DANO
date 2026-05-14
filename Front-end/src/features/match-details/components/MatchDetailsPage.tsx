@@ -6,10 +6,10 @@ import { useState } from "react";
 type Props = {
     matchDetails: MatchDetail;
     onBack: () => void;
-    handleSearchHistory: (nick: string, tag: string) => void;
+    handleSearchParticipant: (nick: string, tag: string) => void;
 }
 
-function MatchDetailsPage ({ matchDetails, onBack, handleSearchHistory }: Props) {
+function MatchDetailsPage ({ matchDetails, onBack, handleSearchParticipant }: Props) {
     const [showDamageText, setShowDamageText] = useState(false);
 
     const { 
@@ -67,7 +67,7 @@ function MatchDetailsPage ({ matchDetails, onBack, handleSearchHistory }: Props)
                     key={title}
                     title={title}
                     participants={participants}
-                    handleSearchHistory={handleSearchHistory}
+                    handleSearchParticipant={handleSearchParticipant}
                     variant={variant}
                     showDamageText={showDamageText}
                 />

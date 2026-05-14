@@ -8,10 +8,10 @@ type Props = {
     variant: "blue" | "red";
     participants: Participant[];
     showDamageText: boolean;
-    handleSearchHistory: (name: string, tag: string) => void;
+    handleSearchParticipant: (name: string, tag: string) => void;
 }
 
-function TeamParticipantsSection ({ title, participants, variant, showDamageText, handleSearchHistory }: Props) {
+function TeamParticipantsSection ({ title, participants, variant, showDamageText, handleSearchParticipant }: Props) {
     const [openedRunesKey, setOpenedRunesKey] = useState<string | null>(null);
     const [closingRunesKey, setClosingRunesKey] = useState<string | null>(null);
     const closeAnimationTimeoutRef = useRef<number | null>(null);
@@ -71,7 +71,7 @@ function TeamParticipantsSection ({ title, participants, variant, showDamageText
                                 participant={participant}
                                 highestTeamDamage={highestTeamDamage}
                                 showDamageText={showDamageText}
-                                handleSearchHistory={handleSearchHistory}
+                                handleSearchParticipant={handleSearchParticipant}
                             />
                             {shouldRenderRunes && (
                                 <div className={isRunesClosing ? "participant-runes-shell participant-runes-shell--closing" : "participant-runes-shell participant-runes-shell--open"}>

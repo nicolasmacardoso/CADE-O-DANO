@@ -1848,10 +1848,6 @@ strong {
   text-shadow: 0 2px 6px rgba(0, 0, 0, 0.72);
 }
 
-.participant-card__player {
-    cursor: pointer;
-}
-
 .participant-card__player .name,
 .participant-card__damage .damage,
 .participant-card__kda {
@@ -1901,7 +1897,28 @@ strong {
   max-width: 100%;
 }
 
-.participant-card__player-header .name {
+.participant-card__player-name {
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.participant-card__player-name:focus-visible {
+  outline: 1px solid rgba(232, 211, 152, 0.78);
+  outline-offset: 3px;
+}
+
+.participant-card__player-name:hover .name {
+  color: var(--gold);
+}
+
+.participant-card__player-name .name {
+  display: block;
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;

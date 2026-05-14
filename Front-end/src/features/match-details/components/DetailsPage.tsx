@@ -5,16 +5,25 @@ import MatchDetailsPage from "./MatchDetailsPage";
 type Props = {
     onBack: () => void;
     matchDetails: MatchDetail | null;
-    handleSearchHistory: (nick: string, tag: string) => void;
+    handleSearchParticipant: (nick: string, tag: string) => void;
+    isSearchingParticipant: boolean;
+    searchError: string;
 }
 
-function DetailsPage ({ onBack, matchDetails, handleSearchHistory }: Props) {
+function DetailsPage ({ onBack, matchDetails, handleSearchParticipant, isSearchingParticipant, searchError }: Props) {
     return (
         <div className="details-page">
+            {isSearchingParticipant || searchError || (
+                <div className="history-page__feedback">
+                    {isSearchingParticipant && <p>Pesquisando jogador...</p>}
+                    {searchError && <p className="search-error">{searchError}</p>}
+                </div>
+            )}
+
             {matchDetails ? (
                 <MatchDetailsPage
                     matchDetails={matchDetails}
-                    handleSearchHistory={handleSearchHistory}
+                    handleSearchParticipant={handleSearchParticipant}
                     onBack={onBack}
                 />
             ) : (
