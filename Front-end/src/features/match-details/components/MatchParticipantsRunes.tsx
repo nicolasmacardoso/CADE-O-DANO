@@ -10,6 +10,8 @@ type Props = {
     runes: Runes;
 }
 
+type PerkRune = NonNullable<Runes["primaryPerkRunes"]>[number];
+
 type RuneTreeVariant = "default" | "domination" | "inspiration" | "precision" | "resolve" | "sorcery";
 
 function getPerkDescription(perk: { shortDescription?: string; shortDesc?: string }) {
@@ -92,6 +94,27 @@ const featuredRunePositionByVariant: Record<RuneTreeVariant, {
         opacity: "0.3",
     },
 };
+
+function RuneIconWithTooltip({
+    perk,
+    className
+}: {
+    perk: PerkRune;
+    className: string;
+}) {
+    const description = getPerkDescription(perk);
+
+    return (
+        <span className={className} tabIndex={0}>
+            <img src={perk.iconUrl} alt="" />
+
+            <span className="participant-runes__tooltip">
+                <strong>{perk.name}</strong>
+                {description && <span>{description}</span>}
+            </span>
+        </span>
+    );
+}
 
 function MatchParticipantsRunes ({ runes }: Props) {
     const containerRef = useRef<HTMLElement | null>(null);
@@ -179,13 +202,13 @@ function MatchParticipantsRunes ({ runes }: Props) {
 
                 {keystoneRune && (
                     <article className="participant-runes__keystone">
-                        <span className="participant-runes__keystone-icon">
-                            <img src={keystoneRune.iconUrl} alt="" />
-                        </span>
+                        <RuneIconWithTooltip 
+                            perk={keystoneRune}
+                            className="participant-runes__keystone-icon"
+                        />
 
                         <div className="participant-runes__perk-text">
                             <strong>{keystoneRune.name}</strong>
-                            <p>{getPerkDescription(keystoneRune)}</p>
                         </div>
                     </article>
                 )}
@@ -193,13 +216,13 @@ function MatchParticipantsRunes ({ runes }: Props) {
                 <div className="participant-runes__perk-list">
                     {primaryRunes.map((perk) => (
                         <article className="participant-runes__perk" key={perk.name}>
-                            <span className="participant-runes__perk-icon">
-                                <img src={perk.iconUrl} alt="" />
-                            </span>
+                            <RuneIconWithTooltip 
+                                perk={perk}
+                                className="participant-runes__perk-icon"
+                            />
 
                             <div className="participant-runes__perk-text">
                                 <strong>{perk.name}</strong>
-                                <p>{getPerkDescription(perk)}</p>
                             </div>
                         </article>
                     ))}
@@ -218,13 +241,13 @@ function MatchParticipantsRunes ({ runes }: Props) {
                 <div className="participant-runes__perk-list">
                     {secondaryPerkRunes.map((perk) => (
                         <article className="participant-runes__perk" key={perk.name}>
-                            <span className="participant-runes__perk-icon">
-                                <img src={perk.iconUrl} alt="" />
-                            </span>
+                            <RuneIconWithTooltip 
+                                perk={perk}
+                                className="participant-runes__perk-icon"
+                            />
 
                             <div className="participant-runes__perk-text">
                                 <strong>{perk.name}</strong>
-                                <p>{getPerkDescription(perk)}</p>
                             </div>
                         </article>
                     ))}
