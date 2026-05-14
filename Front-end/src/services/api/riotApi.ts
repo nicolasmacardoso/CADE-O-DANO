@@ -37,8 +37,8 @@ function normalizeSearchHistoryData(data: SearchHistoryApiData): SearchHistoryDa
     summonerLevel: data.profile.summonerLevel,
     summonerElos: data.rankedStats.elos,
     recentMatches: data.matches.recentMatches,
-    mostPlayedChampions: data.matches.mostPlayedChampions,
-    highestDamageChampions: data.matches.highestDamageChampions,
+    mostPlayedChampions: data.performanceSummary.mostPlayedChampions,
+    highestDamageChampions: data.performanceSummary.highestDamageChampions,
   };
 }
 
