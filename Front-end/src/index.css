@@ -1321,6 +1321,24 @@ strong {
   flex-direction: column;
 }
 
+.participant-runes-shell {
+  display: grid;
+  grid-template-rows: 1fr;
+  opacity: 1;
+  transform-origin: top;
+  overflow: hidden;
+  animation: runes-shell-open 0.42s cubic-bezier(0.2, 0.82, 0.2, 1) both;
+}
+
+.participant-runes-shell--closing {
+  pointer-events: none;
+  animation: runes-shell-close 0.32s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.participant-runes-shell > .participant-runes {
+  min-height: 0;
+}
+
 .participant-runes {
   position: relative;
   display: grid;
@@ -1338,6 +1356,7 @@ strong {
     inset 0 1px 0 rgba(255, 255, 255, 0.05),
     inset 0 -1px 0 rgba(0, 0, 0, 0.38);
   overflow: hidden;
+  transform-origin: top;
 }
 
 .participant-runes::before {
@@ -1383,6 +1402,23 @@ strong {
   width: 78%;
   height: 78%;
   object-fit: contain;
+}
+
+.participant-runes-shell--open .participant-runes__featured-rune {
+  animation: runes-featured-reveal 0.64s cubic-bezier(0.18, 0.9, 0.22, 1.05) 0.08s both;
+}
+
+.participant-runes-shell--open .participant-runes__tree {
+  animation: runes-tree-reveal 0.46s ease both;
+}
+
+.participant-runes-shell--open .participant-runes__tree--secondary {
+  animation-delay: 0.08s;
+}
+
+.participant-runes-shell--closing .participant-runes__featured-rune,
+.participant-runes-shell--closing .participant-runes__tree {
+  animation: runes-content-exit 0.22s ease both;
 }
 
 .participant-runes__tree {
@@ -1558,6 +1594,92 @@ strong {
 
 .participant-runes__tree--secondary .participant-runes__perk-list {
   gap: 22px;
+}
+
+@keyframes runes-shell-open {
+  0% {
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transform: translateY(-10px) scaleY(0.96);
+    filter: brightness(0.72) saturate(0.8);
+  }
+
+  62% {
+    opacity: 1;
+    filter: brightness(1.12) saturate(1.08);
+  }
+
+  100% {
+    grid-template-rows: 1fr;
+    opacity: 1;
+    transform: translateY(0) scaleY(1);
+    filter: brightness(1) saturate(1);
+  }
+}
+
+@keyframes runes-shell-close {
+  0% {
+    grid-template-rows: 1fr;
+    opacity: 1;
+    transform: translateY(0) scaleY(1);
+    filter: brightness(1) saturate(1);
+  }
+
+  100% {
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transform: translateY(-8px) scaleY(0.96);
+    filter: brightness(0.72) saturate(0.8);
+  }
+}
+
+@keyframes runes-featured-reveal {
+  0% {
+    transform: translate(-50%, -50%) scale(0.76) rotate(-8deg);
+    opacity: 0;
+    filter: saturate(0.55) contrast(1.1) blur(4px) drop-shadow(0 0 0 transparent);
+  }
+
+  58% {
+    transform: translate(-50%, -50%) scale(1.08) rotate(2deg);
+    opacity: calc(var(--featured-rune-opacity, 0.32) * 1.24);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(1) rotate(0);
+    opacity: var(--featured-rune-opacity, 0.32);
+    filter: saturate(0.75) contrast(1.28) blur(0) drop-shadow(0 0 26px var(--participant-runes-glow, rgba(216, 177, 95, 0.36)));
+  }
+}
+
+@keyframes runes-tree-reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes runes-content-exit {
+  100% {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .participant-runes-shell,
+  .participant-runes-shell--closing,
+  .participant-runes-shell--open .participant-runes__featured-rune,
+  .participant-runes-shell--open .participant-runes__tree,
+  .participant-runes-shell--closing .participant-runes__featured-rune,
+  .participant-runes-shell--closing .participant-runes__tree {
+    animation: none;
+  }
 }
 
 .participant-card {
