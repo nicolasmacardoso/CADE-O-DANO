@@ -541,7 +541,7 @@ strong {
   min-width: 0;
   height: 100vh;
   overflow-y: auto;
-  padding: clamp(18px, 2vw, 28px) clamp(24px, 3vw, 56px) 46px;
+  padding: clamp(20px, 2vw, 30px) clamp(28px, 3vw, 58px) 54px;
   scrollbar-color: rgba(64, 201, 255, 0.42) rgba(255, 255, 255, 0.05);
 }
 
@@ -564,9 +564,10 @@ strong {
   overflow-y: auto;
   overflow-x: hidden;
   background:
-    linear-gradient(180deg, rgba(30, 51, 60, 0.96), rgba(22, 42, 50, 0.96)),
+    radial-gradient(circle at 20% 10%, rgba(64, 201, 255, 0.11), transparent 28%),
+    linear-gradient(180deg, rgba(25, 45, 54, 0.98), rgba(13, 31, 39, 0.98)),
     rgba(29, 48, 56, 0.94);
-  border-left: 1px solid var(--line-strong);
+  border-left: 1px solid rgba(232, 211, 152, 0.36);
   scrollbar-width: thin;
   scrollbar-color: rgba(168, 127, 49, 0.72) rgba(255, 255, 255, 0.05);
 }
@@ -1173,16 +1174,18 @@ strong {
   position: sticky;
   top: 0;
   z-index: 5;
-  min-height: 78px;
+  min-height: 82px;
   display: grid;
   grid-template-columns: 58px 1fr;
   align-items: center;
   column-gap: 14px;
   row-gap: 2px;
-  padding: 12px 22px;
-  background: rgba(27, 48, 57, 0.96);
+  padding: 14px 22px;
+  background:
+    linear-gradient(90deg, rgba(36, 62, 72, 0.98), rgba(19, 42, 51, 0.98));
   backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--line-strong);
+  border-bottom: 1px solid rgba(232, 211, 152, 0.28);
+  box-shadow: 0 16px 28px rgba(0, 0, 0, 0.18);
 }
 
 .player-icon {
@@ -1273,31 +1276,48 @@ strong {
 }
 
 .player-sidebar__section {
-  padding: 20px 22px 4px;
+  padding: 22px 22px 4px;
 }
 
 .sidebar-section-title {
-  margin-bottom: 16px;
+  margin-bottom: 18px;
   font-family: var(--display);
   font-weight: 900;
   font-size: 15px;
   color: #f2f7fa;
+  letter-spacing: 0.01em;
 }
 
 .player-sidebar__elos {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
 .player-sidebar__elo {
+  position: relative;
   display: grid;
-  grid-template-columns: 96px minmax(0, 1fr);
-  column-gap: 12px;
+  grid-template-columns: 92px minmax(0, 1fr);
+  column-gap: 14px;
   row-gap: 2px;
   align-items: center;
-  min-height: 98px;
-  padding: 2px 0;
+  min-height: 104px;
+  padding: 10px 10px 10px 0;
+  border: 1px solid rgba(188, 213, 218, 0.08);
+  border-radius: 6px;
+  background:
+    linear-gradient(90deg, rgba(31, 63, 72, 0.42), rgba(4, 18, 24, 0.18)),
+    rgba(0, 14, 20, 0.16);
+  overflow: hidden;
+}
+
+.player-sidebar__elo::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: linear-gradient(180deg, transparent, rgba(214, 187, 120, 0.88), transparent);
+  opacity: 0.72;
 }
 
 .player-sidebar__elo-icon {
@@ -1352,7 +1372,16 @@ strong {
   row-gap: 2px;
   align-items: center;
   min-height: 58px;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
+  padding: 7px 8px 7px 0;
+  border-radius: 6px;
+  background: linear-gradient(90deg, rgba(9, 35, 45, 0.42), transparent 78%);
+  transition: background 0.16s ease, transform 0.16s ease;
+}
+
+.player-sidebar__champion:hover {
+  transform: translateX(2px);
+  background: linear-gradient(90deg, rgba(13, 54, 68, 0.6), rgba(44, 198, 226, 0.05) 78%);
 }
 
 .player-sidebar__champion::before {
@@ -1403,34 +1432,53 @@ strong {
 
 .match-details-page {
   font-family: var(--sans);
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
 
 .match-details-page__header {
-  min-height: 72px;
-  display: flex;
+  position: sticky;
+  top: -1px;
+  z-index: 35;
+  min-height: 76px;
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto;
   align-items: center;
-  gap: clamp(18px, 3vw, 42px);
-  padding-bottom: 18px;
-  border-bottom: 1px solid var(--line-strong);
+  gap: clamp(16px, 2.4vw, 34px);
+  padding: 12px 0 20px;
+  border-bottom: 1px solid rgba(188, 213, 218, 0.26);
+  background:
+    linear-gradient(180deg, rgba(0, 15, 23, 0.98), rgba(0, 15, 23, 0.86) 78%, transparent);
+  backdrop-filter: blur(8px);
 }
 
 .match-details-page__summary {
   display: grid;
-  grid-template-columns: minmax(120px, 150px) minmax(160px, 220px) minmax(100px, 140px);
+  grid-template-columns: minmax(116px, 160px) minmax(150px, 220px) minmax(90px, 140px);
   align-items: center;
-  gap: 24px;
+  gap: clamp(18px, 4vw, 68px);
 }
 
 .match-details-page__summary span {
   color: var(--text);
+  font-family: var(--mono);
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 900;
+}
+
+.match-details-page__header .damage-toggle {
+  margin-left: 0;
 }
 
 .team-section {
-  margin-top: 34px;
+  margin-top: 4px;
   border-left: 4px solid var(--blue);
-  background: linear-gradient(90deg, rgba(3, 20, 28, 0.22), transparent 45%);
+  border-radius: 0 8px 8px 0;
+  background:
+    linear-gradient(90deg, rgba(3, 20, 28, 0.38), transparent 46%),
+    rgba(0, 12, 18, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
 .team-section--red {
@@ -1440,9 +1488,9 @@ strong {
 .team-section__header {
   display: flex;
   align-items: center;
-  min-height: 42px;
-  padding-left: 14px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  min-height: 44px;
+  padding-left: 16px;
+  border-bottom: 1px solid rgba(188, 213, 218, 0.16);
 }
 
 .team-section__header h2 {
@@ -1899,23 +1947,25 @@ strong {
   position: relative;
   isolation: isolate;
   z-index: 0;
-  min-height: 70px;
+  min-height: 82px;
   display: grid;
   grid-template-columns:   
-    190px 
-    minmax(240px, 1fr) 
+    minmax(178px, 210px)
+    minmax(190px, 1fr)
     44px
-    minmax(304px, 390px) 
-    minmax(76px, 170px) 
-    minmax(160px, 449px);
+    minmax(230px, 390px)
+    minmax(128px, 174px)
+    minmax(210px, 340px);
   grid-template-areas: "champion player runes items kda damage";
   align-items: center;
-  gap: 16px 14px;
-  padding: 8px 22px 8px 14px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(0, 0, 0, 0.08);
+  gap: 16px 18px;
+  padding: 10px 22px 10px 16px;
+  border-bottom: 1px solid rgba(188, 213, 218, 0.14);
+  background:
+    linear-gradient(90deg, rgba(4, 24, 32, 0.24), rgba(1, 12, 18, 0.08)),
+    rgba(0, 0, 0, 0.08);
   overflow: visible;
-  transition: background 0.16s ease;
+  transition: background 0.16s ease, box-shadow 0.16s ease;
 }
 
 .participant-card > * {
@@ -1924,7 +1974,10 @@ strong {
 
 .participant-card:hover {
   z-index: 12;
-  background: rgba(255, 255, 255, 0.035);
+  background:
+    linear-gradient(90deg, rgba(8, 43, 56, 0.34), rgba(5, 24, 32, 0.12)),
+    rgba(255, 255, 255, 0.026);
+  box-shadow: inset 0 0 0 1px rgba(188, 213, 218, 0.08);
 }
 
 .participant-card--selected {
@@ -1936,8 +1989,8 @@ strong {
   grid-area: champion;
   position: relative;
   z-index: 0;
-  height: 62px;
-  width: 200px;
+  height: 68px;
+  width: 210px;
   gap: 8px;
   overflow: visible;
 }
@@ -1948,17 +2001,19 @@ strong {
   left: 0;
   top: 50%;
   z-index: -1;
-  width: 240px;
-  height: 76px;
+  width: 248px;
+  height: 82px;
   transform: translateY(-50%);
   object-fit: cover;
-  object-position: 1px -9px;
-  border-radius: 2px;
-  opacity: 0.86;
-  filter: saturate(1.18) contrast(1.08) brightness(0.88);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12), 0 0 18px rgba(0, 0, 0, 0.32);
-  -webkit-mask-image: linear-gradient(90deg, #000 0 42%, rgba(0, 0, 0, 0.72) 64%, transparent 100%);
-  mask-image: linear-gradient(90deg, #000 0 42%, rgba(0, 0, 0, 0.72) 64%, transparent 100%);
+  object-position: center;
+  border-radius: 3px;
+  opacity: 0.92;
+  filter: saturate(1.12) contrast(1.08) brightness(0.82);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+    0 0 18px rgba(0, 0, 0, 0.34);
+  -webkit-mask-image: linear-gradient(90deg, #000 0 58%, rgba(0, 0, 0, 0.72) 76%, transparent 100%);
+  mask-image: linear-gradient(90deg, #000 0 58%, rgba(0, 0, 0, 0.72) 76%, transparent 100%);
 }
 
 .participant-card::after {
@@ -1967,14 +2022,14 @@ strong {
   inset: 0;
   z-index: -1;
   background:
-    linear-gradient(90deg, rgba(0, 19, 28, 0.08), rgba(0, 19, 28, 0.3) 13%, rgba(0, 19, 28, 0.88) 32%, rgba(0, 19, 28, 0.96) 100%),
+    linear-gradient(90deg, rgba(0, 19, 28, 0.06), rgba(0, 19, 28, 0.22) 15%, rgba(0, 19, 28, 0.82) 30%, rgba(0, 19, 28, 0.94) 100%),
     linear-gradient(0deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.02));
   pointer-events: none;
 }
 
 .participant-card .champion-level {
   position: static;
-  margin-left: 5px;
+  margin-left: 4px;
   z-index: 1;
   min-width: auto;
   width: auto;
@@ -1985,7 +2040,7 @@ strong {
   background: transparent;
   color: var(--text);
   font-family: var(--display);
-  font-size: 20px;
+  font-size: 21px;
   font-weight: 900;
   text-shadow: 0 2px 6px rgba(0, 0, 0, 0.72);
 }
@@ -1999,6 +2054,7 @@ strong {
 
 .participant-card__kda p {
     display: flex;
+    gap: 12px;
     justify-content: space-between;
 }
 
@@ -2026,7 +2082,7 @@ strong {
   grid-area: player;
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 5px;
 }
 
 .participant-card__player-header {
@@ -2181,11 +2237,21 @@ strong {
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.04),
     0 4px 10px rgba(0, 0, 0, 0.22);
+  transition: border-color 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease, background 0.16s ease;
+}
+
+.participant-card__runes-summary:hover {
+  transform: translateY(-1px);
+  border-color: rgba(232, 211, 152, 0.84);
+  background: rgba(11, 29, 35, 0.9);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+    0 0 18px rgba(194, 144, 55, 0.2);
 }
 
 .participant-card__runes-summary img {
-  width: 28px;
-  height: 28px;
+  width: 25px;
+  height: 25px;
   object-fit: contain;
   display: block;
 }
@@ -2200,30 +2266,31 @@ strong {
   grid-area: kda;
   min-width: 0;
   font-family: var(--mono);
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 900;
-  line-height: 1.5;
+  line-height: 1.55;
   white-space: nowrap;
 }
 
 .participant-card__items {
   display: grid;
-  grid-template-columns: repeat(7, 40px);
-  gap: 4px;
+  grid-template-columns: repeat(7, 38px);
+  gap: 5px;
   justify-content: center;
 }
 
 .participant-card__item-slot,
 .participant-card__item-icon,
 .participant-card__empty-item {
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
 }
 
 .participant-card__item-slot {
   position: relative;
-  border: 1px solid rgba(194, 144, 55, 0.58);
-  background: rgba(5, 14, 18, 0.82);
+  border: 1px solid rgba(194, 144, 55, 0.52);
+  border-radius: 2px;
+  background: rgba(5, 14, 18, 0.86);
   overflow: hidden;
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.04),
@@ -2291,9 +2358,10 @@ strong {
   isolation: isolate;
   z-index: 2;
   width: 100%;
-  height: 27px;
-  background: rgba(255, 255, 255, 0.12);
-  border-radius: 2px;
+  height: 28px;
+  background: rgba(188, 213, 218, 0.12);
+  border: 1px solid rgba(188, 213, 218, 0.08);
+  border-radius: 3px;
   overflow: visible;
   transition: background 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
 }
@@ -2336,7 +2404,7 @@ strong {
 }
 
 .participant-card__damage:hover {
-  background: rgba(255, 255, 255, 0.18);
+  background: rgba(188, 213, 218, 0.16);
   box-shadow:
     inset 0 0 0 1px color-mix(in srgb, var(--damage-bar-color, var(--blue)) 46%, transparent),
     0 0 28px color-mix(in srgb, var(--damage-bar-color, var(--blue)) 22%, transparent);
@@ -2367,7 +2435,11 @@ strong {
   --damage-bar-color: var(--red);
 }
 
-@media (max-width: 1500px) {
+@media (max-width: 1660px) {
+  .participant-card {
+    min-height: 86px;
+  }
+
   .match-card {
     grid-template-columns: 72px minmax(120px, 150px) minmax(170px, 220px) minmax(270px, 1fr) minmax(70px, 90px);
     grid-template-areas:
@@ -2404,11 +2476,12 @@ strong {
   }
 
   .participant-card {
-    grid-template-columns: 190px minmax(140px, 1fr) 44px minmax(304px, 340px) minmax(76px, 96px);
+    grid-template-columns: minmax(170px, 200px) minmax(170px, 1fr) 42px minmax(278px, 330px) minmax(104px, 130px);
     grid-template-areas:
       "champion player runes items kda"
       "champion player runes damage damage";
     align-items: center;
+    gap: 12px 14px;
   }
 
   .participant-card .champ-info {
@@ -2433,6 +2506,30 @@ strong {
     grid-area: damage;
     justify-self: end;
   }
+
+  .participant-card .champ-info {
+    width: 198px;
+  }
+
+  .participant-card .champion-img {
+    width: 228px;
+  }
+
+  .participant-card__items {
+    grid-template-columns: repeat(7, 34px);
+    gap: 4px;
+  }
+
+  .participant-card__item-slot,
+  .participant-card__item-icon,
+  .participant-card__empty-item {
+    width: 34px;
+    height: 34px;
+  }
+
+  .participant-card__kda {
+    font-size: 13px;
+  }
 }
 
 @media (max-width: 1280px) {
@@ -2450,12 +2547,28 @@ strong {
   }
 
   .participant-card {
-    grid-template-columns: 176px minmax(150px, 1fr) minmax(70px, 90px);
+    grid-template-columns: 170px minmax(150px, 1fr) 42px minmax(104px, 130px);
     grid-template-areas:
-        "champion player runes"
-        "items items kda"
-        "damage damage damage";
+        "champion player runes kda"
+        "items items items items"
+        "damage damage damage damage";
     gap: 14px;
+  }
+
+  .participant-card .champion-img {
+    width: 214px;
+  }
+
+  .participant-card__items {
+    grid-template-columns: repeat(7, 32px);
+    gap: 4px;
+  }
+
+  .participant-card__item-slot,
+  .participant-card__item-icon,
+  .participant-card__empty-item {
+    width: 32px;
+    height: 32px;
   }
 }
 
@@ -2777,6 +2890,7 @@ strong {
   }
 
   .match-details-page__header {
+    display: flex;
     align-items: flex-start;
     flex-direction: column;
     gap: 14px;
@@ -2787,7 +2901,7 @@ strong {
   }
 
   .participant-card {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr) 44px;
     grid-template-areas:
       "champion champion"
       "player runes"
