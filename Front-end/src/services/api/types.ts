@@ -45,3 +45,39 @@ export type SearchHistoryData = playerInfo & {
 export type SearchHistoryResponse = {
     data: SearchHistoryData;
 };
+
+type PlayerProfileData = {
+    puuid: string;
+    summonerName: string;
+    profileIconUrl: string;
+    summonerLevel: string | number;
+};
+
+type PlayerRankedStatsData = {
+    elos: summonerElo[];
+};
+
+type PlayerMatchesData = {
+    recentMatches: MatchSummary[];
+    
+};
+
+type PlayerPerformanceData = {
+    mostPlayedChampions: MostPlayedChampion[];
+    highestDamageChampions: HighestDamageChampion[]; 
+}
+
+export type SearchHistoryApiData = SearchHistoryData | {
+    profile: PlayerProfileData;
+    rankedStats: PlayerRankedStatsData;
+    matches: PlayerMatchesData;
+    performanceSummary: PlayerPerformanceData;
+};
+
+export type SearchHistoryApiResponse = {
+    data: SearchHistoryApiData;
+};
+
+export type SearchMatchApiResponse = {
+    data: MatchDetail;
+};
