@@ -151,6 +151,7 @@ function AppFlow () {
             {screen === "detalhes" && (
                 <AppLayout sidebar={playerSidebar}>
                     <DetailsPage
+                        handleSearchHistory={handleSearchHistory}
                         onBack={() => setScreen("historico")}
                         matchDetails={matchDetails}
                     />

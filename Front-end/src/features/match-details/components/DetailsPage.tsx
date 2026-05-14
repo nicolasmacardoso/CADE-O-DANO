@@ -5,14 +5,16 @@ import MatchDetailsPage from "./MatchDetailsPage";
 type Props = {
     onBack: () => void;
     matchDetails: MatchDetail | null;
+    handleSearchHistory: (nick: string, tag: string) => void;
 }
 
-function DetailsPage ({ onBack, matchDetails }: Props) {
+function DetailsPage ({ onBack, matchDetails, handleSearchHistory }: Props) {
     return (
         <div className="details-page">
             {matchDetails ? (
                 <MatchDetailsPage
                     matchDetails={matchDetails}
+                    handleSearchHistory={handleSearchHistory}
                     onBack={onBack}
                 />
             ) : (

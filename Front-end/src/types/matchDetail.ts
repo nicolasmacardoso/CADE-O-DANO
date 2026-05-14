@@ -33,7 +33,7 @@ type ParticipantKda = {
 
 export type Participant = ParticipantKda & {
     summonerName: string;
-    summonerHashtag?: string | null;
+    summonerHashtag: string;
     championIconUrl: string;
     championSplashArtUrl: string;
     championName: string;
