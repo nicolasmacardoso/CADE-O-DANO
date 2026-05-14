@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type FocusEvent, type KeyboardEvent } from "react";
 import type { StoredPlayer } from "../../../services/storage/playerStorage";
+import FloatingAlert from "../../../shared/components/FloatingAlert";
 
 type Props = {
     onSearch: (nick: string, tag: string) => Promise<void>;
@@ -114,7 +115,10 @@ function LoginPage({ onSearch, loading, historyError, searchedPlayers }: Props) 
   
     return (
         <div className="login-page">
-            {historyError && <p className="request error">{historyError}</p>}
+            <FloatingAlert
+                variant={historyError ? "error" : "loading"}
+                message={historyError || (loading ? "Buscando histórico do jogador..." : "")}
+            />
 
             <div className="login-form">
                 <div 

@@ -1,5 +1,6 @@
 import type { MatchDetail } from "../../../types/matchDetail";
 
+import FloatingAlert from "../../../shared/components/FloatingAlert";
 import MatchDetailsPage from "./MatchDetailsPage";
 
 type Props = {
@@ -11,14 +12,15 @@ type Props = {
 }
 
 function DetailsPage ({ onBack, matchDetails, handleSearchParticipant, isSearchingParticipant, searchError }: Props) {
+    const feedbackMessage = searchError
+        || (isSearchingParticipant ? "Buscando histórico do participante..." : "");
+
     return (
         <div className="details-page">
-            {isSearchingParticipant || searchError || (
-                <div className="history-page__feedback">
-                    {isSearchingParticipant && <p>Pesquisando jogador...</p>}
-                    {searchError && <p className="search-error">{searchError}</p>}
-                </div>
-            )}
+            <FloatingAlert
+                variant={searchError ? "error" : "loading"}
+                message={feedbackMessage}
+            />
 
             {matchDetails ? (
                 <MatchDetailsPage

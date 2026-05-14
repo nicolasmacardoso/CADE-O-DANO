@@ -61,6 +61,7 @@ function AppFlow () {
         if (!nick || !tag) return;
 
         setMatchDetails(null);
+        participantRequest.clearError();
         matchRequest.clearError();
 
         const response = await historyRequest.run(() =>
@@ -93,10 +94,9 @@ function AppFlow () {
             buscarHistorico(nick, tag)
         );
 
-        setMatchDetails(null);
-
         if (!response) return;
 
+        setMatchDetails(null);
         setPlayerStats(response.data);
         saveCurrentPlayerHistory(response.data);
 
@@ -113,6 +113,7 @@ function AppFlow () {
 
     async function handleSelectMatch(matchId: string) {
         historyRequest.clearError();
+        participantRequest.clearError();
         
         if (!playerStats?.puuid) return;
 
