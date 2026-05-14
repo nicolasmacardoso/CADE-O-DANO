@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import type { MatchSummary } from "../../../types/match"
+import RemoteImage from "../../../shared/components/RemoteImage";
 import ParticipantItems from "../../match-details/components/ParticipantItems";
 
 const MATCH_RESULT_DISPLAY: Record<MatchSummary["result"], { label: string; classModifier: string }> = {
@@ -58,7 +59,7 @@ function MatchCard ({ match, maxDamageInList, minDamageInList, onSelectMatch, is
             <div className="match-card__champion">
                 <div className="champ-icon">
                     <div className="champ-icon__frame">
-                        <img className="champion-img" src={championIconUrl} alt={championName} />
+                        <RemoteImage className="champion-img" src={championIconUrl} alt={championName} />
                     </div>
 
                     <p className="champion-level">{champLevel}</p>

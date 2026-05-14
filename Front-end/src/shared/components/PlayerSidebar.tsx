@@ -1,4 +1,5 @@
 import type { HighestDamageChampion, MostPlayedChampion, summonerElo } from "../../services/api/types";
+import RemoteImage from "./RemoteImage";
 
 type Props = {
     summonerName: string;
@@ -21,7 +22,7 @@ function PlayerSidebar ({ summonerName, summonerLevel, profileIconUrl, mostPlaye
         <div className="player-sidebar">
             <div className="player-sidebar__header">
                 <div className="player-icon">
-                    <img className="player-img" src={profileIconUrl} alt="icone de invocador"/>
+                    <RemoteImage className="player-img" src={profileIconUrl} alt="icone de invocador"/>
 
                     <p className="player-level">{summonerLevel}</p>
                 </div>
@@ -44,7 +45,7 @@ function PlayerSidebar ({ summonerName, summonerLevel, profileIconUrl, mostPlaye
                             winRate
                         }) => (
                             <div key={queueType} className="player-sidebar__elo">
-                                <img className="player-sidebar__elo-icon" src={leagueIconUrl} alt={`Elo ${tier}`} />
+                                <RemoteImage className="player-sidebar__elo-icon" src={leagueIconUrl} alt={`Elo ${tier}`} />
 
                                 <p className="player-sidebar__elo-queue">{formatQueueType(queueType)}</p>
                                 <p className="player-sidebar__elo-rank">{tier} {rank}</p>
@@ -67,7 +68,7 @@ function PlayerSidebar ({ summonerName, summonerLevel, profileIconUrl, mostPlaye
                     gamesPlayed 
                 }) => (
                     <div key={championName} className="player-sidebar__champion">
-                        <img className="champion-icon" src={championIconUrl} alt="Icone do campeao"/>
+                        <RemoteImage className="champion-icon" src={championIconUrl} alt="Icone do campeao"/>
                         <p className="champion-name">{championName}</p>
                         <p className="champion-subinfo">{gamesPlayed} partidas</p>
                     </div>
@@ -82,7 +83,7 @@ function PlayerSidebar ({ summonerName, summonerLevel, profileIconUrl, mostPlaye
                     highestDamage 
                 }) => (
                     <div key={championName} className="player-sidebar__champion">
-                        <img className="champion-icon" src={championIconUrl} alt="Icone do campeao"/>
+                        <RemoteImage className="champion-icon" src={championIconUrl} alt="Icone do campeao"/>
                         <p className="champion-name">{championName}</p>
                         <p className="champion-subinfo">{highestDamage} de dano total</p>
                     </div>

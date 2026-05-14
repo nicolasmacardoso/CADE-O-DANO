@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type FocusEvent, type KeyboardEvent } from "react";
 import type { StoredPlayer } from "../../../services/storage/playerStorage";
 import FloatingAlert from "../../../shared/components/FloatingAlert";
+import RemoteImage from "../../../shared/components/RemoteImage";
 
 type Props = {
     onSearch: (nick: string, tag: string) => Promise<void>;
@@ -159,7 +160,7 @@ function LoginPage({ onSearch, loading, historyError, searchedPlayers }: Props) 
                                     onClick={() => handleSearchedPlayersButtonClick(nick, tag)}
                                     onKeyDown={(event) => handleSearchedPlayersButtonKeyDown(event, index)}
                                 >
-                                    <img className="searched-players__icon" src={profileIconUrl} alt="Ícone do jogador pesquisado"/>
+                                    <RemoteImage className="searched-players__icon" src={profileIconUrl} alt="Ícone do jogador pesquisado"/>
                                     <p className="searched-players__nick">{nick}</p>
                                     <p className="searched-players__tag">#{tag}</p>
                                 </button>

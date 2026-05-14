@@ -4,6 +4,7 @@ import type { summonerElo } from "../../../services/api/types";
 import ParticipantItems from "./ParticipantItems";
 import runesIcon from "../../../assets/runesicon.png";
 import minionIcon from "../../../assets/icon_minions.png";
+import RemoteImage from "../../../shared/components/RemoteImage";
 
 type Props = {
     participant: Participant;
@@ -54,7 +55,7 @@ function MatchParticipantsCard ({ participant, highestTeamDamage, showDamageText
             className={isSearchedPlayer ? "participant-card participant-card--selected" : "participant-card"} 
         >
             <div className="champ-info">
-                <img className="champion-img" src={championSplashArtUrl} alt={championName}/>
+                <RemoteImage className="champion-img" src={championSplashArtUrl} alt={championName}/>
                 <p className="champion-level">{champLevel}</p>
             </div>
 

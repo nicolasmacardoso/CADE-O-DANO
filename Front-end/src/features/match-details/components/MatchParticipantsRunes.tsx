@@ -5,6 +5,7 @@ import inspirationSplashArt from "../../../assets/inspiration-splash-art.png";
 import precisionSplashArt from "../../../assets/precision-splash-art.png";
 import resolveSplashArt from "../../../assets/resolve-splash-art.png";
 import sorcerySplashArt from "../../../assets/sorcery-splash-art.png";
+import RemoteImage from "../../../shared/components/RemoteImage";
 
 type Props = {
     runes: Runes;
@@ -106,7 +107,7 @@ function RuneIconWithTooltip({
 
     return (
         <span className={className} tabIndex={0}>
-            <img src={perk.iconUrl} alt="" />
+            <RemoteImage src={perk.iconUrl} alt="" />
 
             <span className="participant-runes__tooltip">
                 <strong>{perk.name}</strong>
@@ -187,14 +188,14 @@ function MatchParticipantsRunes ({ runes }: Props) {
         <section className="participant-runes" ref={containerRef} style={runesStyle}>
             {keystoneRune && (
                 <div className="participant-runes__featured-rune" style={featuredRunePositionStyle} aria-hidden="true">
-                    <img src={keystoneRune.iconUrl} alt="" />
+                    <RemoteImage src={keystoneRune.iconUrl} alt="" />
                 </div>
             )}
 
             <div className={`participant-runes__tree participant-runes__tree--primary participant-runes__tree--${primaryVariant}`}>
                 <header className="participant-runes__tree-header">
                     <span className="participant-runes__tree-icon">
-                        {primaryTree?.iconUrl && <img src={primaryTree.iconUrl} alt="" />}
+                        {primaryTree?.iconUrl && <RemoteImage src={primaryTree.iconUrl} alt="" />}
                     </span>
 
                     <p>{primaryTree?.name ?? "Arvore principal"}</p>
@@ -232,7 +233,7 @@ function MatchParticipantsRunes ({ runes }: Props) {
             <div className={`participant-runes__tree participant-runes__tree--secondary participant-runes__tree--${secondaryVariant}`}>
                 <header className="participant-runes__tree-header">
                     <span className="participant-runes__tree-icon">
-                        {secondaryTree?.iconUrl && <img src={secondaryTree.iconUrl} alt="" />}
+                        {secondaryTree?.iconUrl && <RemoteImage src={secondaryTree.iconUrl} alt="" />}
                     </span>
 
                     <p>{secondaryTree?.name ?? "Arvore secundaria"}</p>
