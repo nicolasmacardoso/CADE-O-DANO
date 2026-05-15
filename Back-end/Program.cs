@@ -1,3 +1,4 @@
+using CadeODano.Builders;
 using CadeODano.Interfaces;
 using CadeODano.Mappings;
 using CadeODano.Services;
@@ -11,6 +12,7 @@ builder.Services.AddScoped<IStatsCalculatorService, StatsCalculatorService>();
 builder.Services.AddScoped<IPlayerDashboardService, PlayerDashboardService>();
 builder.Services.AddScoped<IRiotApiService, RiotApiService>();
 builder.Services.AddScoped<IRiotStaticDataService, RiotStaticDataService>();
+builder.Services.AddScoped<MatchDetailsBuilder>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -35,6 +37,7 @@ builder.Services.AddHttpClient<IRiotApiService, RiotApiService>(client =>
     var riotApiKey = builder.Configuration["RiotApi:Key"];
 
     client.DefaultRequestHeaders.Add("X-Riot-Token", riotApiKey);
+    client.Timeout = System.TimeSpan.FromSeconds(120);
 });
 
 var app = builder.Build();

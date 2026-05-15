@@ -7,6 +7,7 @@ public record MatchDetailsDto
   public string gameStartDate { get; set; } = null!;
   public string GameDuration { get; set; } = null!;
   public int TotalKills { get; set; }
+  public bool PlayerWin { get; set; }
 
   public List<TeamDto> Teams { get; set; } = [];
 

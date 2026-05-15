@@ -11,17 +11,21 @@ public class PlayerDashboardService : IPlayerDashboardService
   private readonly IStatsCalculatorService _statsCalculatorService;
   private readonly IMapper _mapper;
   private readonly IRiotStaticDataService _riotStaticDataService;
+  private readonly MatchDetailsBuilder _matchDetailsBuilder;
 
   public PlayerDashboardService(
     IRiotApiService riotApiService,
     IStatsCalculatorService statsCalculatorService,
     IMapper mapper,
-    IRiotStaticDataService riotStaticDataService)
+    IRiotStaticDataService riotStaticDataService,
+    MatchDetailsBuilder matchDetailsBuilder
+    )
   {
     _riotApiService = riotApiService;
     _statsCalculatorService = statsCalculatorService;
     _mapper = mapper;
     _riotStaticDataService = riotStaticDataService;
+    _matchDetailsBuilder = matchDetailsBuilder;
   }
 
   public async Task<ServiceResult<PlayerStatsDto>> GetPlayerStats(PlayerSearchRequestDto playerNickname, string count)
@@ -85,8 +89,7 @@ public class PlayerDashboardService : IPlayerDashboardService
 
             dto.SummonerElos = await _riotApiService.GetSummonerEloByPuuid(x.Puuid!);
 
-            dto.KillParticipation = StatsCalculatorService
-              .CalculateKillParticipation(
+            dto.KillParticipation = _statsCalculatorService.CalculateKillParticipation(
               x.Kills,
               x.Assists,
               teamKills[x.TeamId]);
@@ -120,7 +123,7 @@ public class PlayerDashboardService : IPlayerDashboardService
 
       var participants = (await Task.WhenAll(participantsTasks)).ToList();
 
-      var dto = MatchDetailsBuilder.Build(
+      var dto = _matchDetailsBuilder.Build(
           matchId,
           matchData.Info.QueueId,
           matchData.Info.GameDuration,

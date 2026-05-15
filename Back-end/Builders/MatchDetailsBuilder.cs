@@ -1,11 +1,19 @@
 using CadeODano.DTOs;
 using CadeODano.Helpers;
+using CadeODano.Interfaces;
 
 namespace CadeODano.Builders;
 
-public static class MatchDetailsBuilder
+public class MatchDetailsBuilder
 {
-  public static MatchDetailsDto Build(
+  private readonly IStatsCalculatorService _statsCalculatorService;
+
+  public MatchDetailsBuilder(IStatsCalculatorService statsCalculatorService)
+  {
+    _statsCalculatorService = statsCalculatorService;
+  }
+
+  public MatchDetailsDto Build(
       string matchId,
       int queueId,
       int gameDuration,
@@ -21,12 +29,14 @@ public static class MatchDetailsBuilder
       GameDuration = FormatHelper.FormatGameDuration(gameDuration),
       gameStartDate = FormatHelper.FormatUnixMilliseconds(gameStartTimestamp),
       TotalKills = participants.Sum(x => x.Kills),
+      PlayerWin = searchedPlayer != null && searchedPlayer.Win,
       Teams = participants
     .GroupBy(p => p.TeamId)
     .Select(g => new TeamDto
     {
       TeamId = g.Key,
       TotalTeamKills = g.Sum(p => p.Kills),
+      TeamKDA = _statsCalculatorService.CalculateKDA(g.Sum(p => p.Kills), g.Sum(p => p.Deaths), g.Sum(p => p.Assists)),
       Participants = g.ToList()
     })
     .ToList()

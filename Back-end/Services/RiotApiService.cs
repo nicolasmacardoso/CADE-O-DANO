@@ -100,19 +100,19 @@ public class RiotApiService : IRiotApiService
 
   public async Task<List<SummonerEloDto>> GetSummonerEloByPuuid(string puuid)
   {
-    var response = await _httpClient.GetAsync(RiotUrlBuilder.GetSummonerEloByPuuid(puuid));
+    var response = await _httpClient.GetAsync(
+        RiotUrlBuilder.GetSummonerEloByPuuid(puuid));
 
     if (!response.IsSuccessStatusCode)
       throw new Exception("Failed to get summoner elo info.");
 
-    var eloData = await response.Content.ReadFromJsonAsync<List<SummonerEloResponse>>();
+    var eloData = await response.Content
+        .ReadFromJsonAsync<List<SummonerEloResponse>>();
 
-    if (eloData == null || !eloData.Any())
-      throw new Exception("No elo data found for this player.");
+    if (eloData == null)
+      return [];
 
-    var dto = _mapper.Map<List<SummonerEloDto>>(eloData);
-
-    return dto;
+    return _mapper.Map<List<SummonerEloDto>>(eloData);
   }
 
   public async Task<RiotMatchResponse> GetMatchById(string matchId)

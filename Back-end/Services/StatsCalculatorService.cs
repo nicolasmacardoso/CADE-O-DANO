@@ -37,7 +37,7 @@ public class StatsCalculatorService : IStatsCalculatorService
         .ToList();
   }
 
-  public static string CalculateWinRate(int wins, int losses)
+  public string CalculateWinRate(int wins, int losses)
   {
     int totalGames = wins + losses;
 
@@ -49,7 +49,7 @@ public class StatsCalculatorService : IStatsCalculatorService
     return Math.Round(winRate).ToString() + "%";
   }
 
-  public static double CalculateKDA(int kills, int deaths, int assists)
+  public double CalculateKDA(int kills, int deaths, int assists)
   {
     if (deaths == 0)
       return kills + assists;
@@ -57,7 +57,7 @@ public class StatsCalculatorService : IStatsCalculatorService
     return Math.Round((double)(kills + assists) / deaths, 2);
   }
 
-  public static string CalculateKillParticipation(int kills, int assists, int teamKills)
+  public string CalculateKillParticipation(int kills, int assists, int teamKills)
   {
     if (teamKills == 0)
       return "0%";
@@ -65,12 +65,12 @@ public class StatsCalculatorService : IStatsCalculatorService
     return Math.Round(((double)(kills + assists) / teamKills) * 100, 2).ToString() + "%";
   }
 
-  public static int CalculateCS(int totalMinionsKilled, int neutralMinionsKilled)
+  public int CalculateCS(int totalMinionsKilled, int neutralMinionsKilled)
   {
     return totalMinionsKilled + neutralMinionsKilled;
   }
 
-  public static double CalculateCSPM(int cs, double gameDurationInSeconds)
+  public double CalculateCSPM(int cs, double gameDurationInSeconds)
   {
     if (gameDurationInSeconds == 0)
       return 0;
