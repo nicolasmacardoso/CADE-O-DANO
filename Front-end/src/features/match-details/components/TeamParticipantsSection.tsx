@@ -58,8 +58,13 @@ function TeamParticipantsSection ({ title, participants, variant, showDamageText
             </header>
 
             <div className="team-section__participant-list">
-                {participants.map((participant) => {
-                    const participantKey = participant.summonerName + participant.championName;
+                {participants.map((participant, participantIndex) => {
+                    const participantKey = [
+                        participant.summonerName,
+                        participant.summonerHashtag,
+                        participant.championName,
+                        participantIndex,
+                    ].filter(Boolean).join("-");
                     const isRunesOpen = openedRunesKey === participantKey;
                     const isRunesClosing = closingRunesKey === participantKey;
                     const shouldRenderRunes = isRunesOpen || isRunesClosing;

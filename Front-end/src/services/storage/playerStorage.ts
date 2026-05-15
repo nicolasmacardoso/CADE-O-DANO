@@ -42,12 +42,18 @@ function isStoredPlayer(value: unknown): value is StoredPlayer {
 function isSearchHistoryData(value: unknown): value is SearchHistoryData {
     if (!isRecord(value)) return false;
 
-    return hasNonEmptyStringFields(value, ["puuid", "summonerName"])
-        && hasStringFields(value, ["profileIconUrl"])
-        && hasStringOrNumberField(value, "summonerLevel")
-        && hasArrayFields(value, [
-            "summonerElos",
-            "recentMatches",
+    const { profile, rankedStats, matches, performanceSummary } = value;
+
+    return isRecord(profile)
+        && hasNonEmptyStringFields(profile, ["puuid", "summonerName"])
+        && hasStringFields(profile, ["profileIconUrl"])
+        && hasStringOrNumberField(profile, "summonerLevel")
+        && isRecord(rankedStats)
+        && hasArrayFields(rankedStats, ["elos"])
+        && isRecord(matches)
+        && hasArrayFields(matches, ["recentMatches"])
+        && isRecord(performanceSummary)
+        && hasArrayFields(performanceSummary, [
             "mostPlayedChampions",
             "highestDamageChampions",
         ]);

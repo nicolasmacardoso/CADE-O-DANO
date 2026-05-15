@@ -43,6 +43,11 @@ function AppFlow () {
     const historyRequest = useRequestState();
     const participantRequest = useRequestState();
     const matchRequest = useRequestState();
+    
+    const playerProfile = playerStats?.profile;
+    const rankedStats = playerStats?.rankedStats;
+    const playerMatches = playerStats?.matches;
+    const performanceSummary = playerStats?.performanceSummary;
 
     useEffect(() => {
         setSearchedPlayers(getSearchedPlayers());
@@ -73,7 +78,7 @@ function AppFlow () {
         setPlayerStats(response.data);
         saveCurrentPlayerHistory(response.data);
 
-        const icon = response.data.profileIconUrl;
+        const icon = response.data.profile.profileIconUrl;
 
         const searchedPlayer = { profileIconUrl: icon, nick, tag };
 
@@ -100,7 +105,7 @@ function AppFlow () {
         setPlayerStats(response.data);
         saveCurrentPlayerHistory(response.data);
 
-        const icon = response.data.profileIconUrl;
+        const icon = response.data.profile.profileIconUrl;
 
         const searchedPlayer = { profileIconUrl: icon, nick, tag };
 
@@ -115,10 +120,10 @@ function AppFlow () {
         historyRequest.clearError();
         participantRequest.clearError();
         
-        if (!playerStats?.puuid) return;
+        if (!playerProfile?.puuid) return;
 
         const response = await matchRequest.run(() =>
-            buscarMatch(matchId, playerStats?.puuid)
+            buscarMatch(matchId, playerProfile.puuid)
         );
 
         if (!response) return;
@@ -144,14 +149,14 @@ function AppFlow () {
         setScreen("login");
     }
 
-    const playerSidebar = playerStats ? (
+    const playerSidebar = playerProfile && rankedStats && performanceSummary ? (
         <PlayerSidebar
-            summonerName={playerStats.summonerName}
-            summonerLevel={playerStats.summonerLevel}
-            profileIconUrl={playerStats.profileIconUrl}
-            mostPlayedChampions={playerStats.mostPlayedChampions}
-            highestDamageChampions={playerStats.highestDamageChampions}
-            summonerElos={playerStats.summonerElos}
+            summonerName={playerProfile.summonerName}
+            summonerLevel={playerProfile.summonerLevel}
+            profileIconUrl={playerProfile.profileIconUrl}
+            mostPlayedChampions={performanceSummary.mostPlayedChampions}
+            highestDamageChampions={performanceSummary.highestDamageChampions}
+            summonerElos={rankedStats.elos}
         />
     ) : undefined;
 
@@ -170,7 +175,7 @@ function AppFlow () {
                     <HistoryPage
                         onBack={handleBackToLogin}
                         onRefresh={handleRefreshHistory}
-                        matches={playerStats?.recentMatches || []}
+                        matches={playerMatches?.recentMatches || []}
                         isRefreshingHistory={historyRequest.loading}
                         isLoadingMatchDetails={matchRequest.loading}
                         matchError={matchRequest.error}

@@ -1,10 +1,6 @@
 import type { MatchSummary } from "../../types/match";
 import type { MatchDetail } from "../../types/matchDetail";
 
-export type SearchMatchResponse = {
-    data: MatchDetail;
-};
-
 export type MostPlayedChampion = {
     championName: string;
     championIconUrl: string;
@@ -28,46 +24,28 @@ export type summonerElo = {
     winRate: string;
 }
 
-type playerInfo = {
-    puuid: string;
-    summonerName: string;
-    profileIconUrl: string;
-    summonerLevel: string | number;
-    summonerElos: summonerElo[];
-}
-
-export type SearchHistoryData = playerInfo & {
-    recentMatches: MatchSummary[];
-    mostPlayedChampions: MostPlayedChampion[];
-    highestDamageChampions: HighestDamageChampion[];
-};
-
-export type SearchHistoryResponse = {
-    data: SearchHistoryData;
-};
-
-type PlayerProfileData = {
+export type PlayerProfileData = {
     puuid: string;
     summonerName: string;
     profileIconUrl: string;
     summonerLevel: string | number;
 };
 
-type PlayerRankedStatsData = {
+export type PlayerRankedStatsData = {
     elos: summonerElo[];
 };
 
-type PlayerMatchesData = {
+export type PlayerMatchesData = {
     recentMatches: MatchSummary[];
     
 };
 
-type PlayerPerformanceData = {
+export type PlayerPerformanceData = {
     mostPlayedChampions: MostPlayedChampion[];
     highestDamageChampions: HighestDamageChampion[]; 
 }
 
-export type SearchHistoryApiData = SearchHistoryData | {
+export type SearchHistoryApiData = {
     profile: PlayerProfileData;
     rankedStats: PlayerRankedStatsData;
     matches: PlayerMatchesData;
@@ -81,3 +59,7 @@ export type SearchHistoryApiResponse = {
 export type SearchMatchApiResponse = {
     data: MatchDetail;
 };
+
+export type SearchHistoryData = SearchHistoryApiData;
+export type SearchHistoryResponse = SearchHistoryApiResponse;
+export type SearchMatchResponse = SearchMatchApiResponse;

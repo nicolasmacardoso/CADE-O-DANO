@@ -18,18 +18,17 @@ function MatchDetailsPage ({ matchDetails, onBack, handleSearchParticipant }: Pr
         gameDuration 
     } = matchDetails; 
 
-    const teams = [
-        {
-            title: "Equipe 1",
-            participants: matchDetails.team1,
-            variant: "blue"
-        },
-        {
-            title: "Equipe 2",
-            participants: matchDetails.team2,
-            variant: "red"
-        }
-    ] as const;
+    const teams = matchDetails.teams
+        .toSorted((firstTeam, secondTeam) => firstTeam.teamId - secondTeam.teamId)
+        .map((team, index) => ({
+            title: `Equipe ${index + 1}`,
+            participants: team.participants,
+            variant: index === 0 ? "blue" : "red",
+        })) as {
+            title: string;
+            participants: MatchDetail["teams"][number]["participants"];
+            variant: "blue" | "red";
+        }[];
 
     return (
         <div className="match-details-page">

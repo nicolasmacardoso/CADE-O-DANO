@@ -47,6 +47,14 @@ function MatchParticipantsCard ({ participant, highestTeamDamage, showDamageText
 
     const kda = `${kills}/${deaths}/${assists}`;
     const displayedElo = summonerElos[0] || summonerElos[1];
+    const playerName = summonerName ?? "";
+    const playerTag = summonerHashtag ?? "";
+    const displayPlayerName = playerName && playerTag
+        ? `${playerName}#${playerTag}`
+        : "Jogador desconhecido";
+    const championLabel = championName ?? "Campeão desconhecido";
+    const championSplashArt = championSplashArtUrl ?? "";
+    const canSearchParticipant = playerName.length > 0 && playerTag.length > 0;
     
     const damageStyle = { "--damage-ratio": damageRatio } as CSSProperties;
 
@@ -55,7 +63,7 @@ function MatchParticipantsCard ({ participant, highestTeamDamage, showDamageText
             className={isSearchedPlayer ? "participant-card participant-card--selected" : "participant-card"} 
         >
             <div className="champ-info">
-                <RemoteImage className="champion-img" src={championSplashArtUrl} alt={championName}/>
+                <RemoteImage className="champion-img" src={championSplashArt} alt={championLabel}/>
                 <p className="champion-level">{champLevel}</p>
             </div>
 
@@ -64,9 +72,10 @@ function MatchParticipantsCard ({ participant, highestTeamDamage, showDamageText
                     <button
                         className="participant-card__player-name"
                         type="button"
-                        onClick={() => handleSearchParticipant(summonerName, summonerHashtag)}
+                        onClick={() => handleSearchParticipant(playerName, playerTag)}
+                        disabled={!canSearchParticipant}
                     >
-                        <span className="name">{summonerName}#{summonerHashtag}</span>
+                        <span className="name">{displayPlayerName}</span>
                     </button>
 
                     {displayedElo && (
@@ -102,7 +111,7 @@ function MatchParticipantsCard ({ participant, highestTeamDamage, showDamageText
                     )}
                 </div>
                 
-                <p className="champion-name">{championName}</p>
+                <p className="champion-name">{championLabel}</p>
             </div>
 
             <button 
