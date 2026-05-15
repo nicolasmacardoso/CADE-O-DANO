@@ -41,6 +41,7 @@ function AppFlow () {
     const [searchedPlayers, setSearchedPlayers] = useState<StoredPlayer[]>([]);
 
     const historyRequest = useRequestState();
+    const participantRequest = useRequestState();
     const matchRequest = useRequestState();
 
     useEffect(() => {
@@ -60,6 +61,7 @@ function AppFlow () {
         if (!nick || !tag) return;
 
         setMatchDetails(null);
+        participantRequest.clearError();
         matchRequest.clearError();
 
         const response = await historyRequest.run(() =>
@@ -82,8 +84,36 @@ function AppFlow () {
         setScreen("historico");
     };
 
+    async function handleSearchParticipant(
+        nick: string | null,
+        tag: string | null,
+    ) {
+        if (!nick || !tag) return;
+
+        const response = await participantRequest.run(() =>
+            buscarHistorico(nick, tag)
+        );
+
+        if (!response) return;
+
+        setMatchDetails(null);
+        setPlayerStats(response.data);
+        saveCurrentPlayerHistory(response.data);
+
+        const icon = response.data.profileIconUrl;
+
+        const searchedPlayer = { profileIconUrl: icon, nick, tag };
+
+        saveCurrentPlayer(searchedPlayer);
+        saveSearchedPlayer(searchedPlayer);
+        setSearchedPlayers(getSearchedPlayers());
+
+        setScreen("historico");
+    };
+
     async function handleSelectMatch(matchId: string) {
         historyRequest.clearError();
+        participantRequest.clearError();
         
         if (!playerStats?.puuid) return;
 
@@ -153,6 +183,9 @@ function AppFlow () {
                     <DetailsPage
                         onBack={() => setScreen("historico")}
                         matchDetails={matchDetails}
+                        handleSearchParticipant={handleSearchParticipant}
+                        isSearchingParticipant={participantRequest.loading}
+                        searchError={participantRequest.error}
                     />
                 </AppLayout>
             )}

@@ -33,6 +33,7 @@ type ParticipantKda = {
 
 export type Participant = ParticipantKda & {
     summonerName: string;
+    summonerHashtag: string;
     championIconUrl: string;
     championSplashArtUrl: string;
     championName: string;
@@ -43,13 +44,23 @@ export type Participant = ParticipantKda & {
     itemIconUrls: string[];
     summonerElos?: summonerElo[];
     runes: Runes;
+    win?: boolean;
+};
+
+export type MatchTeam = {
+    teamId: number;
+    totalTeamKills: number;
+    participants: Participant[];
 };
 
 export type MatchDetail = {
     matchId: string;
     queueType: string;
-    gameDuration: number;
+    gameStartDate?: string;
+    gameDuration: string | number;
+    totalKills?: number;
     playerWin: boolean;
     team1: Participant[];
     team2: Participant[];
+    teams?: MatchTeam[];
 };

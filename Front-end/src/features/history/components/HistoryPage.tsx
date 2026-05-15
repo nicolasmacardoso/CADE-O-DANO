@@ -1,7 +1,8 @@
+import { useState } from "react";
 import type { MatchSummary } from "../../../types/match";
 import BackButton from "../../../shared/components/BackButton";
+import FloatingAlert from "../../../shared/components/FloatingAlert";
 import MatchCard from "./MatchCard";
-import { useState } from "react";
 
 type Props = {
     onBack: () => void;
@@ -13,25 +14,33 @@ type Props = {
     matchError: string;
 }
 
-function HistoryPage ({ 
-    onBack, 
-    onRefresh, 
-    matches, 
-    onSelectMatch, 
+function HistoryPage ({
+    onBack,
+    onRefresh,
+    matches,
+    onSelectMatch,
     isLoadingMatchDetails,
-    isRefreshingHistory, 
-    matchError 
+    isRefreshingHistory,
+    matchError
 }: Props) {
     const maxDamageInList = Math.max(...matches.map((match) => match.totalDamage), 0);
-    const matchesWithoutRemake = matches.filter(match => match.result !== 2)
+    const matchesWithoutRemake = matches.filter((match) => match.result !== 2);
     const minDamageInList = matchesWithoutRemake.length > 0
         ? Math.min(...matchesWithoutRemake.map((match) => match.totalDamage))
         : 0;
-        
+
     const [showDamageText, setShowDamageText] = useState(false);
+    const feedbackMessage = matchError
+        || (isLoadingMatchDetails ? "Carregando detalhes da partida..." : "")
+        || (isRefreshingHistory ? "Atualizando histórico..." : "");
 
     return (
         <div className="history-page">
+            <FloatingAlert
+                variant={matchError ? "error" : "loading"}
+                message={feedbackMessage}
+            />
+
             <div className="history-page__buttons-box">
                 <BackButton onBack={onBack}/>
                 <button
@@ -47,29 +56,21 @@ function HistoryPage ({
             <header className="history-page__header">
                 <h1>Histórico de partidas</h1>
             </header>
-            
-            {isRefreshingHistory || isLoadingMatchDetails || matchError || (
-                <div className="history-page__feedback">
-                    {isRefreshingHistory && <p>Atualizando histórico...</p>}
-                    {isLoadingMatchDetails && <p>Carregando detalhes da partida selecionada...</p>}
-                    {matchError && <p className="match-error">{matchError}</p>}
-                </div>
-            )}
 
             <label className="damage-toggle">
                 <span className="damage-toggle__label">Exibir dano</span>
-                <input 
+                <input
                     className="damage-toggle__input"
-                    type="checkbox" 
-                    name="show-damage-text" 
+                    type="checkbox"
+                    name="show-damage-text"
                     checked={showDamageText}
                     onChange={(event) => setShowDamageText(event.target.checked)}
                 />
                 <span className="damage-toggle__control" />
             </label>
-            
+
             <section className="match-list">
-                {matches.length > 0 ?  (
+                {matches.length > 0 ? (
                     matches.map((match) => (
                         <MatchCard
                             key={match.matchId}
@@ -86,7 +87,7 @@ function HistoryPage ({
                 )}
             </section>
         </div>
-    )
+    );
 }
 
 export default HistoryPage;

@@ -4,12 +4,14 @@ import type { summonerElo } from "../../../services/api/types";
 import ParticipantItems from "./ParticipantItems";
 import runesIcon from "../../../assets/runesicon.png";
 import minionIcon from "../../../assets/icon_minions.png";
+import RemoteImage from "../../../shared/components/RemoteImage";
 
 type Props = {
     participant: Participant;
     highestTeamDamage: number;
     showDamageText: boolean;
-    onClickRunes: () => void;
+    handleOpenRunes: () => void;
+    handleSearchParticipant: (nick: string, tag: string) => void;
 }
 
 function formatEloBadge(elo: summonerElo) {
@@ -20,9 +22,10 @@ function formatEloBadge(elo: summonerElo) {
     return `${tierLabel} ${elo.rank}`;
 }
 
-function MatchParticipantsCard ({ participant, highestTeamDamage, showDamageText, onClickRunes }: Props) {
+function MatchParticipantsCard ({ participant, highestTeamDamage, showDamageText, handleOpenRunes, handleSearchParticipant }: Props) {
     const { 
         summonerName, 
+        summonerHashtag, 
         championSplashArtUrl,
         championName, 
         kills, 
@@ -48,15 +51,23 @@ function MatchParticipantsCard ({ participant, highestTeamDamage, showDamageText
     const damageStyle = { "--damage-ratio": damageRatio } as CSSProperties;
 
     return (
-        <div className={isSearchedPlayer ? "participant-card participant-card--selected" : "participant-card"}>
+        <div 
+            className={isSearchedPlayer ? "participant-card participant-card--selected" : "participant-card"} 
+        >
             <div className="champ-info">
-                <img className="champion-img" src={championSplashArtUrl} alt={championName}/>
+                <RemoteImage className="champion-img" src={championSplashArtUrl} alt={championName}/>
                 <p className="champion-level">{champLevel}</p>
             </div>
 
             <div className="participant-card__player">
                 <div className="participant-card__player-header">
-                    <p className="name">{summonerName}</p>
+                    <button
+                        className="participant-card__player-name"
+                        type="button"
+                        onClick={() => handleSearchParticipant(summonerName, summonerHashtag)}
+                    >
+                        <span className="name">{summonerName}#{summonerHashtag}</span>
+                    </button>
 
                     {displayedElo && (
                         <div 
@@ -96,7 +107,7 @@ function MatchParticipantsCard ({ participant, highestTeamDamage, showDamageText
 
             <button 
                 className="participant-card__runes-summary"
-                onClick={onClickRunes}
+                onClick={handleOpenRunes}
             >
                 <img src={runesIcon} alt="Icone de runa padrao"/>
             </button>

@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import type { Participant } from "../../../types/matchDetail";
 import MatchParticipantsCard from "./MatchParticipantsCard";
 import MatchParticipantsRunes from "./MatchParticipantsRunes";
@@ -8,10 +8,43 @@ type Props = {
     variant: "blue" | "red";
     participants: Participant[];
     showDamageText: boolean;
+    handleSearchParticipant: (name: string, tag: string) => void;
 }
 
-function TeamParticipantsSection ({ title, participants, variant, showDamageText }: Props) {
+function TeamParticipantsSection ({ title, participants, variant, showDamageText, handleSearchParticipant }: Props) {
     const [openedRunesKey, setOpenedRunesKey] = useState<string | null>(null);
+    const [closingRunesKey, setClosingRunesKey] = useState<string | null>(null);
+    const closeAnimationTimeoutRef = useRef<number | null>(null);
+
+    useEffect(() => {
+        return () => {
+            if (closeAnimationTimeoutRef.current) {
+                window.clearTimeout(closeAnimationTimeoutRef.current);
+            }
+        };
+    }, []);
+
+    function handleToggleRunes(participantKey: string) {
+        if (closeAnimationTimeoutRef.current) {
+            window.clearTimeout(closeAnimationTimeoutRef.current);
+            closeAnimationTimeoutRef.current = null;
+        }
+
+        if (openedRunesKey === participantKey) {
+            setOpenedRunesKey(null);
+            setClosingRunesKey(participantKey);
+
+            closeAnimationTimeoutRef.current = window.setTimeout(() => {
+                setClosingRunesKey(null);
+                closeAnimationTimeoutRef.current = null;
+            }, 360);
+
+            return;
+        }
+
+        setClosingRunesKey(null);
+        setOpenedRunesKey(participantKey);
+    }
 
     const highestTeamDamage = Math.max(
         ...participants.map((participant) => participant.totalDamage),
@@ -28,19 +61,24 @@ function TeamParticipantsSection ({ title, participants, variant, showDamageText
                 {participants.map((participant) => {
                     const participantKey = participant.summonerName + participant.championName;
                     const isRunesOpen = openedRunesKey === participantKey;
+                    const isRunesClosing = closingRunesKey === participantKey;
+                    const shouldRenderRunes = isRunesOpen || isRunesClosing;
 
                     return (
                         <Fragment key={participantKey}>
                             <MatchParticipantsCard
-                                onClickRunes={() => setOpenedRunesKey(isRunesOpen ? null : participantKey)}
+                                handleOpenRunes={() => handleToggleRunes(participantKey)}
                                 participant={participant}
                                 highestTeamDamage={highestTeamDamage}
                                 showDamageText={showDamageText}
+                                handleSearchParticipant={handleSearchParticipant}
                             />
-                            {isRunesOpen && (
-                                <MatchParticipantsRunes
-                                    runes={participant.runes}
-                                />
+                            {shouldRenderRunes && (
+                                <div className={isRunesClosing ? "participant-runes-shell participant-runes-shell--closing" : "participant-runes-shell participant-runes-shell--open"}>
+                                    <MatchParticipantsRunes
+                                        runes={participant.runes}
+                                    />
+                                </div>
                             )}
                         </Fragment>
                     );
