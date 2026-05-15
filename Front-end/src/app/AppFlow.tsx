@@ -33,10 +33,10 @@ import {
 type Screen = "login" | "historico" | "detalhes";
 
 function AppFlow () {
-    const [playerStats, setPlayerStats] = useState<SearchHistoryData | null>(() => getCurrentPlayerHistory());
+    const [playerData, setPlayerData] = useState<SearchHistoryData | null>(() => getCurrentPlayerHistory());
     const [matchDetails, setMatchDetails] = useState<MatchDetail | null>(null);
 
-    const [screen, setScreen] = useState<Screen>(() => playerStats ? "historico" : "login");
+    const [screen, setScreen] = useState<Screen>(() => playerData ? "historico" : "login");
 
     const [searchedPlayers, setSearchedPlayers] = useState<StoredPlayer[]>([]);
 
@@ -44,10 +44,10 @@ function AppFlow () {
     const participantRequest = useRequestState();
     const matchRequest = useRequestState();
     
-    const playerProfile = playerStats?.profile;
-    const rankedStats = playerStats?.rankedStats;
-    const playerMatches = playerStats?.matches;
-    const performanceSummary = playerStats?.performanceSummary;
+    const playerProfile = playerData?.profile;
+    const rankedStats = playerData?.rankedStats;
+    const playerMatches = playerData?.matches;
+    const performanceSummary = playerData?.performanceSummary;
 
     useEffect(() => {
         setSearchedPlayers(getSearchedPlayers());
@@ -75,7 +75,7 @@ function AppFlow () {
 
         if (!response) return;
 
-        setPlayerStats(response.data);
+        setPlayerData(response.data);
         saveCurrentPlayerHistory(response.data);
 
         const icon = response.data.profile.profileIconUrl;
@@ -102,7 +102,7 @@ function AppFlow () {
         if (!response) return;
 
         setMatchDetails(null);
-        setPlayerStats(response.data);
+        setPlayerData(response.data);
         saveCurrentPlayerHistory(response.data);
 
         const icon = response.data.profile.profileIconUrl;
@@ -143,7 +143,7 @@ function AppFlow () {
     }
 
     function handleBackToLogin() {
-        setPlayerStats(null);
+        setPlayerData(null);
         setMatchDetails(null);
         clearCurrentPlayer();
         setScreen("login");

@@ -24,23 +24,23 @@ export type summonerElo = {
     winRate: string;
 }
 
-export type PlayerProfileData = {
+type PlayerProfileData = {
     puuid: string;
     summonerName: string;
     profileIconUrl: string;
     summonerLevel: string | number;
 };
 
-export type PlayerRankedStatsData = {
+type PlayerRankedStatsData = {
     elos: summonerElo[];
 };
 
-export type PlayerMatchesData = {
+type PlayerMatchesData = {
     recentMatches: MatchSummary[];
     
 };
 
-export type PlayerPerformanceData = {
+type PlayerPerformanceData = {
     mostPlayedChampions: MostPlayedChampion[];
     highestDamageChampions: HighestDamageChampion[]; 
 }
