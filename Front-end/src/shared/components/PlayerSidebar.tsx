@@ -1,4 +1,4 @@
-import type { HighestDamageChampion, MostPlayedChampion, summonerElo } from "../../services/api/types";
+import type { HighestDamageChampion, MostPlayedChampion, SummonerElo } from "../../services/api/types";
 import RemoteImage from "./RemoteImage";
 
 type Props = {
@@ -7,7 +7,7 @@ type Props = {
     profileIconUrl: string;
     mostPlayedChampions: MostPlayedChampion[];
     highestDamageChampions: HighestDamageChampion[];
-    summonerElos: summonerElo[];
+    summonerElos: SummonerElo[];
 }
 
 function formatQueueType(queueType: string) {

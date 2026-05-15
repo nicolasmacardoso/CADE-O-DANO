@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 import type { Participant } from "../../../types/matchDetail";
-import type { summonerElo } from "../../../services/api/types";
+import type { SummonerElo } from "../../../services/api/types";
 import ParticipantItems from "./ParticipantItems";
 import runesIcon from "../../../assets/runesicon.png";
 import minionIcon from "../../../assets/icon_minions.png";
@@ -14,7 +14,7 @@ type Props = {
     handleSearchParticipant: (nick: string, tag: string) => void;
 }
 
-function formatEloBadge(elo: summonerElo) {
+function formatEloBadge(elo: SummonerElo) {
     const tierLabel = elo.tier.slice(0, 3).toUpperCase();
 
     if (!elo.rank) return tierLabel;

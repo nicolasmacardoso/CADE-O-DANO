@@ -13,43 +13,48 @@ export type HighestDamageChampion = {
     highestDamage: number;
 }
 
-export type summonerElo = {
-    queueType: string;
-    leagueIconUrl: string;
-    tier: string;
-    rank: string;
-    leaguePoints: number;
+type EloResultInfo = {
     wins: number;
     losses: number;
     winRate: string;
 }
 
-type PlayerProfileData = {
+type EloRankInfo = {
+    tier: string;
+    rank: string;
+    leaguePoints: number;
+}
+
+export type SummonerElo = EloResultInfo & EloRankInfo & {
+    queueType: string;
+    leagueIconUrl: string;
+}
+
+type PlayerProfile = {
     puuid: string;
     summonerName: string;
     profileIconUrl: string;
     summonerLevel: string | number;
 };
 
-type PlayerRankedStatsData = {
-    elos: summonerElo[];
+type PlayerRankedStats = {
+    elos: SummonerElo[];
 };
 
-type PlayerMatchesData = {
+type PlayerMatches = {
     recentMatches: MatchSummary[];
-    
 };
 
-type PlayerPerformanceData = {
+type PlayerPerformanceSummary = {
     mostPlayedChampions: MostPlayedChampion[];
     highestDamageChampions: HighestDamageChampion[]; 
 }
 
 export type SearchHistoryApiData = {
-    profile: PlayerProfileData;
-    rankedStats: PlayerRankedStatsData;
-    matches: PlayerMatchesData;
-    performanceSummary: PlayerPerformanceData;
+    profile: PlayerProfile;
+    rankedStats: PlayerRankedStats;
+    matches: PlayerMatches;
+    performanceSummary: PlayerPerformanceSummary;
 };
 
 export type SearchHistoryApiResponse = {

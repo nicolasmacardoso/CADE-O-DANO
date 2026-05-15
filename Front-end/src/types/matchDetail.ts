@@ -1,4 +1,4 @@
-import type { summonerElo } from "../services/api/types";
+import type { SummonerElo } from "../services/api/types";
 
 type PerkRune = {
     name: string;
@@ -48,7 +48,7 @@ export type Participant = ParticipantKda & ChampionProps & PlayerInfo & {
     isSearchedPlayer: boolean;
     teamId: number;
     itemIconUrls: string[];
-    summonerElos?: summonerElo[];
+    summonerElos?: SummonerElo[];
     runes: Runes;
     win?: boolean;
 };
