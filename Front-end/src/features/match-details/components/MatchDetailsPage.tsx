@@ -18,12 +18,28 @@ function MatchDetailsPage ({ matchDetails, onBack, handleSearchParticipant }: Pr
         gameDuration 
     } = matchDetails; 
 
+    const selectedTeamIndex = matchDetails.teams.findIndex((team) =>
+        team.participants.some((participant) => participant.isSearchedPlayer)
+    );
+
     const teams = matchDetails.teams
-        .toSorted((firstTeam, secondTeam) => firstTeam.teamId - secondTeam.teamId)
         .map((team, index) => ({
+            team,
+            originalIndex: index,
+        }))
+        .sort((first, second) => {
+            const firstIsSelected = first.originalIndex === selectedTeamIndex;
+            const secondIsSelected = second.originalIndex === selectedTeamIndex;
+
+            if (firstIsSelected && !secondIsSelected) return -1;
+            if (!firstIsSelected && secondIsSelected) return 1;
+
+            return first.team.teamId - second.team.teamId;
+        })
+        .map(({ team }, index) => ({
             title: `Equipe ${index + 1}`,
             participants: team.participants,
-            variant: index === 0 ? "blue" : "red",
+            variant: team.teamId === 100 ? "blue" : "red",
         })) as {
             title: string;
             participants: MatchDetail["teams"][number]["participants"];
