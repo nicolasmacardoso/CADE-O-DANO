@@ -29,16 +29,22 @@ type ParticipantKda = {
     killParticipation: string;
     cs: number;
     csPerMinute: number;
-}
+};
 
-export type Participant = ParticipantKda & {
-    summonerName: string | null;
-    summonerHashtag: string | null;
+type ChampionProps = {
     championIconUrl: string | null;
     championSplashArtUrl: string | null;
     championName: string | null;
-    totalDamage: number;
     champLevel: number;
+};
+
+type PlayerInfo = {
+    summonerName: string | null;
+    summonerHashtag: string | null;
+};
+
+export type Participant = ParticipantKda & ChampionProps & PlayerInfo & {
+    totalDamage: number;
     isSearchedPlayer: boolean;
     teamId: number;
     itemIconUrls: string[];
@@ -54,11 +60,14 @@ export type MatchTeam = {
     participants: Participant[];
 };
 
-export type MatchDetail = {
-    matchId: string;
+type MatchMetadata = {
     queueType: string;
     gameStartDate?: string;
     gameDuration: string | number;
+};
+
+export type MatchDetail = MatchMetadata & {
+    matchId: string;
     totalKills?: number;
     playerWin: boolean;
     teams: MatchTeam[];
