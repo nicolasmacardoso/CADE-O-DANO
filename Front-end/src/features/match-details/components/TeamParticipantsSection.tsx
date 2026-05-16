@@ -5,6 +5,9 @@ import MatchParticipantsRunes from "./MatchParticipantsRunes";
 
 type Props = {
     title: string;
+    totalTeamKills: number;
+    totalTeamDeaths: number;
+    totalTeamAssists: number;
     variant: "blue" | "red";
     participants: Participant[];
     showDamageText: boolean;
@@ -54,7 +57,7 @@ function TeamParticipantsSection ({ title, participants, variant, showDamageText
     return (
         <section className={`team-section team-section--${variant}`}>
             <header className="team-section__header">
-                <h2>{title}</h2>
+                <h2>{title} {}</h2>
             </header>
 
             <div className="team-section__participant-list">
@@ -78,7 +81,7 @@ function TeamParticipantsSection ({ title, participants, variant, showDamageText
                                 showDamageText={showDamageText}
                                 handleSearchParticipant={handleSearchParticipant}
                             />
-                            {shouldRenderRunes && (
+                            {shouldRenderRunes && participant.runes && (
                                 <div className={isRunesClosing ? "participant-runes-shell participant-runes-shell--closing" : "participant-runes-shell participant-runes-shell--open"}>
                                     <MatchParticipantsRunes
                                         runes={participant.runes}

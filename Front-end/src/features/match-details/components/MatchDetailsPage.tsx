@@ -9,6 +9,17 @@ type Props = {
     handleSearchParticipant: (nick: string, tag: string) => void;
 }
 
+type MatchTeam = MatchDetail["teams"][number];
+
+type DisplayTeam = {
+    title: string;
+    variant: "blue" | "red";
+    participants: MatchTeam["participants"];
+    totalTeamKills: MatchTeam["totalTeamKills"];
+    totalTeamDeaths: MatchTeam["totalTeamDeaths"];
+    totalTeamAssists: MatchTeam["totalTeamAssists"];
+}
+
 function MatchDetailsPage ({ matchDetails, onBack, handleSearchParticipant }: Props) {
     const [showDamageText, setShowDamageText] = useState(false);
 
@@ -21,8 +32,8 @@ function MatchDetailsPage ({ matchDetails, onBack, handleSearchParticipant }: Pr
     const selectedTeamIndex = matchDetails.teams.findIndex((team) =>
         team.participants.some((participant) => participant.isSearchedPlayer)
     );
-
-    const teams = matchDetails.teams
+    
+    const teams: DisplayTeam[] = matchDetails.teams
         .map((team, index) => ({
             team,
             originalIndex: index,
@@ -36,15 +47,24 @@ function MatchDetailsPage ({ matchDetails, onBack, handleSearchParticipant }: Pr
 
             return first.team.teamId - second.team.teamId;
         })
-        .map(({ team }, index) => ({
-            title: `Equipe ${index + 1}`,
-            participants: team.participants,
-            variant: team.teamId === 100 ? "blue" : "red",
-        })) as {
-            title: string;
-            participants: MatchDetail["teams"][number]["participants"];
-            variant: "blue" | "red";
-        }[];
+        .map(({ team }, index) => {
+            const {
+                participants,
+                teamId,
+                totalTeamKills,
+                totalTeamDeaths,
+                totalTeamAssists,
+            } = team;
+
+            return {
+                title: `Equipe ${index + 1}`,
+                participants,
+                variant: teamId === 100 ? "blue" : "red",
+                totalTeamKills,
+                totalTeamDeaths,
+                totalTeamAssists,
+            };
+        });
 
     return (
         <div className="match-details-page">
@@ -76,13 +96,19 @@ function MatchDetailsPage ({ matchDetails, onBack, handleSearchParticipant }: Pr
             {teams.map(({ 
                 title, 
                 participants, 
-                variant 
+                variant,
+                totalTeamKills,
+                totalTeamDeaths,
+                totalTeamAssists,
             }) => (
                 <TeamParticipantsSection
                     key={title}
                     title={title}
                     participants={participants}
                     handleSearchParticipant={handleSearchParticipant}
+                    totalTeamKills={totalTeamKills}
+                    totalTeamDeaths={totalTeamDeaths}
+                    totalTeamAssists={totalTeamAssists}
                     variant={variant}
                     showDamageText={showDamageText}
                 />

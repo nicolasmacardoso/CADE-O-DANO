@@ -39,6 +39,7 @@ function MatchParticipantsCard ({ participant, highestTeamDamage, showDamageText
         isSearchedPlayer,
         itemIconUrls,
         summonerElos = [],
+        runes,
     } = participant;
 
     const damageRatio = highestTeamDamage > 0
@@ -59,9 +60,7 @@ function MatchParticipantsCard ({ participant, highestTeamDamage, showDamageText
     const damageStyle = { "--damage-ratio": damageRatio } as CSSProperties;
 
     return (
-        <div 
-            className={isSearchedPlayer ? "participant-card participant-card--selected" : "participant-card"} 
-        >
+        <div className={isSearchedPlayer ? "participant-card participant-card--selected" : "participant-card"}>
             <div className="champ-info">
                 <RemoteImage className="champion-img" src={championSplashArt} alt={championLabel}/>
                 <p className="champion-level">{champLevel}</p>
@@ -114,12 +113,14 @@ function MatchParticipantsCard ({ participant, highestTeamDamage, showDamageText
                 <p className="champion-name">{championLabel}</p>
             </div>
 
-            <button 
-                className="participant-card__runes-summary"
-                onClick={handleOpenRunes}
-            >
-                <img src={runesIcon} alt="Icone de runa padrao"/>
-            </button>
+            {!!runes && (
+                <button 
+                    className="participant-card__runes-summary"
+                    onClick={handleOpenRunes}
+                >
+                    <img src={runesIcon} alt="Icone de runa padrao"/>
+                </button>
+            )}
 
             <div className="participant-card__items-summary">
                 <ParticipantItems itemIconUrls={itemIconUrls}/>
@@ -129,15 +130,17 @@ function MatchParticipantsCard ({ participant, highestTeamDamage, showDamageText
                 <p>
                     <span>{kda}</span> <span>{killParticipation} K/P</span>
                 </p> 
-                <p>
-                    <span>
-                        {cs}
-                        <span className="participant-card__minion-icon" aria-hidden="true">
-                            <img src={minionIcon} alt="" />
-                        </span>
-                    </span> 
-                    <span>{csPerMinute} cs/m</span>
-                </p> 
+                {!!cs && (
+                    <p>
+                        <span>
+                            {cs}
+                            <span className="participant-card__minion-icon" aria-hidden="true">
+                                <img src={minionIcon} alt="" />
+                            </span>
+                        </span> 
+                        <span>{csPerMinute} cs/m</span>
+                    </p>
+                )} 
             </div>
 
             <div 

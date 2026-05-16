@@ -49,14 +49,15 @@ export type Participant = ParticipantKda & ChampionProps & PlayerInfo & {
     teamId: number;
     itemIconUrls: string[];
     summonerElos?: SummonerElo[];
-    runes: Runes;
+    runes: Runes | null;
     win?: boolean;
 };
 
-export type MatchTeam = {
+type MatchTeam = {
     teamId: number;
     totalTeamKills: number;
-    teamKDA: number;
+    totalTeamDeaths: number;
+    totalTeamAssists: number;
     participants: Participant[];
 };
 
