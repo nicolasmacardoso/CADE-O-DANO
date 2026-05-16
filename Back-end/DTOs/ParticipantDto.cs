@@ -30,4 +30,5 @@ public record ParticipantDto
 
     public bool IsSearchedPlayer { get; set; }
     public int TeamId { get; set; }
+    public int SubTeamId { get; set; }
 }

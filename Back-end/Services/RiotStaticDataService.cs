@@ -36,6 +36,36 @@ public class RiotStaticDataService : IRiotStaticDataService
         return runes!;
     }
 
+    public async Task<DataDragonChampionResponse> GetChampionsAsync()
+    {
+        const string cacheKey = "champions";
+
+        if (_cache.TryGetValue(cacheKey, out DataDragonChampionResponse? cachedChampions))
+            return cachedChampions;
+
+        var champions = await _httpClient
+            .GetFromJsonAsync<DataDragonChampionResponse>(
+                DataDragonHelper.GetChampions());
+
+        _cache.Set(cacheKey, champions, new MemoryCacheEntryOptions
+        {
+            AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(12)
+        });
+
+        return champions!;
+    }
+
+    public async Task<string?> GetChampionNameByIdAsync(string championId)
+    {
+        var response = await GetChampionsAsync();
+
+        var champions = response.Data.Values.ToList();
+
+        var champion = champions.FirstOrDefault(c => c.Key == championId);
+
+        return champion?.Name;
+    }
+
     public async Task<PerkRuneDto> GetRuneAsync(int runeId)
     {
         var runes = await GetRunesAsync();

@@ -12,7 +12,7 @@ public static class RiotExtensions
             430 => "Normal Blind",
             450 => "ARAM",
             700 => "Clash",
-            1700 => "Arena",
+            1750 => "Arena",
             _ => "Modo Desconhecido"
         };
     }
@@ -43,5 +43,10 @@ public static class RiotExtensions
             "CHALLENGER" => "Desafiante",
             _ => tier
         };
+    }
+
+    public static bool IsArenaQueue(int queueId)
+    {
+        return queueId == 1750;
     }
 }

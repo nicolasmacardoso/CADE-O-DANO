@@ -16,6 +16,9 @@ public class RiotParticipant
     [JsonPropertyName("teamId")]
     public int TeamId { get; set; }
 
+    [JsonPropertyName("playerSubteamId")]
+    public int SubTeamId { get; set; }
+
     [JsonPropertyName("championName")]
     public string? ChampionName { get; set; }
 

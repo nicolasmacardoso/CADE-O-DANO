@@ -1,7 +1,9 @@
 using AutoMapper;
 using CadeODano.Builders;
 using CadeODano.DTOs;
+using CadeODano.Helpers;
 using CadeODano.Interfaces;
+using CadeODano.Models;
 
 namespace CadeODano.Services;
 
@@ -94,30 +96,44 @@ public class PlayerDashboardService : IPlayerDashboardService
               x.Assists,
               teamKills[x.TeamId]);
 
-            var primaryStyle = x.Perks.Styles[0];
-            var secondaryStyle = x.Perks.Styles[1];
+            dto.CS = x.NeutralMinionsKilled + x.TotalMinionsKilled;
 
-            var primaryRunes = await Task.WhenAll(
-              primaryStyle.Selections.Select(x =>
-                    _riotStaticDataService.GetRuneAsync(x.Perk)));
+            dto.CSPerMinute = _statsCalculatorService.CalculateCSPM(
+              dto.CS,
+              matchData.Info.GameDuration);
+            
+            dto.KDA = _statsCalculatorService.CalculateKDA(
+              x.Kills,
+              x.Deaths,
+              x.Assists);
 
-            var secondaryRunes = await Task.WhenAll(
-                secondaryStyle.Selections.Select(x =>
-                    _riotStaticDataService.GetRuneAsync(x.Perk)));
-
-            dto.Runes = new ParticipantRunesDto
+            if (!RiotExtensions.IsArenaQueue(matchData.Info.QueueId))
             {
-              PrimaryTree = await _riotStaticDataService
-                    .GetRuneStyleAsync(primaryStyle.StyleId),
 
-              SecondaryTree = await _riotStaticDataService
-                    .GetRuneStyleAsync(secondaryStyle.StyleId),
+              var primaryStyle = x.Perks.Styles[0];
+              var secondaryStyle = x.Perks.Styles[1];
 
-              PrimaryPerkRunes = primaryRunes.ToList(),
+              var primaryRunes = await Task.WhenAll(
+                primaryStyle.Selections.Select(x =>
+                      _riotStaticDataService.GetRuneAsync(x.Perk)));
 
-              SecondaryPerkRunes = secondaryRunes.ToList()
-            };
+              var secondaryRunes = await Task.WhenAll(
+                  secondaryStyle.Selections.Select(x =>
+                      _riotStaticDataService.GetRuneAsync(x.Perk)));
 
+              dto.Runes = new ParticipantRunesDto
+              {
+                PrimaryTree = await _riotStaticDataService
+                      .GetRuneStyleAsync(primaryStyle.StyleId),
+
+                SecondaryTree = await _riotStaticDataService
+                      .GetRuneStyleAsync(secondaryStyle.StyleId),
+
+                PrimaryPerkRunes = primaryRunes.ToList(),
+
+                SecondaryPerkRunes = secondaryRunes.ToList()
+              };
+            }
             return dto;
           });
 
@@ -128,6 +144,7 @@ public class PlayerDashboardService : IPlayerDashboardService
           matchData.Info.QueueId,
           matchData.Info.GameDuration,
           matchData.Info.gameStartTimestamp,
+          matchData.Info.Teams,
           participants);
 
       return ServiceResult<MatchDetailsDto>.Success(dto);

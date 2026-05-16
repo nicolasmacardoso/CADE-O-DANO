@@ -25,6 +25,8 @@ public class DataDragonHelper
     public static string GetRuneIcon(string iconPath)
         => $"https://ddragon.leagueoflegends.com/cdn/img/{iconPath}";
 
+    public static string GetChampions()
+        => $"https://ddragon.leagueoflegends.com/cdn/{version}/data/pt_BR/champion.json";
     public static List<string?> GetItemIconUrls(params int[] itemIds)
     {
         return itemIds

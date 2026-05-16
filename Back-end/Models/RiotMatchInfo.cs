@@ -13,6 +13,9 @@ public class RiotMatchInfo
   [JsonPropertyName("gameStartTimestamp")]
   public long gameStartTimestamp{get;set;}
 
+  [JsonPropertyName("teams")]
+  public List<Teams> Teams { get; set; } = null!;
+
   [JsonPropertyName("participants")]
   public List<RiotParticipant> Participants { get; set; } = null!;
 }
