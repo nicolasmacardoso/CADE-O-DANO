@@ -126,10 +126,10 @@ function LoginPage({ onSearch, loading, historyError, searchedPlayers }: Props) 
                 <p className="login-hero__eyebrow">League analytics</p>
                 <h1 id="login-title">Cade o dano?</h1>
                 <p className="login-hero__description">
-                    Analise historico, dano, KDA, builds, runas e desempenho real das partidas em uma interface feita para leitura rapida.
+                    Analise histórico, dano, KDA, builds, runas e desempenho real das partidas em uma interface feita para leitura rápida.
                 </p>
                 <div className="login-hero__metrics" aria-label="Recursos principais">
-                    <span>Historico</span>
+                    <span>Histórico</span>
                     <span>Dano</span>
                     <span>Runas</span>
                 </div>
@@ -138,7 +138,6 @@ function LoginPage({ onSearch, loading, historyError, searchedPlayers }: Props) 
             <div className="login-form" aria-label="Buscar jogador">
                 <div className="login-form__header">
                     <p>Buscar invocador</p>
-                    <span>Riot ID</span>
                 </div>
 
                 <div 

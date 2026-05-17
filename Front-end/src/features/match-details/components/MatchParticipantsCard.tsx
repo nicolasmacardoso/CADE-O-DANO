@@ -155,17 +155,15 @@ function MatchParticipantsCard ({ participant, highestTeamDamage, showDamageText
             </div>
 
             <div 
-                className="participant-card__damage"
+                className={showDamageText ? "participant-card__damage participant-card__damage--expanded" : "participant-card__damage"}
                 data-damage={`Dano total: ${totalDamage}`}
             >
                 <div className="participant-card__damage-bar" />
 
-                {showDamageText && (
-                    <div className="participant-card__damage-details">
-                        <strong>{totalDamage.toLocaleString("pt-BR")}</strong>
-                        <span>{damagePercent}% do maior dano</span>
-                    </div>
-                )}
+                <div className="participant-card__damage-details" aria-hidden={!showDamageText}>
+                    <strong>{totalDamage.toLocaleString("pt-BR")}</strong>
+                    <span>{damagePercent}% do maior dano</span>
+                </div>
             </div>
         </div>
     );

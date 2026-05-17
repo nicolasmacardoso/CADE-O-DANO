@@ -87,7 +87,7 @@ function MatchCard ({ match, maxDamageInList, minDamageInList, onSelectMatch, is
             <p className="match-kda">{kills}/{deaths}/{assists}</p>
 
             <div
-                className="match-card__damage-summary"
+                className={showDamageText ? "match-card__damage-summary match-card__damage-summary--expanded" : "match-card__damage-summary"}
                 data-damage-tooltip={`Dano: ${totalDamage} | ${damagePercent}% do maior dano da lista`}
                 style={{ "--history-damage-ratio": damageRatio } as CSSProperties}
             >
@@ -100,12 +100,10 @@ function MatchCard ({ match, maxDamageInList, minDamageInList, onSelectMatch, is
                 <div className="match-card__damage-bar">
                 </div>
 
-                {showDamageText && (
-                    <div className="match-card__damage-details">
-                        <strong>{totalDamage.toLocaleString("pt-BR")}</strong>
-                        <span>{damagePercent}% do maior dano</span>
-                    </div>
-                )}
+                <div className="match-card__damage-details" aria-hidden={!showDamageText}>
+                    <strong>{totalDamage.toLocaleString("pt-BR")}</strong>
+                    <span>{damagePercent}% do maior dano</span>
+                </div>
             </div>
         </button>
     );

@@ -23,6 +23,11 @@
   --shadow: 0 22px 70px rgba(0, 0, 0, 0.45);
   --shadow-soft: 0 12px 34px rgba(0, 0, 0, 0.28);
   --radius: 8px;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-smooth: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --motion-fast: 160ms;
+  --motion-base: 240ms;
+  --motion-slow: 420ms;
   --sans: "Segoe UI", Roboto, Arial, sans-serif;
   --mono: "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
   font-family: var(--sans);
@@ -79,6 +84,10 @@ body,
   min-height: 100%;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   min-width: 320px;
   margin: 0;
@@ -128,13 +137,13 @@ input {
 button:focus-visible,
 input:focus-visible,
 [tabindex]:focus-visible {
-  outline: 3px solid rgba(65, 217, 255, 0.85);
+  outline: 3px solid color-mix(in srgb, var(--rune-tree-title, var(--gold)) 82%, white 18%);
   outline-offset: 3px;
 }
 
 .remote-image {
   opacity: 1;
-  transition: opacity 0.22s ease, filter 0.22s ease, transform 0.22s ease;
+  transition: opacity var(--motion-base) var(--ease-smooth), filter var(--motion-base) var(--ease-smooth), transform var(--motion-base) var(--ease-out);
 }
 
 .remote-image--loading {
@@ -190,6 +199,11 @@ input:focus-visible,
 
 .login-hero {
   max-width: 760px;
+  animation: contentRise 0.56s var(--ease-out) both;
+}
+
+.login-form {
+  animation: panelEnter 0.62s 90ms var(--ease-out) both;
 }
 
 .login-hero__eyebrow,
@@ -266,14 +280,6 @@ input:focus-visible,
   font-weight: 800;
 }
 
-.login-form__header span {
-  color: var(--cyan);
-  font-family: var(--mono);
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
 .user-field {
   position: relative;
   width: 100%;
@@ -287,7 +293,7 @@ input:focus-visible,
   border-radius: var(--radius);
   background: rgba(255, 255, 255, 0.08);
   color: var(--text);
-  transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+  transition: transform var(--motion-base) var(--ease-out), border-color var(--motion-base) var(--ease-smooth), box-shadow var(--motion-base) var(--ease-smooth), background var(--motion-base) var(--ease-smooth);
 }
 
 .login-form input {
@@ -300,6 +306,7 @@ input:focus-visible,
 
 .login-form input:focus,
 .tag-field:focus-within {
+  transform: translateY(-1px);
   border-color: rgba(65, 217, 255, 0.72);
   background: rgba(255, 255, 255, 0.12);
   box-shadow: 0 0 0 4px rgba(65, 217, 255, 0.14);
@@ -317,6 +324,10 @@ input:focus-visible,
   border: 0;
   background: transparent;
   box-shadow: none;
+}
+
+.tag-field input:focus {
+  transform: none;
 }
 
 .tag-hashtag {
@@ -345,13 +356,17 @@ input:focus-visible,
   box-shadow: 0 18px 36px rgba(255, 143, 68, 0.26);
   font-weight: 800;
   text-transform: uppercase;
-  transition: transform 0.18s ease, filter 0.18s ease, box-shadow 0.18s ease;
+  transition: transform var(--motion-base) var(--ease-out), filter var(--motion-base) var(--ease-smooth), box-shadow var(--motion-base) var(--ease-smooth);
 }
 
 .search-button:hover:not(:disabled) {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
   filter: brightness(1.06);
   box-shadow: 0 22px 42px rgba(255, 143, 68, 0.34);
+}
+
+.search-button:active:not(:disabled) {
+  transform: translateY(-1px) scale(0.995);
 }
 
 .search-button:disabled {
@@ -395,12 +410,12 @@ input:focus-visible,
   background: rgba(255, 255, 255, 0.055);
   color: var(--text);
   text-align: left;
-  transition: transform 0.16s ease, border-color 0.16s ease, background 0.16s ease;
+  transition: transform var(--motion-base) var(--ease-out), border-color var(--motion-base) var(--ease-smooth), background var(--motion-base) var(--ease-smooth);
 }
 
 .searched-players__button--selected,
 .searched-players__button:hover {
-  transform: translateX(3px);
+  transform: translateX(4px);
   border-color: rgba(65, 217, 255, 0.36);
   background: rgba(65, 217, 255, 0.15);
 }
@@ -540,6 +555,7 @@ input:focus-visible,
   overflow-y: auto;
   scrollbar-gutter: stable;
   padding: 40px 42px 56px;
+  animation: contentRise 0.42s var(--ease-out) both;
 }
 
 .app-layout__sidebar {
@@ -549,7 +565,11 @@ input:focus-visible,
   height: 100vh;
   overflow-y: auto;
   border-left: 1px solid rgba(255, 255, 255, 0.11);
-  background: rgba(5, 8, 15, 0.9);
+  background:
+    radial-gradient(circle at 18% 8%, rgba(65, 217, 255, 0.09), transparent 30%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.045), transparent 34%),
+    linear-gradient(135deg, rgba(248, 213, 107, 0.045), transparent 42%),
+    rgba(5, 8, 15, 0.9);
   backdrop-filter: blur(22px);
 }
 
@@ -566,6 +586,13 @@ input:focus-visible,
   background: linear-gradient(135deg, var(--gold), #ff8a4c);
   color: #130c04;
   box-shadow: var(--shadow-soft);
+  transition: transform var(--motion-base) var(--ease-out), filter var(--motion-base) var(--ease-smooth), box-shadow var(--motion-base) var(--ease-smooth);
+}
+
+.app-layout__sidebar-button:hover {
+  transform: translateY(-3px) scale(1.03);
+  filter: brightness(1.05);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.36);
 }
 
 .backButton {
@@ -578,13 +605,14 @@ input:focus-visible,
   background: rgba(255, 255, 255, 0.08);
   color: var(--text);
   font-weight: 700;
-  transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+  transition: transform var(--motion-base) var(--ease-out), background var(--motion-base) var(--ease-smooth), border-color var(--motion-base) var(--ease-smooth), box-shadow var(--motion-base) var(--ease-smooth);
 }
 
 .backButton:hover {
   transform: translateX(-2px);
   border-color: rgba(248, 213, 107, 0.42);
   background: rgba(248, 213, 107, 0.12);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.22);
 }
 
 .history-page,
@@ -611,10 +639,14 @@ input:focus-visible,
   border: 1px solid var(--line);
   background: rgba(255, 255, 255, 0.08);
   color: var(--cyan);
+  transition: transform var(--motion-base) var(--ease-out), background var(--motion-base) var(--ease-smooth), border-color var(--motion-base) var(--ease-smooth), box-shadow var(--motion-base) var(--ease-smooth);
 }
 
 .history-page__refresh-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  border-color: rgba(65, 217, 255, 0.36);
   background: rgba(65, 217, 255, 0.14);
+  box-shadow: 0 12px 28px rgba(65, 217, 255, 0.12);
 }
 
 .history-page__header {
@@ -669,6 +701,13 @@ input:focus-visible,
   color: var(--text-soft);
   font-size: 0.86rem;
   font-weight: 700;
+  transition: transform var(--motion-base) var(--ease-out), background var(--motion-base) var(--ease-smooth), border-color var(--motion-base) var(--ease-smooth);
+}
+
+.damage-toggle:hover {
+  transform: translateY(-1px);
+  border-color: rgba(65, 217, 255, 0.28);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .damage-toggle__input {
@@ -682,7 +721,7 @@ input:focus-visible,
   height: 24px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.14);
-  transition: background 0.18s ease;
+  transition: background var(--motion-base) var(--ease-smooth), box-shadow var(--motion-base) var(--ease-smooth);
 }
 
 .damage-toggle__control::before {
@@ -694,7 +733,7 @@ input:focus-visible,
   height: 16px;
   border-radius: 50%;
   background: #fff;
-  transition: transform 0.18s ease;
+  transition: transform var(--motion-base) var(--ease-out), box-shadow var(--motion-base) var(--ease-smooth);
 }
 
 .damage-toggle__input:checked + .damage-toggle__control {
@@ -703,6 +742,7 @@ input:focus-visible,
 
 .damage-toggle__input:checked + .damage-toggle__control::before {
   transform: translateX(18px);
+  box-shadow: 0 0 14px rgba(255, 255, 255, 0.24);
 }
 
 .damage-toggle__input:focus-visible + .damage-toggle__control {
@@ -713,6 +753,17 @@ input:focus-visible,
   display: grid;
   gap: 14px;
 }
+
+.match-list > * {
+  animation: listItemEnter 0.42s var(--ease-out) both;
+}
+
+.match-list > *:nth-child(2) { animation-delay: 40ms; }
+.match-list > *:nth-child(3) { animation-delay: 80ms; }
+.match-list > *:nth-child(4) { animation-delay: 120ms; }
+.match-list > *:nth-child(5) { animation-delay: 160ms; }
+.match-list > *:nth-child(6) { animation-delay: 200ms; }
+.match-list > *:nth-child(n + 7) { animation-delay: 240ms; }
 
 .history-page__content {
   display: grid;
@@ -727,6 +778,7 @@ input:focus-visible,
   display: grid;
   gap: 24px;
   margin-top: -28px;
+  animation: panelEnter 0.46s 120ms var(--ease-out) both;
 }
 
 .history-insights__section {
@@ -744,6 +796,13 @@ input:focus-visible,
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: var(--radius);
   background: rgba(255, 255, 255, 0.065);
+  transition: transform var(--motion-base) var(--ease-out), background var(--motion-base) var(--ease-smooth), border-color var(--motion-base) var(--ease-smooth);
+}
+
+.history-insights__champion:hover {
+  transform: translateX(3px);
+  border-color: rgba(65, 217, 255, 0.28);
+  background: rgba(255, 255, 255, 0.09);
 }
 
 .history-insights__champion .champion-icon {
@@ -791,7 +850,8 @@ input:focus-visible,
   color: var(--text);
   box-shadow: var(--shadow-soft);
   text-align: left;
-  transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+  transition: transform var(--motion-base) var(--ease-out), border-color var(--motion-base) var(--ease-smooth), background var(--motion-base) var(--ease-smooth), box-shadow var(--motion-base) var(--ease-smooth), filter var(--motion-base) var(--ease-smooth);
+  will-change: transform;
 }
 
 .match-card--loss {
@@ -811,7 +871,7 @@ input:focus-visible,
 }
 
 .match-card:hover:not(:disabled) {
-  transform: translateY(-2px);
+  transform: translateY(-4px);
   border-color: rgba(65, 217, 255, 0.5);
   background:
     linear-gradient(90deg, rgba(65, 217, 255, 0.13), transparent 32%),
@@ -819,6 +879,10 @@ input:focus-visible,
   box-shadow:
     0 16px 42px rgba(0, 0, 0, 0.34),
     0 0 0 1px rgba(65, 217, 255, 0.16);
+}
+
+.match-card:active:not(:disabled) {
+  transform: translateY(-1px) scale(0.998);
 }
 
 .match-card:disabled {
@@ -865,6 +929,14 @@ input:focus-visible,
   border-radius: var(--radius);
   background: linear-gradient(135deg, var(--gold), var(--cyan));
   padding: 2px;
+  transition: transform var(--motion-base) var(--ease-out), box-shadow var(--motion-base) var(--ease-smooth), filter var(--motion-base) var(--ease-smooth);
+}
+
+.match-card:hover .champ-icon__frame,
+.participant-card:hover .champ-info,
+.player-sidebar__header:hover .player-icon {
+  transform: translateY(-1px) scale(1.02);
+  filter: brightness(1.06);
 }
 
 .champion-img,
@@ -970,38 +1042,108 @@ input:focus-visible,
   display: grid;
   align-self: stretch;
   align-content: center;
-  gap: 8px;
   width: 100%;
   min-height: 58px;
+  padding: 9px 10px;
+  border: 1px solid color-mix(in srgb, var(--match-color) 12%, rgba(255, 255, 255, 0.045));
+  border-radius: var(--radius);
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--match-color) 4%, transparent), transparent 72%),
+    rgba(255, 255, 255, 0.018);
+}
+
+.match-card__damage-summary::after {
+  content: attr(data-damage-tooltip);
+  position: absolute;
+  z-index: 12;
+  right: 0;
+  bottom: calc(100% + 10px);
+  min-width: max-content;
+  max-width: 260px;
+  padding: 8px 10px;
+  border: 1px solid color-mix(in srgb, var(--match-color) 42%, rgba(255, 255, 255, 0.16));
+  border-radius: var(--radius);
+  background: rgba(8, 11, 19, 0.98);
+  color: var(--text);
+  box-shadow: var(--shadow-soft), 0 0 18px var(--match-glow);
+  font-family: var(--mono);
+  font-size: 0.76rem;
+  font-weight: 800;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(6px);
+  transition: opacity var(--motion-fast) var(--ease-smooth), transform var(--motion-base) var(--ease-out);
+}
+
+.match-card__damage-summary:hover::after,
+.match-card:focus-visible .match-card__damage-summary::after {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .match-card__damage-bar,
 .participant-card__damage-bar {
+  --damage-color: var(--match-color, var(--team-color));
+  --damage-glow: var(--match-glow, var(--team-glow));
   position: relative;
   overflow: hidden;
-  height: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 4px;
+  height: 22px;
+  padding: 3px;
+  border: 1px solid color-mix(in srgb, var(--damage-color) 24%, rgba(255, 255, 255, 0.08));
+  border-radius: var(--radius);
   background:
-    repeating-linear-gradient(90deg, transparent 0 17px, rgba(255, 255, 255, 0.12) 17px 18px),
-    rgba(255, 255, 255, 0.08);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(0, 0, 0, 0.16)),
+    color-mix(in srgb, var(--damage-color) 4%, rgba(7, 10, 18, 0.92));
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.2),
+    inset 0 -8px 14px rgba(0, 0, 0, 0.24);
+  transition: border-color var(--motion-base) var(--ease-smooth), background var(--motion-base) var(--ease-smooth), box-shadow var(--motion-base) var(--ease-smooth);
 }
 
 .match-card__damage-bar::before,
 .participant-card__damage-bar::before {
   content: "";
   position: absolute;
-  inset: 0 auto 0 0;
-  width: calc(var(--history-damage-ratio, var(--damage-ratio, 0)) * 100%);
+  inset: 3px auto 3px 3px;
+  width: calc(100% - 6px);
+  border-radius: calc(var(--radius) - 2px);
   background:
-    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.22) 0 1px, transparent 1px 18px),
-    linear-gradient(
-      90deg,
-      color-mix(in srgb, var(--match-color, var(--team-color)) 76%, #ffffff),
-      var(--match-color, var(--team-color))
-    );
-  box-shadow: 0 0 14px var(--match-glow, var(--team-glow));
+    linear-gradient(90deg, transparent calc(100% - 14px), color-mix(in srgb, var(--damage-color) 64%, white 22%)),
+    linear-gradient(180deg, color-mix(in srgb, var(--damage-color) 28%, white 10%), transparent 58%, rgba(0, 0, 0, 0.12)),
+    linear-gradient(90deg, color-mix(in srgb, var(--damage-color) 48%, white), color-mix(in srgb, var(--damage-color) 92%, white 8%));
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--damage-color) 24%, rgba(255, 255, 255, 0.14)),
+    0 0 13px color-mix(in srgb, var(--damage-glow) 38%, transparent);
+  transform: scaleX(var(--history-damage-ratio, var(--damage-ratio, 0)));
+  transform-origin: left center;
+  transition: transform 0.58s var(--ease-out), filter var(--motion-base) var(--ease-smooth);
+}
+
+.match-card__damage-bar::after,
+.participant-card__damage-bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--damage-color) 8%, transparent), transparent 24%, transparent 76%, color-mix(in srgb, var(--damage-color) 6%, transparent));
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: 0.72;
+}
+
+.match-card:hover .match-card__damage-bar,
+.participant-card:hover .participant-card__damage-bar {
+  border-color: color-mix(in srgb, var(--damage-color) 58%, rgba(255, 255, 255, 0.2));
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.18),
+    inset 0 -8px 14px rgba(0, 0, 0, 0.2),
+    0 0 14px color-mix(in srgb, var(--damage-glow) 20%, transparent);
+}
+
+.match-card:hover .match-card__damage-bar::before,
+.participant-card:hover .participant-card__damage-bar::before {
+  filter: brightness(1.12) saturate(1.12);
 }
 
 .match-card__damage-indicator {
@@ -1018,6 +1160,23 @@ input:focus-visible,
   grid-template-columns: 1fr;
   gap: 2px;
   margin-top: 2px;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transform: translateY(-6px);
+  filter: blur(3px);
+  transition:
+    max-height 0.34s var(--ease-out),
+    opacity 0.24s var(--ease-smooth),
+    transform 0.34s var(--ease-out),
+    filter 0.34s var(--ease-smooth);
+}
+
+.match-card__damage-summary--expanded .match-card__damage-details {
+  max-height: 48px;
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
 }
 
 .match-card__damage-details strong {
@@ -1071,6 +1230,12 @@ input:focus-visible,
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.035)),
     rgba(255, 255, 255, 0.045);
+  transition: transform var(--motion-base) var(--ease-out), border-color var(--motion-base) var(--ease-smooth), background var(--motion-base) var(--ease-smooth);
+}
+
+.player-sidebar__header:hover {
+  transform: translateY(-2px);
+  border-color: rgba(65, 217, 255, 0.24);
 }
 
 .player-icon {
@@ -1121,6 +1286,15 @@ input:focus-visible,
     linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.035)),
     rgba(255, 255, 255, 0.045);
   align-items: center;
+  transition: transform var(--motion-base) var(--ease-out), border-color var(--motion-base) var(--ease-smooth), background var(--motion-base) var(--ease-smooth);
+}
+
+.player-sidebar__elo:hover {
+  transform: translateX(-3px);
+  border-color: rgba(248, 213, 107, 0.26);
+  background:
+    linear-gradient(180deg, rgba(248, 213, 107, 0.08), rgba(255, 255, 255, 0.035)),
+    rgba(255, 255, 255, 0.06);
 }
 
 .player-sidebar__elo-icon {
@@ -1174,6 +1348,13 @@ input:focus-visible,
   gap: 6px 10px;
   align-items: center;
   padding: 10px;
+  transition: transform var(--motion-base) var(--ease-out), border-color var(--motion-base) var(--ease-smooth), background var(--motion-base) var(--ease-smooth);
+}
+
+.player-sidebar__champion:hover {
+  transform: translateX(-3px);
+  border-color: rgba(65, 217, 255, 0.24);
+  background: rgba(255, 255, 255, 0.09);
 }
 
 .player-sidebar__champion .champion-icon {
@@ -1220,6 +1401,7 @@ input:focus-visible,
   border-radius: var(--radius);
   background: rgba(12, 18, 30, 0.8);
   box-shadow: var(--shadow-soft);
+  animation: panelEnter 0.44s var(--ease-out) both;
 }
 
 .team-section--blue {
@@ -1306,7 +1488,7 @@ input:focus-visible,
   background:
     linear-gradient(90deg, color-mix(in srgb, var(--team-color) 10%, transparent), transparent 38%),
     rgba(255, 255, 255, 0.055);
-  transition: background 0.18s ease;
+  transition: transform var(--motion-base) var(--ease-out), background var(--motion-base) var(--ease-smooth), box-shadow var(--motion-base) var(--ease-smooth);
 }
 
 .participant-card::after {
@@ -1346,9 +1528,11 @@ input:focus-visible,
 }
 
 .participant-card:hover {
+  transform: translateX(3px);
   background:
     linear-gradient(90deg, color-mix(in srgb, var(--team-color) 14%, transparent), transparent 40%),
     rgba(255, 255, 255, 0.085);
+  box-shadow: inset 3px 0 0 color-mix(in srgb, var(--team-color) 70%, transparent);
 }
 
 .participant-card--selected {
@@ -1396,6 +1580,7 @@ input:focus-visible,
   color: var(--text);
   font-weight: 750;
   text-align: left;
+  transition: color var(--motion-fast) var(--ease-smooth), transform var(--motion-fast) var(--ease-out);
 }
 
 .participant-card__player-name .name {
@@ -1407,6 +1592,7 @@ input:focus-visible,
 
 .participant-card__player-name:hover:not(:disabled) {
   color: var(--cyan);
+  transform: translateX(2px);
 }
 
 .participant-card__elo {
@@ -1424,6 +1610,12 @@ input:focus-visible,
   color: var(--gold);
   font-size: 0.72rem;
   font-weight: 800;
+  transition: background var(--motion-base) var(--ease-smooth), transform var(--motion-base) var(--ease-out);
+}
+
+.participant-card__elo:hover .participant-card__elo-badge {
+  transform: translateY(-1px);
+  background: rgba(248, 213, 107, 0.22);
 }
 
 .participant-card__elo-tooltip,
@@ -1433,7 +1625,7 @@ input:focus-visible,
   pointer-events: none;
   opacity: 0;
   transform: translateY(8px);
-  transition: opacity 0.16s ease, transform 0.16s ease;
+  transition: opacity var(--motion-fast) var(--ease-smooth), transform var(--motion-base) var(--ease-out);
 }
 
 .participant-card__elo-tooltip {
@@ -1480,12 +1672,14 @@ input:focus-visible,
   place-items: center;
   border: 1px solid rgba(248, 213, 107, 0.28);
   background: rgba(248, 213, 107, 0.12);
-  transition: transform 0.18s ease, background 0.18s ease;
+  transition: transform var(--motion-base) var(--ease-out), background var(--motion-base) var(--ease-smooth), border-color var(--motion-base) var(--ease-smooth), box-shadow var(--motion-base) var(--ease-smooth);
 }
 
 .participant-card__runes-summary:hover {
-  transform: translateY(-1px);
+  transform: translateY(-2px) rotate(-2deg);
+  border-color: rgba(248, 213, 107, 0.45);
   background: rgba(248, 213, 107, 0.2);
+  box-shadow: 0 10px 24px rgba(248, 213, 107, 0.1);
 }
 
 .participant-card__runes-summary img {
@@ -1517,6 +1711,13 @@ input:focus-visible,
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.13);
   background: rgba(255, 255, 255, 0.07);
+  transition: transform var(--motion-base) var(--ease-out), border-color var(--motion-base) var(--ease-smooth), box-shadow var(--motion-base) var(--ease-smooth);
+}
+
+.participant-card__item-slot:hover {
+  transform: translateY(-2px);
+  border-color: rgba(65, 217, 255, 0.3);
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.22);
 }
 
 .participant-card__item-slot--loading::before {
@@ -1535,7 +1736,12 @@ input:focus-visible,
   object-fit: cover;
   opacity: 0;
   transform: scale(0.94);
-  transition: opacity 0.18s ease, transform 0.18s ease;
+  transition: opacity var(--motion-base) var(--ease-smooth), transform var(--motion-base) var(--ease-out), filter var(--motion-base) var(--ease-smooth);
+}
+
+.participant-card__item-slot:hover .participant-card__item-icon {
+  filter: brightness(1.08);
+  transform: scale(1.04);
 }
 
 .participant-card__item-slot--loaded .participant-card__item-icon {
@@ -1593,6 +1799,12 @@ input:focus-visible,
   align-content: center;
   gap: 8px;
   min-height: 58px;
+  padding: 9px 10px;
+  border: 1px solid color-mix(in srgb, var(--team-color) 12%, rgba(255, 255, 255, 0.045));
+  border-radius: var(--radius);
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--team-color) 4%, transparent), transparent 72%),
+    rgba(255, 255, 255, 0.018);
 }
 
 .participant-card__damage::after {
@@ -1615,7 +1827,7 @@ input:focus-visible,
   opacity: 0;
   pointer-events: none;
   transform: translateY(6px);
-  transition: opacity 0.16s ease, transform 0.16s ease;
+  transition: opacity var(--motion-fast) var(--ease-smooth), transform var(--motion-base) var(--ease-out);
 }
 
 .participant-card__damage:hover::after,
@@ -1627,6 +1839,23 @@ input:focus-visible,
 .participant-card__damage-details {
   display: grid;
   gap: 2px;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transform: translateY(-6px);
+  filter: blur(3px);
+  transition:
+    max-height 0.34s var(--ease-out),
+    opacity 0.24s var(--ease-smooth),
+    transform 0.34s var(--ease-out),
+    filter 0.34s var(--ease-smooth);
+}
+
+.participant-card__damage--expanded .participant-card__damage-details {
+  max-height: 48px;
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
 }
 
 .participant-card__damage-details strong {
@@ -1643,16 +1872,40 @@ input:focus-visible,
 }
 
 .participant-runes-shell {
+  position: relative;
   overflow: hidden;
+  transform-origin: top center;
+  will-change: max-height, opacity, transform, clip-path, filter;
+}
+
+.participant-runes-shell::before {
+  content: "";
+  position: absolute;
+  z-index: 8;
+  inset: 0;
+  background:
+    linear-gradient(90deg, transparent, color-mix(in srgb, var(--team-color, var(--cyan)) 28%, transparent), transparent),
+    linear-gradient(180deg, color-mix(in srgb, var(--team-color, var(--cyan)) 16%, transparent), transparent 28%);
+  opacity: 0;
+  transform: translateY(-100%);
+  pointer-events: none;
 }
 
 .participant-runes-shell--open {
   overflow: visible;
-  animation: runesOpen 0.28s ease both;
+  animation: runesOpen 0.62s var(--ease-out) both;
+}
+
+.participant-runes-shell--open::before {
+  animation: runesRevealSweep 0.74s var(--ease-out) both;
 }
 
 .participant-runes-shell--closing {
-  animation: runesClose 0.22s ease both;
+  animation: runesClose 0.42s var(--ease-smooth) both;
+}
+
+.participant-runes-shell--closing::before {
+  animation: runesCloseSweep 0.42s var(--ease-smooth) both;
 }
 
 .participant-runes {
@@ -1695,6 +1948,7 @@ input:focus-visible,
   opacity: calc(var(--featured-rune-opacity, 0.3) * 0.9);
   transform: translate(-50%, -50%);
   filter: saturate(0.98) contrast(1.12) drop-shadow(0 0 20px color-mix(in srgb, var(--participant-runes-glow, rgba(248, 213, 107, 0.32)) 58%, transparent));
+  animation: runeSigilFloat 5.8s var(--ease-smooth) infinite alternate;
 }
 
 .participant-runes__featured-rune img {
@@ -1714,6 +1968,11 @@ input:focus-visible,
   border: 0;
   background: transparent;
   backdrop-filter: none;
+  animation: listItemEnter 0.46s var(--ease-out) both;
+}
+
+.participant-runes__tree:nth-of-type(2) {
+  animation-delay: 90ms;
 }
 
 .participant-runes__tree--precision {
@@ -1764,6 +2023,8 @@ input:focus-visible,
     repeating-linear-gradient(180deg, transparent 0 18px, rgba(255, 255, 255, 0.22) 18px 20px);
   box-shadow: 0 0 10px color-mix(in srgb, var(--rune-tree-glow) 58%, transparent);
   opacity: 0.76;
+  transform-origin: top;
+  animation: runeLineDraw 0.62s 90ms var(--ease-out) both;
 }
 
 .participant-runes__tree::after {
@@ -1815,7 +2076,7 @@ input:focus-visible,
     0 0 0 3px rgba(0, 0, 0, 0.42),
     0 8px 18px rgba(0, 0, 0, 0.34),
     0 0 12px color-mix(in srgb, var(--rune-tree-glow) 46%, transparent);
-  transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+  transition: transform var(--motion-base) var(--ease-out), border-color var(--motion-base) var(--ease-smooth), box-shadow var(--motion-base) var(--ease-smooth), filter var(--motion-base) var(--ease-smooth);
 }
 
 .participant-runes__tree-icon::before {
@@ -1929,8 +2190,9 @@ input:focus-visible,
 .participant-runes__keystone-icon:focus-visible,
 .participant-runes__perk-icon:hover,
 .participant-runes__perk-icon:focus-visible {
-  transform: translateY(-1px) scale(1.03);
+  transform: translateY(-2px) scale(1.045);
   border-color: color-mix(in srgb, var(--rune-tree-title, var(--gold)) 82%, white 18%);
+  filter: brightness(1.08);
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.07),
     inset 0 -8px 18px rgba(0, 0, 0, 0.22),
@@ -2005,6 +2267,70 @@ input:focus-visible,
   }
 }
 
+@keyframes contentRise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes panelEnter {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes sidebarEnter {
+  from {
+    opacity: 0;
+    transform: translateX(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes listItemEnter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes runeSigilFloat {
+  from {
+    transform: translate(-50%, -50%) scale(0.985);
+  }
+  to {
+    transform: translate(-50%, calc(-50% - 6px)) scale(1.02);
+  }
+}
+
+@keyframes runeLineDraw {
+  from {
+    opacity: 0;
+    transform: translateX(-0.5px) scaleY(0.12);
+  }
+  to {
+    opacity: 0.76;
+    transform: translateX(-0.5px) scaleY(1);
+  }
+}
+
 @keyframes alertIn {
   from {
     opacity: 0;
@@ -2022,10 +2348,20 @@ input:focus-visible,
   from {
     max-height: 0;
     opacity: 0;
+    clip-path: inset(0 0 100% 0 round var(--radius));
+    filter: blur(10px) saturate(0.72);
+    transform: translateY(-18px) scaleY(0.94);
+  }
+  48% {
+    opacity: 1;
+    filter: blur(2px) saturate(1.06);
   }
   to {
     max-height: 700px;
     opacity: 1;
+    clip-path: inset(0 0 0 0 round var(--radius));
+    filter: blur(0) saturate(1);
+    transform: translateY(0) scaleY(1);
   }
 }
 
@@ -2033,14 +2369,59 @@ input:focus-visible,
   from {
     max-height: 700px;
     opacity: 1;
+    clip-path: inset(0 0 0 0 round var(--radius));
+    filter: blur(0) saturate(1);
+    transform: translateY(0) scaleY(1);
+  }
+  45% {
+    opacity: 0.76;
+    clip-path: inset(0 0 18% 0 round var(--radius));
+    filter: blur(2px) saturate(0.88);
   }
   to {
     max-height: 0;
     opacity: 0;
+    clip-path: inset(0 0 100% 0 round var(--radius));
+    filter: blur(9px) saturate(0.62);
+    transform: translateY(-14px) scaleY(0.96);
+  }
+}
+
+@keyframes runesRevealSweep {
+  0% {
+    opacity: 0;
+    transform: translateY(-110%);
+  }
+  30% {
+    opacity: 0.88;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(105%);
+  }
+}
+
+@keyframes runesCloseSweep {
+  0% {
+    opacity: 0;
+    transform: translateY(105%);
+  }
+  42% {
+    opacity: 0.54;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-110%);
   }
 }
 
 /* Responsive layout */
+@media (min-width: 1001px) {
+  .app-layout__sidebar {
+    animation: sidebarEnter 0.46s 80ms var(--ease-out) both;
+  }
+}
+
 @media (max-width: 1780px) {
     .match-card__items-summary .participant-card__item-slot,
     .match-card__items-summary .participant-card__item-icon,
