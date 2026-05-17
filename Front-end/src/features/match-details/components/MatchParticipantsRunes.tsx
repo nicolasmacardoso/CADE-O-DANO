@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import type { Runes } from "../../../types/matchDetail";
-import dominationSplashArt from "../../../assets/domination-splash-art.png";
-import inspirationSplashArt from "../../../assets/inspiration-splash-art.png";
-import precisionSplashArt from "../../../assets/precision-splash-art.png";
-import resolveSplashArt from "../../../assets/resolve-splash-art.png";
-import sorcerySplashArt from "../../../assets/sorcery-splash-art.png";
+import dominationSplashArt from "../../../assets/runes/splash-art/domination.png";
+import inspirationSplashArt from "../../../assets/runes/splash-art/inspiration.png";
+import precisionSplashArt from "../../../assets/runes/splash-art/precision.png";
+import resolveSplashArt from "../../../assets/runes/splash-art/resolve.png";
+import sorcerySplashArt from "../../../assets/runes/splash-art/sorcery.png";
 import RemoteImage from "../../../shared/components/RemoteImage";
 
 type Props = {

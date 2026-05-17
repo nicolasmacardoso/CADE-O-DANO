@@ -1,7 +1,10 @@
 import { useState } from "react";
+import { RefreshCw } from "lucide-react";
 import type { MatchSummary } from "../../../types/match";
+import type { HighestDamageChampion, MostPlayedChampion } from "../../../services/api/types";
 import BackButton from "../../../shared/components/BackButton";
 import FloatingAlert from "../../../shared/components/FloatingAlert";
+import RemoteImage from "../../../shared/components/RemoteImage";
 import MatchCard from "./MatchCard";
 
 type Props = {
@@ -12,6 +15,8 @@ type Props = {
     isLoadingMatchDetails: boolean;
     isRefreshingHistory: boolean;
     matchError: string;
+    mostPlayedChampions: MostPlayedChampion[];
+    highestDamageChampions: HighestDamageChampion[];
 }
 
 function HistoryPage ({
@@ -21,7 +26,9 @@ function HistoryPage ({
     onSelectMatch,
     isLoadingMatchDetails,
     isRefreshingHistory,
-    matchError
+    matchError,
+    mostPlayedChampions,
+    highestDamageChampions
 }: Props) {
     const maxDamageInList = Math.max(...matches.map((match) => match.totalDamage), 0);
     const matchesWithoutRemake = matches.filter((match) => match.result !== 2);
@@ -41,51 +48,92 @@ function HistoryPage ({
                 message={feedbackMessage}
             />
 
-            <div className="history-page__buttons-box">
+            <div className="history-page__topbar">
                 <BackButton onBack={onBack}/>
-                <button
-                    type="button"
-                    className={isRefreshingHistory ? "history-page__refresh-button is-loading" : "history-page__refresh-button"}
-                    onClick={onRefresh}
-                    disabled={isRefreshingHistory}
-                    aria-label="Recarregar histórico"
-                    title="Recarregar histórico"
-                />
+
+                <div className="history-page__actions">
+                    <button
+                        type="button"
+                        className={isRefreshingHistory ? "history-page__refresh-button is-loading" : "history-page__refresh-button"}
+                        onClick={onRefresh}
+                        disabled={isRefreshingHistory}
+                        aria-label="Recarregar histórico"
+                        title="Recarregar histórico"
+                    >
+                        <RefreshCw size={20} strokeWidth={2.4} aria-hidden="true" />
+                    </button>
+
+                    <label className="damage-toggle">
+                        <span className="damage-toggle__label">Exibir dano</span>
+                        <input
+                            className="damage-toggle__input"
+                            type="checkbox"
+                            name="show-damage-text"
+                            checked={showDamageText}
+                            onChange={(event) => setShowDamageText(event.target.checked)}
+                        />
+                        <span className="damage-toggle__control" />
+                    </label>
+                </div>
             </div>
 
             <header className="history-page__header">
+                <p className="page-eyebrow">Painel de desempenho</p>
                 <h1>Histórico de partidas</h1>
+                <span>{matches.length} partidas recentes analisadas</span>
             </header>
 
-            <label className="damage-toggle">
-                <span className="damage-toggle__label">Exibir dano</span>
-                <input
-                    className="damage-toggle__input"
-                    type="checkbox"
-                    name="show-damage-text"
-                    checked={showDamageText}
-                    onChange={(event) => setShowDamageText(event.target.checked)}
-                />
-                <span className="damage-toggle__control" />
-            </label>
+            <div className="history-page__content">
+                <aside className="history-insights" aria-label="Resumo de campeões">
+                    <section className="history-insights__section">
+                        <p className="sidebar-section-title">Campeões mais jogados</p>
+                        {mostPlayedChampions.map(({
+                            championName,
+                            championIconUrl,
+                            gamesPlayed
+                        }) => (
+                            <div key={championName} className="history-insights__champion">
+                                <RemoteImage className="champion-icon" src={championIconUrl} alt={`Ícone do campeão ${championName}`}/>
+                                <p className="champion-name">{championName}</p>
+                                <p className="champion-subinfo">{gamesPlayed} partidas</p>
+                            </div>
+                        ))}
+                    </section>
 
-            <section className="match-list">
-                {matches.length > 0 ? (
-                    matches.map((match) => (
-                        <MatchCard
-                            key={match.matchId}
-                            match={match}
-                            maxDamageInList={maxDamageInList}
-                            minDamageInList={minDamageInList}
-                            onSelectMatch={onSelectMatch}
-                            isLoadingMatchDetails={isLoadingMatchDetails}
-                            showDamageText={showDamageText}
-                        />
-                    ))
-                ) : (
-                    <p className="empty-state">Nenhuma partida encontrada</p>
-                )}
-            </section>
+                    <section className="history-insights__section">
+                        <p className="sidebar-section-title">Maior dano por campeão</p>
+                        {highestDamageChampions.map(({
+                            championName,
+                            championIconUrl,
+                            highestDamage
+                        }) => (
+                            <div key={championName} className="history-insights__champion">
+                                <RemoteImage className="champion-icon" src={championIconUrl} alt={`Ícone do campeão ${championName}`}/>
+                                <p className="champion-name">{championName}</p>
+                                <p className="champion-subinfo">{highestDamage.toLocaleString("pt-BR")} de dano total</p>
+                            </div>
+                        ))}
+                    </section>
+                </aside>
+
+                <section className="match-list">
+                    {matches.length > 0 ? (
+                        matches.map((match) => (
+                            <MatchCard
+                                key={match.matchId}
+                                match={match}
+                                maxDamageInList={maxDamageInList}
+                                minDamageInList={minDamageInList}
+                                onSelectMatch={onSelectMatch}
+                                isLoadingMatchDetails={isLoadingMatchDetails}
+                                showDamageText={showDamageText}
+                            />
+                        ))
+                    ) : (
+                        <p className="empty-state">Nenhuma partida encontrada</p>
+                    )}
+                </section>
+            </div>
         </div>
     );
 }

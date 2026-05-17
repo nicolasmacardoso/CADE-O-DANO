@@ -1,4 +1,5 @@
 import { useState, type ReactNode } from "react";
+import { Menu, X } from "lucide-react";
 
 type Props = {
   children: ReactNode;
@@ -18,10 +19,14 @@ function AppLayout({ children, sidebar }: Props) {
                 className="app-layout__sidebar-button" 
                 onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                 type="button"
+                aria-label={isSidebarOpen ? "Fechar painel do jogador" : "Abrir painel do jogador"}
+                aria-expanded={isSidebarOpen}
             >
-                <div className="app-layout__sidebar-button-line"/>
-                <div className="app-layout__sidebar-button-line"/>
-                <div className="app-layout__sidebar-button-line"/>
+                {isSidebarOpen ? (
+                    <X size={25} strokeWidth={2.5} aria-hidden="true" />
+                ) : (
+                    <Menu size={25} strokeWidth={2.5} aria-hidden="true" />
+                )}
             </button>
             
             {sidebar && (

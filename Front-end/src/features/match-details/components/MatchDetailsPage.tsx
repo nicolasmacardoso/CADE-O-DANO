@@ -13,12 +13,14 @@ type MatchTeam = MatchDetail["teams"][number];
 
 type DisplayTeam = {
     title: string;
-    variant: "blue" | "red";
+    variant: string;
     participants: MatchTeam["participants"];
     totalTeamKills: MatchTeam["totalTeamKills"];
     totalTeamDeaths: MatchTeam["totalTeamDeaths"];
     totalTeamAssists: MatchTeam["totalTeamAssists"];
 }
+
+const MULTI_TEAM_VARIANTS = ["blue", "red", "gold", "green", "purple", "cyan"];
 
 function MatchDetailsPage ({ matchDetails, onBack, handleSearchParticipant }: Props) {
     const [showDamageText, setShowDamageText] = useState(false);
@@ -47,7 +49,7 @@ function MatchDetailsPage ({ matchDetails, onBack, handleSearchParticipant }: Pr
 
             return first.team.teamId - second.team.teamId;
         })
-        .map(({ team }, index) => {
+        .map(({ team }, index, sortedTeams) => {
             const {
                 participants,
                 teamId,
@@ -56,10 +58,14 @@ function MatchDetailsPage ({ matchDetails, onBack, handleSearchParticipant }: Pr
                 totalTeamAssists,
             } = team;
 
+            const variant = sortedTeams.length <= 2
+                ? teamId === 100 ? "blue" : "red"
+                : MULTI_TEAM_VARIANTS[index % MULTI_TEAM_VARIANTS.length];
+
             return {
                 title: `Equipe ${index + 1}`,
                 participants,
-                variant: teamId === 100 ? "blue" : "red",
+                variant,
                 totalTeamKills,
                 totalTeamDeaths,
                 totalTeamAssists,

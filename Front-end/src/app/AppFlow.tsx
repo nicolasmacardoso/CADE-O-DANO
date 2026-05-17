@@ -154,8 +154,6 @@ function AppFlow () {
             summonerName={playerProfile.summonerName}
             summonerLevel={playerProfile.summonerLevel}
             profileIconUrl={playerProfile.profileIconUrl}
-            mostPlayedChampions={performanceSummary.mostPlayedChampions}
-            highestDamageChampions={performanceSummary.highestDamageChampions}
             summonerElos={rankedStats.elos}
         />
     ) : undefined;
@@ -180,6 +178,8 @@ function AppFlow () {
                         isLoadingMatchDetails={matchRequest.loading}
                         matchError={matchRequest.error}
                         onSelectMatch={handleSelectMatch}
+                        mostPlayedChampions={performanceSummary?.mostPlayedChampions || []}
+                        highestDamageChampions={performanceSummary?.highestDamageChampions || []}
                     />
                 </AppLayout>
             )}

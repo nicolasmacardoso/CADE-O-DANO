@@ -98,8 +98,14 @@ function MatchCard ({ match, maxDamageInList, minDamageInList, onSelectMatch, is
                 )}
 
                 <div className="match-card__damage-bar">
-                    {showDamageText && <p className="match-card-damage">{totalDamage}</p>}
                 </div>
+
+                {showDamageText && (
+                    <div className="match-card__damage-details">
+                        <strong>{totalDamage.toLocaleString("pt-BR")}</strong>
+                        <span>{damagePercent}% do maior dano</span>
+                    </div>
+                )}
             </div>
         </button>
     );

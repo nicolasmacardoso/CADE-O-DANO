@@ -8,13 +8,22 @@ type Props = {
     totalTeamKills: number;
     totalTeamDeaths: number;
     totalTeamAssists: number;
-    variant: "blue" | "red";
+    variant: string;
     participants: Participant[];
     showDamageText: boolean;
     handleSearchParticipant: (name: string, tag: string) => void;
 }
 
-function TeamParticipantsSection ({ title, participants, variant, showDamageText, handleSearchParticipant }: Props) {
+function TeamParticipantsSection ({
+    title,
+    totalTeamKills,
+    totalTeamDeaths,
+    totalTeamAssists,
+    participants,
+    variant,
+    showDamageText,
+    handleSearchParticipant
+}: Props) {
     const [openedRunesKey, setOpenedRunesKey] = useState<string | null>(null);
     const [closingRunesKey, setClosingRunesKey] = useState<string | null>(null);
     const closeAnimationTimeoutRef = useRef<number | null>(null);
@@ -57,7 +66,8 @@ function TeamParticipantsSection ({ title, participants, variant, showDamageText
     return (
         <section className={`team-section team-section--${variant}`}>
             <header className="team-section__header">
-                <h2>{title} {}</h2>
+                <h2>{title}</h2>
+                <p>{totalTeamKills}/{totalTeamDeaths}/{totalTeamAssists}</p>
             </header>
 
             <div className="team-section__participant-list">

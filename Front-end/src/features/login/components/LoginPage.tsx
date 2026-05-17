@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type FocusEvent, type KeyboardEvent } from "react";
+import { ArrowRight, LoaderCircle } from "lucide-react";
 import type { StoredPlayer } from "../../../services/storage/playerStorage";
 import FloatingAlert from "../../../shared/components/FloatingAlert";
 import RemoteImage from "../../../shared/components/RemoteImage";
@@ -121,7 +122,25 @@ function LoginPage({ onSearch, loading, historyError, searchedPlayers }: Props) 
                 message={historyError || (loading ? "Buscando histórico do jogador..." : "")}
             />
 
-            <div className="login-form">
+            <section className="login-hero" aria-labelledby="login-title">
+                <p className="login-hero__eyebrow">League analytics</p>
+                <h1 id="login-title">Cade o dano?</h1>
+                <p className="login-hero__description">
+                    Analise historico, dano, KDA, builds, runas e desempenho real das partidas em uma interface feita para leitura rapida.
+                </p>
+                <div className="login-hero__metrics" aria-label="Recursos principais">
+                    <span>Historico</span>
+                    <span>Dano</span>
+                    <span>Runas</span>
+                </div>
+            </section>
+
+            <div className="login-form" aria-label="Buscar jogador">
+                <div className="login-form__header">
+                    <p>Buscar invocador</p>
+                    <span>Riot ID</span>
+                </div>
+
                 <div 
                     className="user-field"
                     onBlur={(event) => handleUserFieldBlur(event)}
@@ -191,7 +210,14 @@ function LoginPage({ onSearch, loading, historyError, searchedPlayers }: Props) 
                     className={loading ? "search-button is-loading" : "search-button"}
                     disabled={loading || !nick.trim() || !tag.trim()}
                     onClick={() => onSearch(nick, tag)}
-                />
+                >
+                    {loading ? "Buscando..." : "Analisar jogador"}
+                    {loading ? (
+                        <LoaderCircle size={20} strokeWidth={2.4} aria-hidden="true" />
+                    ) : (
+                        <ArrowRight size={20} strokeWidth={2.4} aria-hidden="true" />
+                    )}
+                </button>
             </div>
         </div>
     );

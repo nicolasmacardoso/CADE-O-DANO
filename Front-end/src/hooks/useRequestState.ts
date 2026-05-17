@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function getFriendlyRequestError(error: unknown) {
     const rawMessage = error instanceof Error
@@ -41,6 +41,16 @@ function getFriendlyRequestError(error: unknown) {
 function useRequestState() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string>("");
+
+    useEffect(() => {
+        if (!error) return;
+
+        const timeoutId = window.setTimeout(() => {
+            setError("");
+        }, 3000);
+
+        return () => window.clearTimeout(timeoutId);
+    }, [error]);
 
     async function run<T>(fn: () => Promise<T>): Promise<Awaited<T> | undefined> {
         setLoading(true);

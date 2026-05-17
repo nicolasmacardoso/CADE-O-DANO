@@ -2,8 +2,8 @@ import type { CSSProperties } from "react";
 import type { Participant } from "../../../types/matchDetail";
 import type { SummonerElo } from "../../../services/api/types";
 import ParticipantItems from "./ParticipantItems";
-import runesIcon from "../../../assets/runesicon.png";
-import minionIcon from "../../../assets/icon_minions.png";
+import runesIcon from "../../../assets/icons/runes.png";
+import minionIcon from "../../../assets/icons/minions.png";
 import RemoteImage from "../../../shared/components/RemoteImage";
 
 type Props = {
@@ -45,6 +45,7 @@ function MatchParticipantsCard ({ participant, highestTeamDamage, showDamageText
     const damageRatio = highestTeamDamage > 0
         ? totalDamage / highestTeamDamage
         : 0;
+    const damagePercent = Math.round(damageRatio * 100);
 
     const kda = `${kills}/${deaths}/${assists}`;
     const displayedElo = summonerElos[0] || summonerElos[1];
@@ -57,10 +58,19 @@ function MatchParticipantsCard ({ participant, highestTeamDamage, showDamageText
     const championSplashArt = championSplashArtUrl ?? "";
     const canSearchParticipant = playerName.length > 0 && playerTag.length > 0;
     
-    const damageStyle = { "--damage-ratio": damageRatio } as CSSProperties;
+    const cardStyle = {
+        "--damage-ratio": damageRatio,
+    } as CSSProperties;
 
     return (
-        <div className={isSearchedPlayer ? "participant-card participant-card--selected" : "participant-card"}>
+        <div
+            className={isSearchedPlayer ? "participant-card participant-card--selected" : "participant-card"}
+            style={cardStyle}
+        >
+            {championSplashArt && (
+                <RemoteImage className="participant-card__splash" src={championSplashArt} alt="" />
+            )}
+
             <div className="champ-info">
                 <RemoteImage className="champion-img" src={championSplashArt} alt={championLabel}/>
                 <p className="champion-level">{champLevel}</p>
@@ -127,17 +137,18 @@ function MatchParticipantsCard ({ participant, highestTeamDamage, showDamageText
             </div>
 
             <div className="participant-card__kda">
-                <p>
-                    <span>{kda}</span> <span>{killParticipation} K/P</span>
+                <p className="participant-card__kda-line">
+                    <strong>{kda}</strong>
+                    <span>{killParticipation} K/P</span>
                 </p> 
                 {!!cs && (
-                    <p>
-                        <span>
+                    <p className="participant-card__farm-line">
+                        <strong>
                             {cs}
                             <span className="participant-card__minion-icon" aria-hidden="true">
                                 <img src={minionIcon} alt="" />
                             </span>
-                        </span> 
+                        </strong> 
                         <span>{csPerMinute} cs/m</span>
                     </p>
                 )} 
@@ -146,9 +157,15 @@ function MatchParticipantsCard ({ participant, highestTeamDamage, showDamageText
             <div 
                 className="participant-card__damage"
                 data-damage={`Dano total: ${totalDamage}`}
-                style={damageStyle}
             >
-                {showDamageText && <p className="damage">{totalDamage}</p>}
+                <div className="participant-card__damage-bar" />
+
+                {showDamageText && (
+                    <div className="participant-card__damage-details">
+                        <strong>{totalDamage.toLocaleString("pt-BR")}</strong>
+                        <span>{damagePercent}% do maior dano</span>
+                    </div>
+                )}
             </div>
         </div>
     );

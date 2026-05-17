@@ -16,6 +16,10 @@ function FloatingAlert({ message, variant }: Props) {
                 <strong>{title}</strong>
                 <p>{message}</p>
             </div>
+
+            {variant === "error" && (
+                <span className="floating-alert__timer" aria-hidden="true" />
+            )}
         </div>
     );
 }
