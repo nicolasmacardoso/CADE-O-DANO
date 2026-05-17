@@ -1396,12 +1396,19 @@ input:focus-visible,
   --team-color: var(--cyan);
   --team-glow: rgba(65, 217, 255, 0.32);
   --team-soft: rgba(65, 217, 255, 0.14);
-  overflow: hidden;
+  position: relative;
+  overflow: visible;
+  z-index: 1;
   border: 1px solid color-mix(in srgb, var(--team-color) 42%, transparent);
   border-radius: var(--radius);
   background: rgba(12, 18, 30, 0.8);
   box-shadow: var(--shadow-soft);
   animation: panelEnter 0.44s var(--ease-out) both;
+}
+
+.team-section:has(.participant-card:hover),
+.team-section:has(.participant-card:focus-within) {
+  z-index: 20;
 }
 
 .team-section--blue {
@@ -1466,6 +1473,8 @@ input:focus-visible,
   display: grid;
   gap: 1px;
   padding: 1px;
+  border-radius: 0 0 calc(var(--radius) - 1px) calc(var(--radius) - 1px);
+  overflow: visible;
 }
 
 .participant-card {
@@ -1563,6 +1572,7 @@ input:focus-visible,
   min-width: 0;
   display: grid;
   gap: 4px;
+  z-index: 4;
 }
 
 .participant-card__player-header {
@@ -1598,6 +1608,12 @@ input:focus-visible,
 .participant-card__elo {
   position: relative;
   flex: 0 0 auto;
+  z-index: 90;
+}
+
+.participant-card__elo:hover,
+.participant-card__elo:focus-within {
+  z-index: 120;
 }
 
 .participant-card__elo-badge {
@@ -1621,7 +1637,7 @@ input:focus-visible,
 .participant-card__elo-tooltip,
 .participant-runes__tooltip {
   position: absolute;
-  z-index: 20;
+  z-index: 80;
   pointer-events: none;
   opacity: 0;
   transform: translateY(8px);
@@ -1631,7 +1647,9 @@ input:focus-visible,
 .participant-card__elo-tooltip {
   top: calc(100% + 10px);
   left: 0;
+  width: max-content;
   min-width: 210px;
+  max-width: min(260px, calc(100vw - 48px));
   display: grid;
   gap: 8px;
   padding: 10px;
@@ -1642,7 +1660,7 @@ input:focus-visible,
 }
 
 .participant-card__elo:hover .participant-card__elo-tooltip,
-.participant-card__elo:focus-visible .participant-card__elo-tooltip {
+.participant-card__elo:focus-within .participant-card__elo-tooltip {
   opacity: 1;
   transform: translateY(0);
 }
@@ -2754,6 +2772,18 @@ input:focus-visible,
     color: var(--text-soft);
     font-size: 0.82rem;
     font-weight: 750;
+  }
+
+  .participant-card__elo-tooltip {
+    top: calc(100% + 8px);
+    left: -150%;
+    max-width: min(230px, calc(100vw - 72px));
+    transform: translateY(6px);
+  }
+
+  .participant-card__elo:hover .participant-card__elo-tooltip,
+  .participant-card__elo:focus-within .participant-card__elo-tooltip {
+    transform: translateY(0);
   }
 
   .participant-card__runes-summary {
